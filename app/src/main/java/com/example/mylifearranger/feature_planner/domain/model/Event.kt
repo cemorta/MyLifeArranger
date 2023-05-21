@@ -2,12 +2,12 @@ package com.example.mylifearranger.feature_planner.domain.model
 
 import androidx.compose.ui.graphics.Color
 import androidx.room.PrimaryKey
-import java.time.LocalTime
+import java.time.LocalDateTime
 
 data class Event(
     val title: String,
-    val start: LocalTime,
-    val end: LocalTime,
+    val start: LocalDateTime,
+    val end: LocalDateTime,
     val color: Int,
     val isDone: Boolean,
     val isAllDay: Boolean,
@@ -17,3 +17,5 @@ data class Event(
         val eventColors = listOf(Color.Blue, Color.Cyan, Color.Green, Color.Magenta, Color.Red, Color.Yellow)
     }
 }
+
+class InvalidEventException(message: String) : Exception(message)

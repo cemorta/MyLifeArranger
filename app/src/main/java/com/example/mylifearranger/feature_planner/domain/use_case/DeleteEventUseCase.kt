@@ -7,7 +7,7 @@ class DeleteEventUseCase(
     private val eventRepository: EventRepository
 ) {
 
-    suspend fun invoke(event: Event) {
+    suspend operator fun invoke(event: Event) {
         eventRepository.deleteEvent(event)
     }
 }
