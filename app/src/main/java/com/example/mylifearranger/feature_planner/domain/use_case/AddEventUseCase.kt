@@ -10,21 +10,15 @@ class AddEventUseCase(
 
     @Throws(InvalidEventException::class)
     suspend operator fun invoke(event: Event) {
-        if(event.title.isBlank()) {
+        if (event.title.isBlank()) {
             throw InvalidEventException("The title of the event can't be empty.")
         }
-        if(event.start.isAfter(event.end)) {
+        if (event.start.isAfter(event.end)) {
             throw InvalidEventException("The start time of the event can't be after the end time.")
         }
-        if(event.start == event.end) {
-            throw InvalidEventException("The start time of the event can't be the same as the end time.")
-        }
-        if(event.start == null) {
-            throw InvalidEventException("The start time of the event can't be null.")
-        }
-        if(event.end == null) {
-            throw InvalidEventException("The end time of the event can't be null.")
-        }
+//        if (event.start.hour == event.end) {
+//            throw InvalidEventException("The start time of the event can't be the same as the end time.")
+//        }
 
         eventRepository.insertEvent(event)
     }

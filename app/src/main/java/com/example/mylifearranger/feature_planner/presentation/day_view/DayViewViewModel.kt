@@ -22,6 +22,10 @@ class DayViewViewModel @Inject constructor(
 
     private var getEventsJob: Job? = null
 
+    init {
+        getEvents()
+    }
+
     fun onEvent(event: DayViewEvent) {
         when (event) {
             is DayViewEvent.DeleteEvent -> {

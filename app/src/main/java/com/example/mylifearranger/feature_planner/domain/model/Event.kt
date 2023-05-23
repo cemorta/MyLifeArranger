@@ -11,8 +11,8 @@ data class Event(
     val start: LocalDateTime,
     val end: LocalDateTime,
     val color: Int,
-    val isDone: Boolean,
-    val isAllDay: Boolean,
+    val isDone: Boolean = false,
+    val isAllDay: Boolean = false,
     @PrimaryKey(autoGenerate = true) val id: Int? = null
 ) {
     companion object {

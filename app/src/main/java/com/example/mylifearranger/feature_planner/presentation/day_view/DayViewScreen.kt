@@ -31,12 +31,15 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun DayViewScreen(
     navController: NavController,
+    date: String,
     viewModel: DayViewViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
     val scope = rememberCoroutineScope()
 
-    val currentDate = LocalDate.now()
+    // Parse date from string to LocalDate
+    val currentDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
+
     val date = currentDate?.format(DateTimeFormatter.ISO_DATE)
     val appTitle: String = date.toString()
 
