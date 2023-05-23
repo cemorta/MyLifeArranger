@@ -1,9 +1,11 @@
 package com.example.mylifearranger.feature_planner.domain.model
 
 import androidx.compose.ui.graphics.Color
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
+@Entity
 data class Event(
     val title: String,
     val start: LocalDateTime,
@@ -11,10 +13,11 @@ data class Event(
     val color: Int,
     val isDone: Boolean,
     val isAllDay: Boolean,
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true) val id: Int? = null
 ) {
     companion object {
-        val eventColors = listOf(Color.Blue, Color.Cyan, Color.Green, Color.Magenta, Color.Red, Color.Yellow)
+        val eventColors =
+            listOf(Color.Blue, Color.Cyan, Color.Green, Color.Magenta, Color.Red, Color.Yellow)
     }
 }
 
