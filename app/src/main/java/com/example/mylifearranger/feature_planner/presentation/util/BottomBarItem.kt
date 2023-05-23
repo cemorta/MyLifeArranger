@@ -1,4 +1,6 @@
-package com.example.mylifearranger
+package com.example.mylifearranger.feature_planner.presentation.util
+
+import com.example.mylifearranger.R
 
 data class BottomTabItem(val itemText: String, val icon: Int) {
     companion object {

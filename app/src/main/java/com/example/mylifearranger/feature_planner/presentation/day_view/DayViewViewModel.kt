@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.presentation.events
+package com.example.mylifearranger.feature_planner.presentation.day_view
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -13,18 +13,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EventsViewModel @Inject constructor(
+class DayViewViewModel @Inject constructor(
     private val eventUseCases: EventUseCases
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(EventsState())
-    private val state: State<EventsState> = _state
+    private val _state = mutableStateOf(DayViewState())
+    val state: State<DayViewState> = _state
 
     private var getEventsJob: Job? = null
 
-    fun onEvent(event: EventsEvent) {
+    fun onEvent(event: DayViewEvent) {
         when (event) {
-            is EventsEvent.DeleteEvent -> {
+            is DayViewEvent.DeleteEvent -> {
                 viewModelScope.launch {
                     eventUseCases.deleteEventUseCase(event.event)
                 }

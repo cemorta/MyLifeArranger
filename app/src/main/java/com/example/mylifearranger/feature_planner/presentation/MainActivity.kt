@@ -46,7 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.example.mylifearranger.BottomTabItem
+import com.example.mylifearranger.feature_planner.presentation.util.BottomTabItem
 import com.example.mylifearranger.R
 import com.example.mylifearranger.ui.theme.MyLifeArrangerTheme
 import java.time.LocalDate

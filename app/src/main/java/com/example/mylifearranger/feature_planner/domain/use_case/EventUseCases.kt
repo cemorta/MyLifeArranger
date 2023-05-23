@@ -4,4 +4,5 @@ data class EventUseCases(
     val getEventsUseCase: GetEventsUseCase,
     val deleteEventUseCase: DeleteEventUseCase,
     val addEventUseCase: AddEventUseCase,
+    val getEventUseCase: GetEventUseCase,
 )
