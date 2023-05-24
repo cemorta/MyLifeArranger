@@ -13,8 +13,11 @@ class AddEventUseCase(
         if (event.title.isBlank()) {
             throw InvalidEventException("The title of the event can't be empty.")
         }
-        if (event.start.isAfter(event.end)) {
+        if (event.startTimestamp > event.endTimestamp) {
             throw InvalidEventException("The start time of the event can't be after the end time.")
+        }
+        if (event.color == 0) {
+            throw InvalidEventException("The color of the event can't be empty.")
         }
 //        if (event.start.hour == event.end) {
 //            throw InvalidEventException("The start time of the event can't be the same as the end time.")

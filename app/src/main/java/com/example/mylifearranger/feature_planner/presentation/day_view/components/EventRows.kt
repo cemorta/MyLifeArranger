@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.mylifearranger.feature_planner.domain.model.Event
+import toLocalDateTime
 
 @Composable
 fun EventRows(events: List<Event>, modifier: Modifier) {
@@ -12,7 +13,7 @@ fun EventRows(events: List<Event>, modifier: Modifier) {
 //            EventRow(events[i], returnClockPosition(String.format("%02d:%02d", events[i].start.hour, events[i].start.minute)))
 //        }
         for (event in events) {
-            EventRow(event, returnClockPosition(String.format("%02d:%02d", event.start.hour, event.start.minute)), returnClockPosition(String.format("%02d:%02d", event.end.hour, event.end.minute)))
+            EventRow(event, returnClockPosition(String.format("%02d:%02d", event.startTimestamp.toLocalDateTime().hour, event.startTimestamp.toLocalDateTime().minute)), returnClockPosition(String.format("%02d:%02d", event.endTimestamp.toLocalDateTime().hour, event.endTimestamp.toLocalDateTime().minute)))
         }
     }
 //        for (event in events) {

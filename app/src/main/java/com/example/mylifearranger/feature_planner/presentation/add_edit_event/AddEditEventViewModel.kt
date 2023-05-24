@@ -12,6 +12,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import toLocalDateTime
+import toTimestamp
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -54,8 +56,8 @@ class AddEditEventViewModel @Inject constructor(
                             isHintVisible = false
                         )
                         _eventColor.value = event.color
-                        _eventStartDateTime.value = event.start
-                        _eventEndDateTime.value = event.end
+                        _eventStartDateTime.value = event.startTimestamp.toLocalDateTime()
+                        _eventEndDateTime.value = event.endTimestamp.toLocalDateTime()
                     }
                 }
             }
@@ -135,8 +137,8 @@ class AddEditEventViewModel @Inject constructor(
                         eventUseCases.addEventUseCase(
                             Event(
                                 title = eventTitle.value.text,
-                                start = eventStartDateTime.value,
-                                end = eventEndDateTime.value,
+                                startTimestamp = eventStartDateTime.value.toTimestamp(),
+                                endTimestamp = eventEndDateTime.value.toTimestamp(),
                                 color = eventColor.value,
                                 isDone = false,
                                 isAllDay = false,

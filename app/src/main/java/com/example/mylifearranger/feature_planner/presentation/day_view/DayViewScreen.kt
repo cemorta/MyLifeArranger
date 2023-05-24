@@ -19,16 +19,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
-import com.example.mylifearranger.feature_planner.domain.model.Event
-import com.example.mylifearranger.feature_planner.domain.util.Converters
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.TimelineView
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.WeekDaysRow
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.dayViewActionButtons
 import com.example.mylifearranger.feature_planner.presentation.util.AppBar
 import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
+import toLocalDateTime
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,11 +45,22 @@ fun DayViewScreen(
     val date = currentDate?.format(DateTimeFormatter.ISO_DATE)
     val appTitle: String = date.toString()
 
-    // Create a list of example events
-    var exampleEvents = mutableListOf<Event>()
-    exampleEvents.add(Event(id = 1, title = "Event 1", start = LocalDateTime.parse("2021-10-01T10:00:00") , end = LocalDateTime.parse("2021-10-01T11:00:00"), color = 0x2000FF00.toInt()))
-    exampleEvents.add(Event(id = 2, title = "Event 2", start = LocalDateTime.parse("2021-10-01T12:00:00") , end = LocalDateTime.parse("2021-10-01T13:00:00"), color = 0x20000000.toInt()))
-    exampleEvents.add(Event(id = 3, title = "Event 3", start = LocalDateTime.parse("2021-10-01T14:30:00") , end = LocalDateTime.parse("2021-10-01T16:00:00"), color = 0x2000FF00.toInt()))
+    // print current date
+    println("Current date: $date")
+    // print events
+    try {
+        println("Events: ${state.events[0].startTimestamp.toLocalDateTime()} ${state.events[0].endTimestamp.toLocalDateTime()}")
+    }
+    catch (e: Exception) {
+        println("No events")
+    }
+    // Get events for the current date
+    val events = state.events
+//    // Create a list of example events
+//    var exampleEvents = mutableListOf<Event>()
+//    exampleEvents.add(Event(id = 1, title = "Event 1", start = LocalDateTime.parse("2021-10-01T10:00:00") , end = LocalDateTime.parse("2021-10-01T11:00:00"), color = 0x2000FF00.toInt()))
+//    exampleEvents.add(Event(id = 2, title = "Event 2", start = LocalDateTime.parse("2021-10-01T12:00:00") , end = LocalDateTime.parse("2021-10-01T13:00:00"), color = 0x20000000.toInt()))
+//    exampleEvents.add(Event(id = 3, title = "Event 3", start = LocalDateTime.parse("2021-10-01T14:30:00") , end = LocalDateTime.parse("2021-10-01T16:00:00"), color = 0x2000FF00.toInt()))
 
     Scaffold(floatingActionButton = {
         FloatingActionButton(
@@ -85,7 +94,7 @@ fun DayViewScreen(
             Column {
                 WeekDaysRow(currentDate)
                 Divider()
-                TimelineView(exampleEvents)
+                TimelineView(events)
             }
         }
     }

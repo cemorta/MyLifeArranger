@@ -2,6 +2,7 @@ package com.example.mylifearranger.feature_planner.presentation.day_view
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mylifearranger.feature_planner.domain.use_case.EventUseCases
@@ -14,16 +15,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DayViewViewModel @Inject constructor(
-    private val eventUseCases: EventUseCases
+    private val eventUseCases: EventUseCases,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _state = mutableStateOf(DayViewState())
     val state: State<DayViewState> = _state
 
+    private var getEventsForDateJob: Job? = null
     private var getEventsJob: Job? = null
 
     init {
-        getEvents()
+        savedStateHandle.get<String>("date")?.let {
+            println("DayViewViewModel: init: it = $it")
+            getEventsForDate(it)
+        }
     }
 
     fun onEvent(event: DayViewEvent) {
@@ -34,6 +40,13 @@ class DayViewViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun getEventsForDate(date: String) {
+        getEventsForDateJob?.cancel()
+        getEventsForDateJob = eventUseCases.getEventsForDateUseCase(date).onEach { events ->
+            _state.value = state.value.copy(events = events)
+        }.launchIn(viewModelScope)
     }
 
     private fun getEvents() {

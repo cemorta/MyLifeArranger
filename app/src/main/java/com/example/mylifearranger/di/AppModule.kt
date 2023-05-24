@@ -9,6 +9,7 @@ import com.example.mylifearranger.feature_planner.domain.use_case.AddEventUseCas
 import com.example.mylifearranger.feature_planner.domain.use_case.DeleteEventUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.EventUseCases
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.GetEventsForDateUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventsUseCase
 import dagger.Module
 import dagger.Provides
@@ -44,6 +45,7 @@ object AppModule {
             deleteEventUseCase = DeleteEventUseCase(eventRepository),
             addEventUseCase = AddEventUseCase(eventRepository),
             getEventUseCase = GetEventUseCase(eventRepository),
+            getEventsForDateUseCase = GetEventsForDateUseCase(eventRepository),
         )
     }
 }

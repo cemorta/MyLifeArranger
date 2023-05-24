@@ -29,12 +29,20 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.DayViewScreen.route
+                        startDestination = Screen.DayViewScreen.route + "?date={date}"
                     ) {
                         composable(
-                            route = Screen.DayViewScreen.route
+                            route = Screen.DayViewScreen.route + "?date={date}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "date"
+                                ) {
+                                    type = NavType.StringType
+                                    defaultValue = "2023-05-24"
+                                }
+                            )
                         ) {
-                            val date = it.arguments?.getString("date") ?: "2023-05-23"
+                            val date = it.arguments?.getString("date") ?: "2023-05-24"
                             DayViewScreen(
                                 navController = navController,
                                 date = date,

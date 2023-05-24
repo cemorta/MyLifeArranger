@@ -58,6 +58,7 @@ fun AddEditEventScreen(
     val titleState = viewModel.eventTitle.value
     val startDateState = viewModel.eventStartDateTime.value
     val endDateState = viewModel.eventEndDateTime.value
+    val colorState = viewModel.eventColor.value
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -201,7 +202,6 @@ fun AddEditEventScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateTimePicker(
     initialDateValue: LocalDate? = null,
