@@ -24,9 +24,11 @@ class DayViewViewModel @Inject constructor(
 
     private var getEventsForDateJob: Job? = null
     private var getEventsJob: Job? = null
+    private var date: String? = null
 
     init {
         savedStateHandle.get<String>("date")?.let {
+            date = it
             println("DayViewViewModel: init: it = $it")
             getEventsForDate(it)
         }
@@ -43,6 +45,7 @@ class DayViewViewModel @Inject constructor(
     }
 
     private fun getEventsForDate(date: String) {
+        println("DayViewViewModel: getEventsForDate: date = $date")
         getEventsForDateJob?.cancel()
         getEventsForDateJob = eventUseCases.getEventsForDateUseCase(date).onEach { events ->
             _state.value = state.value.copy(events = events)
@@ -54,5 +57,12 @@ class DayViewViewModel @Inject constructor(
         getEventsJob = eventUseCases.getEventsUseCase().onEach { events ->
             _state.value = state.value.copy(events = events)
         }.launchIn(viewModelScope)
+    }
+
+    fun onScreenDisplayed(newDate: String) {
+        if (date != newDate) {
+            date = newDate
+            getEventsForDate(newDate)
+        }
     }
 }

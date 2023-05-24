@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -39,23 +40,26 @@ fun DayViewScreen(
     val state = viewModel.state.value
     val scope = rememberCoroutineScope()
 
-    // Parse date from string to LocalDate
-    val currentDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
+    // Parse string date in format of YYYY-MM-DD to LocalDate
+    val localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
 
-    val date = currentDate?.format(DateTimeFormatter.ISO_DATE)
-    val appTitle: String = date.toString()
+    val appTitle: String = localDate.toString()
 
     // print current date
-    println("Current date: $date")
+    println("Current date: $localDate")
     // print events
     try {
-        println("Events: ${state.events[0].startTimestamp.toLocalDateTime()} ${state.events[0].endTimestamp.toLocalDateTime()}")
+        println("Events: ${state.events}")
     }
     catch (e: Exception) {
         println("No events")
     }
     // Get events for the current date
     val events = state.events
+    LaunchedEffect(key1 = date) {
+        println("Launched effect")
+        viewModel.onScreenDisplayed(date)
+    }
 //    // Create a list of example events
 //    var exampleEvents = mutableListOf<Event>()
 //    exampleEvents.add(Event(id = 1, title = "Event 1", start = LocalDateTime.parse("2021-10-01T10:00:00") , end = LocalDateTime.parse("2021-10-01T11:00:00"), color = 0x2000FF00.toInt()))
@@ -92,7 +96,7 @@ fun DayViewScreen(
             color = MaterialTheme.colorScheme.background
         ) {
             Column {
-                WeekDaysRow(currentDate)
+                WeekDaysRow(localDate, navController)
                 Divider()
                 TimelineView(events)
             }

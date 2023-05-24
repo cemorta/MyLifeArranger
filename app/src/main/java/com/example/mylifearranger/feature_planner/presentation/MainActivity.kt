@@ -16,6 +16,8 @@ import com.example.mylifearranger.feature_planner.presentation.day_view.DayViewS
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import com.example.mylifearranger.ui.theme.MyLifeArrangerTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -23,6 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyLifeArrangerTheme {
+                val currentDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
@@ -38,11 +41,11 @@ class MainActivity : ComponentActivity() {
                                     name = "date"
                                 ) {
                                     type = NavType.StringType
-                                    defaultValue = "2023-05-24"
+                                    defaultValue = currentDate
                                 }
                             )
                         ) {
-                            val date = it.arguments?.getString("date") ?: "2023-05-24"
+                            val date = it.arguments?.getString("date") ?: currentDate
                             DayViewScreen(
                                 navController = navController,
                                 date = date,
