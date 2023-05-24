@@ -19,12 +19,16 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
+import com.example.mylifearranger.feature_planner.domain.model.Event
+import com.example.mylifearranger.feature_planner.domain.util.Converters
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.TimelineView
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.WeekDaysRow
+import com.example.mylifearranger.feature_planner.presentation.day_view.components.dayViewActionButtons
 import com.example.mylifearranger.feature_planner.presentation.util.AppBar
 import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,16 +47,30 @@ fun DayViewScreen(
     val date = currentDate?.format(DateTimeFormatter.ISO_DATE)
     val appTitle: String = date.toString()
 
+    // Create a list of example events
+    var exampleEvents = mutableListOf<Event>()
+    exampleEvents.add(Event(id = 1, title = "Event 1", start = LocalDateTime.parse("2021-10-01T10:00:00") , end = LocalDateTime.parse("2021-10-01T11:00:00"), color = 0x2000FF00.toInt()))
+    exampleEvents.add(Event(id = 2, title = "Event 2", start = LocalDateTime.parse("2021-10-01T12:00:00") , end = LocalDateTime.parse("2021-10-01T13:00:00"), color = 0x20000000.toInt()))
+    exampleEvents.add(Event(id = 3, title = "Event 3", start = LocalDateTime.parse("2021-10-01T14:30:00") , end = LocalDateTime.parse("2021-10-01T16:00:00"), color = 0x2000FF00.toInt()))
+
     Scaffold(floatingActionButton = {
         FloatingActionButton(
             onClick = {
                 navController.navigate(Screen.AddEditEventScreen.route)
             },
-            Modifier.background(color = MaterialTheme.colorScheme.primary)
+            Modifier.background(color = MaterialTheme.colorScheme.background)
         ) {
             Icon(painterResource(id = R.drawable.baseline_add_24), contentDescription = "Add event")
         }
-    }, topBar = { AppBar(appTitle) }, bottomBar = { BottomBar() }) {
+    }, topBar = {
+        AppBar(
+            appTitle, dayViewActionButtons(
+                onTodayClick = { /*TODO*/ },
+                onPickDateClick = { /*TODO*/ },
+                onViewSettingsClick = { /*TODO*/ },
+            )
+        )
+    }, bottomBar = { BottomBar() }) {
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -67,19 +85,8 @@ fun DayViewScreen(
             Column {
                 WeekDaysRow(currentDate)
                 Divider()
-                TimelineView()
+                TimelineView(exampleEvents)
             }
         }
     }
-}
-fun returnClockPosition(time: String): Float {
-    val initialPadding = 11
-    val paddingBetweenHours: Float = 81.5F
-    val paddingBetweenMinutes: Float = 1.35F
-
-    val hour = time.substring(0, 2).toInt()
-    val minutes = time.substring(3, 5).toInt()
-    val result: Float =
-        hour * paddingBetweenHours + initialPadding + minutes * paddingBetweenMinutes
-    return result
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 
 @Composable
-fun BottomBar(items: List<BottomTabItem> = BottomTabItem.items) {
+fun BottomBar(items: List<BottomBarItem> = BottomBarItem.items) {
     var width by remember { mutableStateOf(0) }
     var selectedItem by remember { mutableStateOf(items[0]) }
 

@@ -12,9 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.mylifearranger.feature_planner.domain.model.Event
 
 @Composable
-fun TimelineView() {
+fun TimelineView(events: List<Event>) {
     val scrollState = rememberScrollState()
 
     // Create a list of hours to display in the timeline
@@ -36,6 +37,6 @@ fun TimelineView() {
                 Text(hour)
             }
         }
-        EventRows()
+        EventRows(events, modifier = Modifier.fillMaxSize())
     }
 }
