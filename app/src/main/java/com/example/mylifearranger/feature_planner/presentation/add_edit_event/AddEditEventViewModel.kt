@@ -31,12 +31,12 @@ class AddEditEventViewModel @Inject constructor(
     private val _eventColor = mutableStateOf<Int>(Event.eventColors.random().toArgb())
     val eventColor: State<Int> = _eventColor
 
-    private val _eventStartDate = mutableStateOf<LocalDateTime>(LocalDateTime.now())
-    val eventStartDate: State<LocalDateTime> = _eventStartDate
+    private val _eventStartDateTime = mutableStateOf<LocalDateTime>(LocalDateTime.now())
+    val eventStartDateTime: State<LocalDateTime> = _eventStartDateTime
 
-    // Create an eventEndDate with a default value of eventStartDate + 1 hour
-    private val _eventEndDate = mutableStateOf<LocalDateTime>(LocalDateTime.now().plusHours(1))
-    val eventEndDate: State<LocalDateTime> = _eventEndDate
+    // Create an eventEndDateTime with a default time value of eventStartTime + 1 hour
+    private val _eventEndDateTime = mutableStateOf<LocalDateTime>(LocalDateTime.now().plusHours(1))
+    val eventEndDateTime: State<LocalDateTime> = _eventEndDateTime
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -54,8 +54,8 @@ class AddEditEventViewModel @Inject constructor(
                             isHintVisible = false
                         )
                         _eventColor.value = event.color
-                        _eventStartDate.value = event.start
-                        _eventEndDate.value = event.end
+                        _eventStartDateTime.value = event.start
+                        _eventEndDateTime.value = event.end
                     }
                 }
             }
@@ -82,11 +82,51 @@ class AddEditEventViewModel @Inject constructor(
             }
 
             is AddEditEventEvent.EnteredStartDate -> {
-                _eventStartDate.value = event.value
+
+                val newStartDate = LocalDateTime.of(event.value, _eventStartDateTime.value.toLocalTime())
+                _eventStartDateTime.value = newStartDate
+
+                // If the end date is before the start date, set the end date to the start date
+                if (_eventEndDateTime.value.isBefore(newStartDate)) {
+                    val newEndDate = LocalDateTime.of(event.value, _eventEndDateTime.value.toLocalTime())
+                    _eventEndDateTime.value = newEndDate
+                }
             }
 
             is AddEditEventEvent.EnteredEndDate -> {
-                _eventEndDate.value = event.value
+
+                val newEndDate = LocalDateTime.of(event.value, _eventEndDateTime.value.toLocalTime())
+                _eventEndDateTime.value = newEndDate
+
+                // If the start date is after the end date, set the start date to the end date
+                if (_eventStartDateTime.value.isAfter(newEndDate)) {
+                    val newStartDate = LocalDateTime.of(event.value, _eventStartDateTime.value.toLocalTime())
+                    _eventStartDateTime.value = newStartDate
+                }
+            }
+
+            is AddEditEventEvent.EnteredStartTime -> {
+
+                val newStartTime = LocalDateTime.of(_eventStartDateTime.value.toLocalDate(), event.value)
+                _eventStartDateTime.value = newStartTime
+
+                // If the end time is before the start time, set the end time to the start time
+                if (_eventEndDateTime.value.isBefore(newStartTime)) {
+                    val newEndTime = LocalDateTime.of(_eventEndDateTime.value.toLocalDate(), event.value)
+                    _eventEndDateTime.value = newEndTime
+                }
+            }
+
+            is AddEditEventEvent.EnteredEndTime -> {
+
+                val newEndTime = LocalDateTime.of(_eventEndDateTime.value.toLocalDate(), event.value)
+                _eventEndDateTime.value = newEndTime
+
+                // If the start time is after the end time, set the start time to the end time
+                if (_eventStartDateTime.value.isAfter(newEndTime)) {
+                    val newStartTime = LocalDateTime.of(_eventStartDateTime.value.toLocalDate(), event.value)
+                    _eventStartDateTime.value = newStartTime
+                }
             }
 
             is AddEditEventEvent.SaveEvent -> {
@@ -95,8 +135,8 @@ class AddEditEventViewModel @Inject constructor(
                         eventUseCases.addEventUseCase(
                             Event(
                                 title = eventTitle.value.text,
-                                start = eventStartDate.value,
-                                end = eventEndDate.value,
+                                start = eventStartDateTime.value,
+                                end = eventEndDateTime.value,
                                 color = eventColor.value,
                                 isDone = false,
                                 isAllDay = false,

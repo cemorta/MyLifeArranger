@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -23,25 +22,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.domain.model.Event
 import com.example.mylifearranger.feature_planner.presentation.add_edit_event.components.TransparentHintTextField
+import com.example.mylifearranger.feature_planner.presentation.util.AppBar
+import com.example.mylifearranger.feature_planner.presentation.util.DatePicker
+import com.example.mylifearranger.feature_planner.presentation.util.TimePicker
 import kotlinx.coroutines.flow.collectLatest
-import java.time.LocalDateTime
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -53,8 +56,8 @@ fun AddEditEventScreen(
     viewModel: AddEditEventViewModel = hiltViewModel()
 ) {
     val titleState = viewModel.eventTitle.value
-    val startDateState = viewModel.eventStartDate.value
-    val endDateState = viewModel.eventEndDate.value
+    val startDateState = viewModel.eventStartDateTime.value
+    val endDateState = viewModel.eventEndDateTime.value
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -66,6 +69,7 @@ fun AddEditEventScreen(
                         message = event.message
                     )
                 }
+
                 is AddEditEventViewModel.UiEvent.SaveEvent -> {
                     navController.navigateUp()
                 }
@@ -81,7 +85,6 @@ fun AddEditEventScreen(
                 },
                 Modifier.background(
                     MaterialTheme.colorScheme.background,
-                    MaterialTheme.shapes.small
                 )
             ) {
                 Icon(
@@ -90,6 +93,13 @@ fun AddEditEventScreen(
                 )
             }
         },
+        topBar = {
+            AppBar(
+                title = "Add event",
+                isThereBackButton = true,
+                navController = navController
+            )
+        },
         snackbarHost = {
             snackbarHostState.currentSnackbarData?.let { snackbarData ->
                 Snackbar(
@@ -97,88 +107,131 @@ fun AddEditEventScreen(
                 )
             }
         }
-    ) {
-        Column(
+    ) { paddingValues ->
+
+        Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(
+                    paddingValues.calculateLeftPadding(layoutDirection = LayoutDirection.Ltr),
+                    paddingValues.calculateTopPadding(),
+                    paddingValues.calculateRightPadding(layoutDirection = LayoutDirection.Ltr),
+                    paddingValues.calculateBottomPadding()
+                ),
+            color = MaterialTheme.colorScheme.background
         ) {
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
             ) {
-                Event.eventColors.forEach { color ->
-                    val colorInt = color.toArgb()
-                    Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .shadow(15.dp, CircleShape)
-                            .background(color)
-                            .clickable { viewModel.onEvent(AddEditEventEvent.ChangeColor(colorInt)) }
-                    )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Event.eventColors.forEach { color ->
+                        val colorInt = color.toArgb()
+                        Box(
+                            modifier = Modifier
+                                .size(50.dp)
+                                .shadow(15.dp, CircleShape)
+                                .background(color)
+                                .clickable {
+                                    viewModel.onEvent(
+                                        AddEditEventEvent.ChangeColor(
+                                            colorInt
+                                        )
+                                    )
+                                }
+                        )
+                    }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+                TransparentHintTextField(
+                    text = titleState.text,
+                    hint = titleState.hint,
+                    onValueChange = {
+                        viewModel.onEvent(AddEditEventEvent.EnteredTitle(it))
+                    },
+                    onFocusChange = {
+                        viewModel.onEvent(AddEditEventEvent.ChangeTitleFocus(it))
+                    },
+                    isHintVisible = titleState.isHintVisible,
+                    singleLine = true,
+                    textStyle = MaterialTheme.typography.titleLarge,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Start date",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                DateTimePicker(
+                    initialDateValue = startDateState.toLocalDate(),
+                    initialTimeValue = startDateState.toLocalTime(),
+                    onDateSelected = {
+                        viewModel.onEvent(AddEditEventEvent.EnteredStartDate(it))
+                    },
+                    onTimeSelected = {
+                        viewModel.onEvent(AddEditEventEvent.EnteredStartTime(it))
+                    },
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "End date",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                DateTimePicker(
+                    initialDateValue = endDateState.toLocalDate(),
+                    initialTimeValue = endDateState.toLocalTime(),
+                    onDateSelected = {
+                        viewModel.onEvent(AddEditEventEvent.EnteredEndDate(it))
+                    },
+                    onTimeSelected = {
+                        viewModel.onEvent(AddEditEventEvent.EnteredEndTime(it))
+                    },
+                )
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            TransparentHintTextField(
-                text = titleState.text,
-                hint = titleState.hint,
-                onValueChange = {
-                    viewModel.onEvent(AddEditEventEvent.EnteredTitle(it))
-                },
-                onFocusChange = {
-                    viewModel.onEvent(AddEditEventEvent.ChangeTitleFocus(it))
-                },
-                isHintVisible = titleState.isHintVisible,
-                singleLine = true,
-                textStyle = MaterialTheme.typography.bodyMedium,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            DateTimePicker(onDateTimeSelected = {
-                viewModel.onEvent(AddEditEventEvent.EnteredStartDate(it))
-            })
-            Spacer(modifier = Modifier.height(16.dp))
-            DateTimePicker(onDateTimeSelected = {
-                viewModel.onEvent(AddEditEventEvent.EnteredEndDate(it))
-            })
-
-
-
         }
-
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateTimePicker(onDateTimeSelected: (LocalDateTime) -> Unit) {
+fun DateTimePicker(
+    initialDateValue: LocalDate? = null,
+    initialTimeValue: LocalTime? = null,
+    onDateSelected: (LocalDate) -> Unit,
+    onTimeSelected: (LocalTime) -> Unit
+) {
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    val date = remember { mutableStateOf(LocalDateTime.now().format(dateFormatter)) }
-    val time = remember { mutableStateOf(LocalDateTime.now().format(timeFormatter)) }
-
     Column {
-        TextField(
-            value = date.value,
-            onValueChange = { date.value = it },
-            label = { Text("Date") },
+        DatePicker(
+            label = "Date",
+            value = initialDateValue?.format(dateFormatter) ?: "",
+            onValueChange = {
+                onDateSelected(LocalDate.parse(it, dateFormatter))
+            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        TextField(
-            value = time.value,
-            onValueChange = { time.value = it },
-            label = { Text("Time") },
+        TimePicker(
+            label = "Time",
+            value = initialTimeValue?.format(timeFormatter) ?: "",
+            onValueChange = {
+                onTimeSelected(LocalTime.parse(it, timeFormatter))
+            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Button(onClick = {
-            val dateTime = LocalDateTime.parse("${date.value}T${time.value}", DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-            onDateTimeSelected(dateTime)
-        }) {
-            Text("Submit")
-        }
     }
 }
+
 //@Preview(showBackground = true)
 //@Composable
 //fun AddEditEventScreenPreview() {
