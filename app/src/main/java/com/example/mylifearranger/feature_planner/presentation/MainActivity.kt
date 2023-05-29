@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mylifearranger.feature_planner.presentation.add_edit_event.AddEditEventScreen
 import com.example.mylifearranger.feature_planner.presentation.day_view.DayViewScreen
+import com.example.mylifearranger.feature_planner.presentation.event_details.EventDetailsScreen
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import com.example.mylifearranger.ui.theme.MyLifeArrangerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +74,28 @@ class MainActivity : ComponentActivity() {
                             AddEditEventScreen(
                                 navController = navController,
                                 eventColor = color
+                            )
+                        }
+                        composable(
+                            route = Screen.EventDetailsScreen.route +
+                                    "?eventId={eventId}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "eventId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                                navArgument(
+                                    name = "eventColor"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                            )
+                        ) {
+                            EventDetailsScreen(
+                                navController = navController,
                             )
                         }
 

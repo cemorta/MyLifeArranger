@@ -98,7 +98,7 @@ fun DayViewScreen(
             Column {
                 WeekDaysRow(localDate, navController)
                 Divider()
-                TimelineView(events)
+                TimelineView(events, navController)
             }
         }
     }

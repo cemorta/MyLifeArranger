@@ -1,21 +1,41 @@
 package com.example.mylifearranger.feature_planner.presentation.day_view.components
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.mylifearranger.feature_planner.domain.model.Event
+import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import toLocalDateTime
 
 @Composable
-fun EventRows(events: List<Event>, modifier: Modifier) {
-    Box(modifier = modifier) {
+fun EventRows(events: List<Event>, navController: NavController) {
 //        for (i in events.indices) {
 //            EventRow(events[i], returnClockPosition(String.format("%02d:%02d", events[i].start.hour, events[i].start.minute)))
 //        }
-        for (event in events) {
-            EventRow(event, returnClockPosition(String.format("%02d:%02d", event.startTimestamp.toLocalDateTime().hour, event.startTimestamp.toLocalDateTime().minute)), returnClockPosition(String.format("%02d:%02d", event.endTimestamp.toLocalDateTime().hour, event.endTimestamp.toLocalDateTime().minute)))
+    for (event in events) {
+        EventRow(
+            event,
+            returnClockPosition(
+                String.format(
+                    "%02d:%02d",
+                    event.startTimestamp.toLocalDateTime().hour,
+                    event.startTimestamp.toLocalDateTime().minute
+                )
+            ),
+            returnClockPosition(
+                String.format(
+                    "%02d:%02d",
+                    event.endTimestamp.toLocalDateTime().hour,
+                    event.endTimestamp.toLocalDateTime().minute
+                )
+            ),
+        ) {
+            println("Clicked on event: ${event.title}")
+            navController.navigate(Screen.EventDetailsScreen.route + "?eventId=${event.id}")
         }
     }
+    // TODO: How to handle overlapping events?
+    // TODO: How to handle events that are longer than 1 day?
+
 //        for (event in events) {
 //            println(event.start.hour.toString() + ":" + String.format("%02d", event.start.minute))
 //            Spacer(modifier = Modifier.height(returnClockPosition(event.start.hour.toString() + ":" + String.format("%02d", event.start.minute)).dp))
