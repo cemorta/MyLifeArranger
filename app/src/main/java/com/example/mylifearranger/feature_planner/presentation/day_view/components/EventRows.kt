@@ -44,9 +44,9 @@ fun EventRows(events: List<Event>, navController: NavController) {
 }
 
 fun returnClockPosition(time: String): Float {
-    val initialPadding = 11
-    val paddingBetweenHours: Float = 81.5F
-    val paddingBetweenMinutes: Float = 1.35F
+    val initialPadding = 9F
+    val paddingBetweenHours: Float = 80F
+    val paddingBetweenMinutes: Float = 1.33F
 
     val hour = time.substring(0, 2).toInt()
     val minutes = time.substring(3, 5).toInt()
