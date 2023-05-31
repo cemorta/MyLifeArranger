@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import com.example.mylifearranger.feature_planner.domain.model.Event
 
 @Composable
-fun TimelineView(events: List<Event>, navController: NavController, onEventClick: () -> Unit) {
+fun TimelineView(events: List<Event>, navController: NavController) {
     val scrollState = rememberScrollState()
 
     // Create a list of hours to display in the timeline
@@ -39,6 +39,6 @@ fun TimelineView(events: List<Event>, navController: NavController, onEventClick
                 Text(hour, modifier = Modifier.height(80.dp), fontSize = 12.sp)
             }
         }
-        EventRows(events, navController, onEventClick)
+        EventRows(events, navController)
     }
 }

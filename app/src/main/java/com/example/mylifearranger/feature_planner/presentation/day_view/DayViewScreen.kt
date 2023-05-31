@@ -30,7 +30,6 @@ import com.example.mylifearranger.feature_planner.presentation.day_view.componen
 import com.example.mylifearranger.feature_planner.presentation.util.AppBar
 import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
-import toLocalDateTime
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -41,6 +40,11 @@ fun DayViewScreen(
     date: String,
     viewModel: DayViewViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(key1 = date) {
+        println("Launched effect")
+        viewModel.onScreenDisplayed(date)
+    }
+
     val state = viewModel.state.value
     val scope = rememberCoroutineScope()
 
@@ -61,13 +65,6 @@ fun DayViewScreen(
     }
     // Get events for the current date
     val events = state.events
-    LaunchedEffect(key1 = date) {
-        if (!viewModel.isNavigatedFromEventDetails.value) {
-            println("Launched effect")
-            viewModel.isNavigatedFromEventDetails.value = false
-            viewModel.onScreenDisplayed(date)
-        }
-    }
 //    // Create a list of example events
 //    var exampleEvents = mutableListOf<Event>()
 //    exampleEvents.add(Event(id = 1, title = "Event 1", start = LocalDateTime.parse("2021-10-01T10:00:00") , end = LocalDateTime.parse("2021-10-01T11:00:00"), color = 0x2000FF00.toInt()))
@@ -135,9 +132,7 @@ fun DayViewScreen(
                     }
                 }
                 Divider()
-                TimelineView(events, navController) {
-                    viewModel.isNavigatedFromEventDetails.value = true
-                }
+                TimelineView(events, navController)
             }
         }
     }

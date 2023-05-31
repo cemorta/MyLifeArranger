@@ -21,7 +21,6 @@ class DayViewViewModel @Inject constructor(
 
     private val _state = mutableStateOf(DayViewState())
     val state: State<DayViewState> = _state
-    val isNavigatedFromEventDetails = mutableStateOf(false)
 
     private var getEventsForDateJob: Job? = null
     private var getEventsJob: Job? = null

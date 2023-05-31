@@ -1,14 +1,13 @@
 package com.example.mylifearranger.feature_planner.presentation.day_view.components
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.feature_planner.domain.model.Event
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import toLocalDateTime
 
 @Composable
-fun EventRows(events: List<Event>, navController: NavController, onEventClick: () -> Unit) {
+fun EventRows(events: List<Event>, navController: NavController) {
 //        for (i in events.indices) {
 //            EventRow(events[i], returnClockPosition(String.format("%02d:%02d", events[i].start.hour, events[i].start.minute)))
 //        }
@@ -31,7 +30,6 @@ fun EventRows(events: List<Event>, navController: NavController, onEventClick: (
             ),
         ) {
             println("Clicked on event: ${event.title}")
-            onEventClick()
             navController.navigate(Screen.EventDetailsScreen.route + "?eventId=${event.id}")
         }
     }
