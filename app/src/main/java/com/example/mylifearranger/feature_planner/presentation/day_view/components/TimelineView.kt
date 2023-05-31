@@ -1,6 +1,5 @@
 package com.example.mylifearranger.feature_planner.presentation.day_view.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,7 @@ import androidx.navigation.NavController
 import com.example.mylifearranger.feature_planner.domain.model.Event
 
 @Composable
-fun TimelineView(events: List<Event>, navController: NavController) {
+fun TimelineView(events: List<Event>, navController: NavController, onEventClick: () -> Unit) {
     val scrollState = rememberScrollState()
 
     // Create a list of hours to display in the timeline
@@ -40,6 +39,6 @@ fun TimelineView(events: List<Event>, navController: NavController) {
                 Text(hour, modifier = Modifier.height(80.dp), fontSize = 12.sp)
             }
         }
-        EventRows(events, navController)
+        EventRows(events, navController, onEventClick)
     }
 }

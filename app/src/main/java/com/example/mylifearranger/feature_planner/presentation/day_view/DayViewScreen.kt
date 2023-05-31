@@ -57,8 +57,11 @@ fun DayViewScreen(
     // Get events for the current date
     val events = state.events
     LaunchedEffect(key1 = date) {
-        println("Launched effect")
-        viewModel.onScreenDisplayed(date)
+        if(!viewModel.isNavigatedFromEventDetails.value) {
+            println("Launched effect")
+            viewModel.isNavigatedFromEventDetails.value = false
+            viewModel.onScreenDisplayed(date)
+        }
     }
 //    // Create a list of example events
 //    var exampleEvents = mutableListOf<Event>()
@@ -98,7 +101,9 @@ fun DayViewScreen(
             Column {
                 WeekDaysRow(localDate, navController)
                 Divider()
-                TimelineView(events, navController)
+                TimelineView(events, navController) {
+                    viewModel.isNavigatedFromEventDetails.value = true
+                }
             }
         }
     }
