@@ -13,7 +13,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -43,6 +47,8 @@ fun DayViewScreen(
     // Parse string date in format of YYYY-MM-DD to LocalDate
     val localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
 
+    var selectedDate by remember { mutableStateOf<LocalDate?>(localDate) }
+
     val appTitle: String = localDate.toString()
 
     // print current date
@@ -50,14 +56,13 @@ fun DayViewScreen(
     // print events
     try {
         println("Events: ${state.events}")
-    }
-    catch (e: Exception) {
+    } catch (e: Exception) {
         println("No events")
     }
     // Get events for the current date
     val events = state.events
     LaunchedEffect(key1 = date) {
-        if(!viewModel.isNavigatedFromEventDetails.value) {
+        if (!viewModel.isNavigatedFromEventDetails.value) {
             println("Launched effect")
             viewModel.isNavigatedFromEventDetails.value = false
             viewModel.onScreenDisplayed(date)
@@ -81,25 +86,54 @@ fun DayViewScreen(
     }, topBar = {
         AppBar(
             appTitle, dayViewActionButtons(
-                onTodayClick = { /*TODO*/ },
+                onTodayClick = {
+                    val today: LocalDate = LocalDate.now()
+                    navController.currentBackStackEntry?.let { currentBackStackEntry ->
+                        navController.navigate(
+                            route = Screen.DayViewScreen.route + "?date=${
+                                LocalDate.parse(
+                                    today.toString(), DateTimeFormatter.ISO_DATE
+                                )
+                            }"
+                        ) {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(currentBackStackEntry.id) {
+                                saveState = true
+                            }
+                        }
+                    }
+                    selectedDate = today
+                },
                 onPickDateClick = { /*TODO*/ },
                 onViewSettingsClick = { /*TODO*/ },
             )
         )
-    }, bottomBar = { BottomBar() }) {
+    }, bottomBar = { BottomBar() }) { paddingValues ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    it.calculateLeftPadding(layoutDirection = LayoutDirection.Ltr),
-                    it.calculateTopPadding(),
-                    it.calculateRightPadding(layoutDirection = LayoutDirection.Ltr),
-                    it.calculateBottomPadding()
+                    paddingValues.calculateLeftPadding(layoutDirection = LayoutDirection.Ltr),
+                    paddingValues.calculateTopPadding(),
+                    paddingValues.calculateRightPadding(layoutDirection = LayoutDirection.Ltr),
+                    paddingValues.calculateBottomPadding()
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
             Column {
-                WeekDaysRow(localDate, navController)
+                WeekDaysRow(selectedDate, navController) {
+                    selectedDate = it
+                    navController.currentBackStackEntry?.let { currentBackStackEntry ->
+                        navController.navigate(route = Screen.DayViewScreen.route + "?date=${selectedDate}") {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(currentBackStackEntry.id) {
+                                saveState = true
+                            }
+                        }
+                    }
+                }
                 Divider()
                 TimelineView(events, navController) {
                     viewModel.isNavigatedFromEventDetails.value = true
