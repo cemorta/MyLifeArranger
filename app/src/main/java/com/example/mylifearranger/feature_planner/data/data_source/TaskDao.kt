@@ -17,7 +17,13 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE id = :id")
     suspend fun getTaskById(id: Int): Task?
 
-    @Query("SELECT * FROM task WHERE date(plannedTimestamp / 1000, 'unixepoch') = :date")
+    @Query("SELECT * FROM task WHERE taskType = 'YEARLY' AND plannedTimestamp >= :yearStart AND plannedTimestamp < :yearEnd")
+    fun getYearlyTasksForYear(yearStart: Long, yearEnd: Long): Flow<List<Task>>
+
+    @Query("SELECT * FROM task WHERE taskType = 'MONTHLY' AND plannedTimestamp >= :monthStart AND plannedTimestamp < :monthEnd")
+    fun getMonthlyTasksForMonth(monthStart: Long, monthEnd: Long): Flow<List<Task>>
+
+    @Query("SELECT * FROM task WHERE taskType = 'DAILY' AND date(plannedTimestamp / 1000, 'unixepoch') = :date")
     fun getTasksForDate(date: String): Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

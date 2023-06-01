@@ -17,6 +17,14 @@ class TaskRepositoryImpl(
         return taskDao.getTaskById(id)
     }
 
+    override fun getYearlyTasksForYear(yearStart: Long, yearEnd: Long): Flow<List<Task>> {
+        return taskDao.getYearlyTasksForYear(yearStart, yearEnd)
+    }
+
+    override fun getMonthlyTasksForMonth(monthStart: Long, monthEnd: Long): Flow<List<Task>> {
+        return taskDao.getMonthlyTasksForMonth(monthStart, monthEnd)
+    }
+
     override fun getTasksForDate(date: String): Flow<List<Task>> {
         return taskDao.getTasksForDate(date)
     }

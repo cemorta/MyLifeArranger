@@ -13,6 +13,14 @@ import com.example.mylifearranger.feature_planner.domain.use_case.EventUseCases
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventsForDateUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventsUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.AddTaskUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.DeleteTaskUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.GetMonthlyTasksForMonthUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTaskUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTasksForDateUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTasksUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.GetYearlyTasksForYearUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.TaskUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,5 +63,19 @@ object AppModule {
     @Singleton
     fun provideTaskRepository(appDatabase: AppDatabase): TaskRepository {
         return TaskRepositoryImpl(appDatabase.taskDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTaskUseCases(taskRepository: TaskRepository): TaskUseCases {
+        return TaskUseCases(
+            getTasksUseCase = GetTasksUseCase(taskRepository),
+            deleteTaskUseCase = DeleteTaskUseCase(taskRepository),
+            addTaskUseCase = AddTaskUseCase(taskRepository),
+            getTaskUseCase = GetTaskUseCase(taskRepository),
+            getYearlyTasksForYearUseCase = GetYearlyTasksForYearUseCase(taskRepository),
+            getMonthlyTasksForMonthUseCase = GetMonthlyTasksForMonthUseCase(taskRepository),
+            getTasksForDateUseCase = GetTasksForDateUseCase(taskRepository),
+        )
     }
 }

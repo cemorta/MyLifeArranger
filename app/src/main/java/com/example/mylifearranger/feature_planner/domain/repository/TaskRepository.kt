@@ -9,6 +9,10 @@ interface TaskRepository {
 
     suspend fun getTaskById(id: Int): Task?
 
+    fun getYearlyTasksForYear(yearStart: Long, yearEnd: Long): Flow<List<Task>>
+
+    fun getMonthlyTasksForMonth(monthStart: Long, monthEnd: Long): Flow<List<Task>>
+
     fun getTasksForDate(date: String): Flow<List<Task>>
 
     suspend fun insertTask(task: Task)
