@@ -2,11 +2,7 @@ package com.example.mylifearranger.feature_planner.domain.model
 
 import androidx.compose.ui.graphics.Color
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 @Entity
 data class Event(
