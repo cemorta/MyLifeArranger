@@ -12,8 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mylifearranger.feature_planner.presentation.add_edit_event.AddEditEventScreen
+import com.example.mylifearranger.feature_planner.presentation.add_edit_task.AddEditTaskScreen
 import com.example.mylifearranger.feature_planner.presentation.day_view.DayViewScreen
 import com.example.mylifearranger.feature_planner.presentation.event_details.EventDetailsScreen
+import com.example.mylifearranger.feature_planner.presentation.task_view.TaskViewScreen
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import com.example.mylifearranger.ui.theme.MyLifeArrangerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -98,7 +100,45 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                             )
                         }
-
+                        composable(
+                            route = Screen.TaskViewScreen.route + "?taskType={taskType}&date={date}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "taskType"
+                                ) {
+                                    type = NavType.StringType
+                                    defaultValue = "DAILY"
+                                },
+                                navArgument(
+                                    name = "date"
+                                ) {
+                                    type = NavType.StringType
+                                    defaultValue = currentDate
+                                }
+                            )
+                        ) {
+                            TaskViewScreen(
+                                navController = navController,
+                                taskType = it.arguments?.getString("taskType") ?: "DAILY",
+                                date = it.arguments?.getString("date") ?: currentDate
+                            )
+                        }
+                        composable(
+                            route = Screen.AddEditTaskScreen.route +
+                                    "?taskId={taskId}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "taskId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                            )
+                        ) {
+                            AddEditTaskScreen(
+                                navController = navController,
+                            )
+                        }
                     }
 
                 }
