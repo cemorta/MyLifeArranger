@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 @Composable
-fun WeekDaysRow(selectedDate: LocalDate?, navController: NavController, changeSelectedDay: (LocalDate) -> Unit) {
+fun WeekDaysRow(selectedDate: LocalDate?, changeSelectedDay: (LocalDate) -> Unit) {
     val startDate = LocalDate.now().withDayOfMonth(1)
     val endDate = LocalDate.now().withDayOfMonth(startDate.lengthOfMonth())
     val daysOfMonth = ChronoUnit.DAYS.between(startDate, endDate).toInt() + 1

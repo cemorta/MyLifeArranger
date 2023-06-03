@@ -13,16 +13,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.mylifearranger.R
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-data class BottomBarItem(val itemText: String, val icon: Int) {
+data class BottomBarItem(val itemText: String, val icon: Int, val route: String? = null) {
     companion object {
         val items = listOf(
-            BottomBarItem("Day", R.drawable.baseline_view_day_24),
-            BottomBarItem("Plans", R.drawable.baseline_menu_book_24),
-            BottomBarItem("Goals", R.drawable.baseline_task_alt_24),
-            BottomBarItem("Calendar", R.drawable.baseline_calendar_view_month_24),
-            BottomBarItem("Settings", R.drawable.baseline_settings_24)
+            BottomBarItem(
+                "Day",
+                R.drawable.baseline_view_day_24,
+                Screen.DayViewScreen.route + "?date=${
+                    LocalDate.parse(
+                        LocalDate.now().toString(),
+                        DateTimeFormatter.ISO_DATE
+                    )
+                }"
+            ),
+            BottomBarItem(
+                "Plans",
+                R.drawable.baseline_menu_book_24
+            ),
+            BottomBarItem(
+                "Tasks",
+                R.drawable.baseline_task_alt_24,
+                Screen.TaskViewScreen.route + "?taskType=DAILY&date=${
+                    LocalDate.parse(
+                        LocalDate.now().toString(),
+                        DateTimeFormatter.ISO_DATE
+                    )
+                }"
+            ),
+            BottomBarItem(
+                "Calendar",
+                R.drawable.baseline_calendar_view_month_24
+            ),
+            BottomBarItem(
+                "Settings",
+                R.drawable.baseline_settings_24
+            )
         )
     }
 }
@@ -32,13 +63,23 @@ fun BottomBarItemComposable(
     barItem: BottomBarItem,
     width: Int,
     isSelected: Boolean,
-    onItemClick: () -> Unit
+    navController: NavController,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .clickable { onItemClick() }
+            .clickable {
+                barItem.route?.let {
+                    navController.navigate(it) {
+                        // Clear the back stack until the start destination (not included) and launch the route of the selected item
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
             .width(with(LocalDensity.current) { width.toDp() })
             .background(
                 color = if (isSelected) Color.Blue else Color.LightGray,

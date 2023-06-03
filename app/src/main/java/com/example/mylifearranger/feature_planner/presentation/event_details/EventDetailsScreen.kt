@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import com.example.mylifearranger.feature_planner.presentation.event_details.components.eventDetailsActionButtons
 import com.example.mylifearranger.feature_planner.presentation.util.AppBar
 import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
+import com.example.mylifearranger.feature_planner.presentation.util.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import toLocalDateTime
 
@@ -42,7 +43,7 @@ fun EventDetailsScreen(
             )
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(navController, BottomBarItem.items[0])
         }
     ) {
         Surface(

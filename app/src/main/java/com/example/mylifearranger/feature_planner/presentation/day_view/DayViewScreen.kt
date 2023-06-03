@@ -29,6 +29,7 @@ import com.example.mylifearranger.feature_planner.presentation.day_view.componen
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.dayViewActionButtons
 import com.example.mylifearranger.feature_planner.presentation.util.AppBar
 import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
+import com.example.mylifearranger.feature_planner.presentation.util.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -65,11 +66,6 @@ fun DayViewScreen(
     }
     // Get events for the current date
     val events = state.events
-//    // Create a list of example events
-//    var exampleEvents = mutableListOf<Event>()
-//    exampleEvents.add(Event(id = 1, title = "Event 1", start = LocalDateTime.parse("2021-10-01T10:00:00") , end = LocalDateTime.parse("2021-10-01T11:00:00"), color = 0x2000FF00.toInt()))
-//    exampleEvents.add(Event(id = 2, title = "Event 2", start = LocalDateTime.parse("2021-10-01T12:00:00") , end = LocalDateTime.parse("2021-10-01T13:00:00"), color = 0x20000000.toInt()))
-//    exampleEvents.add(Event(id = 3, title = "Event 3", start = LocalDateTime.parse("2021-10-01T14:30:00") , end = LocalDateTime.parse("2021-10-01T16:00:00"), color = 0x2000FF00.toInt()))
 
     Scaffold(floatingActionButton = {
         FloatingActionButton(
@@ -106,7 +102,7 @@ fun DayViewScreen(
                 onViewSettingsClick = { /*TODO*/ },
             )
         )
-    }, bottomBar = { BottomBar() }) { paddingValues ->
+    }, bottomBar = { BottomBar(navController, BottomBarItem.items[0]) }) { paddingValues ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -119,7 +115,7 @@ fun DayViewScreen(
             color = MaterialTheme.colorScheme.background
         ) {
             Column {
-                WeekDaysRow(selectedDate, navController) {
+                WeekDaysRow(selectedDate) {
                     selectedDate = it
                     navController.currentBackStackEntry?.let { currentBackStackEntry ->
                         navController.navigate(route = Screen.DayViewScreen.route + "?date=${selectedDate}") {

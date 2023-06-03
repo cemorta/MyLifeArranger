@@ -13,11 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.navigation.NavController
 
 @Composable
-fun BottomBar(items: List<BottomBarItem> = BottomBarItem.items) {
+fun BottomBar(
+    navController: NavController,
+    currentItem: BottomBarItem,
+    items: List<BottomBarItem> = BottomBarItem.items
+) {
     var width by remember { mutableStateOf(0) }
-    var selectedItem by remember { mutableStateOf(items[0]) }
 
     Box(
         modifier = Modifier
@@ -31,10 +35,9 @@ fun BottomBar(items: List<BottomBarItem> = BottomBarItem.items) {
                 BottomBarItemComposable(
                     barItem = item,
                     width = width / items.size,
-                    isSelected = item == selectedItem
-                ) {
-                    selectedItem = item
-                }
+                    isSelected = item == currentItem,
+                    navController
+                )
             }
         }
     }
