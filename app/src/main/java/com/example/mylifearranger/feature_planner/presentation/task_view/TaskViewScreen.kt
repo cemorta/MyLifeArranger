@@ -10,12 +10,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
+import com.example.mylifearranger.feature_planner.domain.util.TaskType
 import com.example.mylifearranger.feature_planner.presentation.task_view.components.TaskViewContent
 import com.example.mylifearranger.feature_planner.presentation.task_view.components.taskViewActionButtons
 import com.example.mylifearranger.feature_planner.presentation.util.AppBar
@@ -27,8 +31,6 @@ import com.example.mylifearranger.feature_planner.presentation.util.Screen
 @Composable
 fun TaskViewScreen(
     navController: NavController,
-    taskType: String,
-    date: String,
     viewModel: TaskViewViewModel = hiltViewModel()
 ) {
 //    LaunchedEffect(key1 = date) {
@@ -44,7 +46,20 @@ fun TaskViewScreen(
 //
 //    var selectedDate by remember { mutableStateOf<LocalDate?>(localDate) }
 //
-    val appTitle = "$date $taskType"
+    val appTitle = when (state.taskType) {
+        TaskType.YEARLY -> "${state.date!!.substring(0, 4)} ${state.taskType}"
+        TaskType.MONTHLY -> "${state.date!!.substring(0, 7)} ${state.taskType}"
+        TaskType.DAILY -> "${state.date} ${state.taskType}"
+    }
+
+    // print task type
+    println("Task type: ${state.taskType}")
+    // print tasks
+    try {
+        println("Tasks: ${state.tasks}")
+    } catch (e: Exception) {
+        println("No tasks")
+    }
 //
 //    // print current date
 //    println("Current date: $localDate")
@@ -68,7 +83,22 @@ fun TaskViewScreen(
         }
     }, topBar = {
         AppBar(
-            appTitle, taskViewActionButtons(
+            appTitle, taskViewActionButtons(state.taskType,
+                {
+                    viewModel.onEvent(
+                        TaskViewEvent.FilterTaskType(TaskType.YEARLY, state.date!!)
+                    )
+                },
+                {
+                    viewModel.onEvent(
+                        TaskViewEvent.FilterTaskType(TaskType.MONTHLY, state.date!!)
+                    )
+                },
+                {
+                    viewModel.onEvent(
+                        TaskViewEvent.FilterTaskType(TaskType.DAILY, state.date!!)
+                    )
+                }
             )
         )
     }, bottomBar = { BottomBar(navController, BottomBarItem.items[2]) }) { paddingValues ->

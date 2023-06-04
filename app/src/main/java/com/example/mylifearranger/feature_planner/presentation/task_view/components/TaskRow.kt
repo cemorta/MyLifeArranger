@@ -1,6 +1,7 @@
 package com.example.mylifearranger.feature_planner.presentation.task_view.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ fun TaskRow(task: Task) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {  }
             .background(color = Color.LightGray)
             .height(50.dp)
     ) {

@@ -11,8 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import toTimestamp
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -43,16 +43,14 @@ class TaskViewViewModel @Inject constructor(
         }
     }
 
-    //
-//    fun onTask(task: DayViewTask) {
-//        when (task) {
-//            is DayViewTask.DeleteTask -> {
-//                viewModelScope.launch {
-//                    taskUseCases.deleteTaskUseCase(task.task)
-//                }
-//            }
-//        }
-//    }
+    fun onEvent(event: TaskViewEvent) {
+        when (event) {
+            is TaskViewEvent.FilterTaskType -> {
+                _state.value = state.value.copy(taskType = event.taskType)
+                getTasksForDateAndType(event.date, event.taskType)
+            }
+        }
+    }
 //
 //    private fun getTasksForDate(date: String) {
 //        println("DayViewViewModel: getTasksForDate: date = $date")
@@ -91,8 +89,8 @@ class TaskViewViewModel @Inject constructor(
         }
     }
 
-    fun getStartAndEndTimestamps(date: String, taskType: TaskType): Pair<Long, Long> {
-        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private fun getStartAndEndTimestamps(date: String, taskType: TaskType): Pair<Long, Long> {
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
         val parsedDate = LocalDateTime.parse("${date}T00:00", inputFormatter)
 
         return when (taskType) {
@@ -100,8 +98,8 @@ class TaskViewViewModel @Inject constructor(
                 val startOfMonth = parsedDate.withDayOfMonth(1).withHour(0).withMinute(0)
                 val endOfMonth = startOfMonth.plusMonths(1)
                 Pair(
-                    startOfMonth.toEpochSecond(ZoneOffset.UTC),
-                    endOfMonth.toEpochSecond(ZoneOffset.UTC)
+                    startOfMonth.toTimestamp(),
+                    endOfMonth.toTimestamp()
                 )
             }
 
@@ -109,8 +107,8 @@ class TaskViewViewModel @Inject constructor(
                 val startOfYear = parsedDate.withDayOfYear(1).withHour(0).withMinute(0)
                 val endOfYear = startOfYear.plusYears(1)
                 Pair(
-                    startOfYear.toEpochSecond(ZoneOffset.UTC),
-                    endOfYear.toEpochSecond(ZoneOffset.UTC)
+                    startOfYear.toTimestamp(),
+                    endOfYear.toTimestamp()
                 )
             }
 

@@ -119,8 +119,6 @@ class MainActivity : ComponentActivity() {
                         ) {
                             TaskViewScreen(
                                 navController = navController,
-                                taskType = it.arguments?.getString("taskType") ?: "DAILY",
-                                date = it.arguments?.getString("date") ?: currentDate
                             )
                         }
                         composable(
