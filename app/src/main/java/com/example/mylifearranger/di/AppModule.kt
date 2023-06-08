@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.room.Room
 import com.example.mylifearranger.feature_planner.data.data_source.AppDatabase
 import com.example.mylifearranger.feature_planner.data.repository.EventRepositoryImpl
+import com.example.mylifearranger.feature_planner.data.repository.PlanRepositoryImpl
 import com.example.mylifearranger.feature_planner.data.repository.TaskRepositoryImpl
 import com.example.mylifearranger.feature_planner.domain.repository.EventRepository
+import com.example.mylifearranger.feature_planner.domain.repository.PlanRepository
 import com.example.mylifearranger.feature_planner.domain.repository.TaskRepository
 import com.example.mylifearranger.feature_planner.domain.use_case.AddEventUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.DeleteEventUseCase
@@ -13,6 +15,12 @@ import com.example.mylifearranger.feature_planner.domain.use_case.EventUseCases
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventsForDateUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.GetEventsUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanTaskUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanWithTasksUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.DeletePlanUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanWithTasksUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.PlanUseCases
 import com.example.mylifearranger.feature_planner.domain.use_case.task.AddTaskUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.DeleteTaskUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetMonthlyTasksForMonthUseCase
@@ -76,6 +84,24 @@ object AppModule {
             getYearlyTasksForYearUseCase = GetYearlyTasksForYearUseCase(taskRepository),
             getMonthlyTasksForMonthUseCase = GetMonthlyTasksForMonthUseCase(taskRepository),
             getTasksForDateUseCase = GetTasksForDateUseCase(taskRepository),
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun providePlanRepository(appDatabase: AppDatabase): PlanRepository {
+        return PlanRepositoryImpl(appDatabase.planDao)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlanUseCases(planRepository: PlanRepository): PlanUseCases {
+        return PlanUseCases(
+            addPlanUseCase = AddPlanUseCase(planRepository),
+            addPlanTaskUseCase = AddPlanTaskUseCase(planRepository),
+            addPlanWithTasksUseCase = AddPlanWithTasksUseCase(planRepository),
+            deletePlanUseCase = DeletePlanUseCase(planRepository),
+            getPlanWithTasksUseCase = GetPlanWithTasksUseCase(planRepository),
         )
     }
 }
