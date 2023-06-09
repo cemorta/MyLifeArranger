@@ -30,7 +30,7 @@ interface PlanDao {
 //    fun getTasksForDate(date: String): Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPlan(plan: Plan): Int
+    suspend fun insertPlan(plan: Plan): Long
 
     @Insert
     suspend fun insertPlanTask(planTask: PlanTask)

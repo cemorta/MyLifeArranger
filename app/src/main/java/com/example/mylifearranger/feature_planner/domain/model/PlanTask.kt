@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 )
 data class PlanTask(
     @ColumnInfo(index = true)
-    val planId: Int,
+    val planId: Long,
     val title: String,
     val description: String,
     val amountToDo: Int,
@@ -26,5 +26,5 @@ data class PlanTask(
     val endDateTimestamp: Long? = null,
     val setEndTime: Boolean = false,
     val isDone: Boolean = false,
-    @PrimaryKey(autoGenerate = true) val id: Int? = null
+    @PrimaryKey(autoGenerate = true) val id: Long? = null
 )

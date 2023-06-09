@@ -15,7 +15,7 @@ class PlanRepositoryImpl(
         return planDao.getPlanWithTasks(planId)
     }
 
-    override suspend fun insertPlan(plan: Plan): Int {
+    override suspend fun insertPlan(plan: Plan): Long {
         return planDao.insertPlan(plan)
     }
 

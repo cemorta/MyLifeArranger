@@ -16,5 +16,5 @@ data class Plan(
     val startDateTimestamp: Long,
     val endDateTimestamp: Long,
     val isDone: Boolean = false,
-    @PrimaryKey(autoGenerate = true) val id: Int? = null
+    @PrimaryKey(autoGenerate = true) val id: Long? = null
 )
