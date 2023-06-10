@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.presentation.add_edit_event.components
+package com.example.mylifearranger.core.presentation.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

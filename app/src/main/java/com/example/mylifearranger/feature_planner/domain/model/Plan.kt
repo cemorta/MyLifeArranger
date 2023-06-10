@@ -9,6 +9,7 @@ data class Plan(
     val title: String,
     val planType: PlanType,
     val totalAmount: Int?,
+    val completedAmount: Int = 0,
     val unit: String,
     val startRange: Int?,
     val endRange: Int?,

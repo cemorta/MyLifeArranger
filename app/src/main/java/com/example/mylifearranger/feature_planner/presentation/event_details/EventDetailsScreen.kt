@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.feature_planner.presentation.event_details.components.eventDetailsActionButtons
-import com.example.mylifearranger.feature_planner.presentation.util.AppBar
-import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
-import com.example.mylifearranger.feature_planner.presentation.util.BottomBarItem
+import com.example.mylifearranger.core.presentation.components.AppBar
+import com.example.mylifearranger.core.presentation.components.BottomBar
+import com.example.mylifearranger.core.presentation.components.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import toLocalDateTime
 

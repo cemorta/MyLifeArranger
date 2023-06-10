@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.presentation.util
+package com.example.mylifearranger.core.presentation.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton

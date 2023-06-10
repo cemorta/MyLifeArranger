@@ -1,7 +1,7 @@
 package com.example.mylifearranger.feature_planner.presentation.task_details.components
 
 import com.example.mylifearranger.R
-import com.example.mylifearranger.feature_planner.presentation.util.ActionIconButton
+import com.example.mylifearranger.core.presentation.components.ActionIconButton
 
 fun taskDetailsActionButtons(
     onEdit: () -> Unit,

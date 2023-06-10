@@ -27,9 +27,9 @@ import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.TimelineView
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.WeekDaysRow
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.dayViewActionButtons
-import com.example.mylifearranger.feature_planner.presentation.util.AppBar
-import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
-import com.example.mylifearranger.feature_planner.presentation.util.BottomBarItem
+import com.example.mylifearranger.core.presentation.components.AppBar
+import com.example.mylifearranger.core.presentation.components.BottomBar
+import com.example.mylifearranger.core.presentation.components.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

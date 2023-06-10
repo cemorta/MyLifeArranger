@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.presentation.util
+package com.example.mylifearranger.core.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
+import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

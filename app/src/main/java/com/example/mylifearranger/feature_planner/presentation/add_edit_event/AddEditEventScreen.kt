@@ -40,10 +40,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.domain.model.Event
-import com.example.mylifearranger.feature_planner.presentation.add_edit_event.components.TransparentHintTextField
-import com.example.mylifearranger.feature_planner.presentation.util.AppBar
-import com.example.mylifearranger.feature_planner.presentation.util.DatePicker
-import com.example.mylifearranger.feature_planner.presentation.util.TimePicker
+import com.example.mylifearranger.core.presentation.components.TransparentHintTextField
+import com.example.mylifearranger.core.presentation.components.AppBar
+import com.example.mylifearranger.core.presentation.components.DatePicker
+import com.example.mylifearranger.core.presentation.components.TimePicker
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 import java.time.LocalTime

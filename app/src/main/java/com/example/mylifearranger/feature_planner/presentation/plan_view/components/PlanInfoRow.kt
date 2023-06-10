@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.mylifearranger.feature_planner.domain.model.Plan
 import com.example.mylifearranger.feature_planner.domain.util.PlanType
-import com.example.mylifearranger.feature_planner.presentation.util.returnDayStringByBitMasking
+import com.example.mylifearranger.core.presentation.util.returnDayStringByBitMasking
 import toLocalDateTime
 import java.time.format.DateTimeFormatter
 

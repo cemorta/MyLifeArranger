@@ -16,8 +16,8 @@ import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.domain.model.Plan
 import com.example.mylifearranger.feature_planner.domain.util.PlanType
 import com.example.mylifearranger.feature_planner.presentation.plan_view.components.PlanList
-import com.example.mylifearranger.feature_planner.presentation.util.ActionIconButton
-import com.example.mylifearranger.feature_planner.presentation.util.AppBar
+import com.example.mylifearranger.core.presentation.components.ActionIconButton
+import com.example.mylifearranger.core.presentation.components.AppBar
 import java.time.LocalDateTime
 
 //package com.example.mylifearranger.feature_planner.presentation.plan_view
@@ -44,9 +44,9 @@ import java.time.LocalDateTime
 //import com.example.mylifearranger.feature_planner.domain.util.TaskType
 //import com.example.mylifearranger.feature_planner.presentation.task_view.components.TaskViewContent
 //import com.example.mylifearranger.feature_planner.presentation.task_view.components.taskViewActionButtons
-//import com.example.mylifearranger.feature_planner.presentation.util.AppBar
-//import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
-//import com.example.mylifearranger.feature_planner.presentation.util.BottomBarItem
+//import com.example.mylifearranger.core.presentation.components.AppBar
+//import com.example.mylifearranger.core.presentation.components.BottomBar
+//import com.example.mylifearranger.core.presentation.components.BottomBarItem
 //import com.example.mylifearranger.feature_planner.presentation.util.Screen
 //
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -237,6 +237,7 @@ fun PlanViewScreenPreview() {
                     "Plan 1",
                     PlanType.TOTAL,
                     20,
+                    0,
                     "km",
                     null,
                     null,
@@ -250,6 +251,7 @@ fun PlanViewScreenPreview() {
                     "Plan 2",
                     PlanType.RANGE,
                     null,
+                    0,
                     "pages",
                     40,
                     50,

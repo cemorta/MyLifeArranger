@@ -10,9 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -22,9 +19,9 @@ import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.domain.util.TaskType
 import com.example.mylifearranger.feature_planner.presentation.task_view.components.TaskViewContent
 import com.example.mylifearranger.feature_planner.presentation.task_view.components.taskViewActionButtons
-import com.example.mylifearranger.feature_planner.presentation.util.AppBar
-import com.example.mylifearranger.feature_planner.presentation.util.BottomBar
-import com.example.mylifearranger.feature_planner.presentation.util.BottomBarItem
+import com.example.mylifearranger.core.presentation.components.AppBar
+import com.example.mylifearranger.core.presentation.components.BottomBar
+import com.example.mylifearranger.core.presentation.components.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)

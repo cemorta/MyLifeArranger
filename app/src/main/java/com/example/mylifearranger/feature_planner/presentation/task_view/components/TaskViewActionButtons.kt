@@ -2,7 +2,7 @@ package com.example.mylifearranger.feature_planner.presentation.task_view.compon
 
 import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.domain.util.TaskType
-import com.example.mylifearranger.feature_planner.presentation.util.ActionIconButton
+import com.example.mylifearranger.core.presentation.components.ActionIconButton
 
 fun taskViewActionButtons(
     taskType: TaskType,
