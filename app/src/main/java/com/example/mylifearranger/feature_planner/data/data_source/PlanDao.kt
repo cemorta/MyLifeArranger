@@ -17,6 +17,12 @@ interface PlanDao {
     @Query("SELECT * FROM plan WHERE id = :planId")
     fun getPlanWithTasks(planId: Int): Flow<PlanWithTasks>
 
+    @Query("SELECT * FROM plan")
+    fun getPlans(): Flow<List<Plan>>
+
+    @Query("SELECT * FROM plan WHERE id = :id")
+    suspend fun getPlanById(id: Int): Plan?
+
 //    @Query("SELECT * FROM task WHERE id = :id")
 //    suspend fun getTaskById(id: Int): Task?
 //

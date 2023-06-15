@@ -19,7 +19,9 @@ import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanTa
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanWithTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.DeletePlanUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanWithTasksUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlansUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.PlanUseCases
 import com.example.mylifearranger.feature_planner.domain.use_case.task.AddTaskUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.DeleteTaskUseCase
@@ -101,7 +103,9 @@ object AppModule {
             addPlanTaskUseCase = AddPlanTaskUseCase(planRepository),
             addPlanWithTasksUseCase = AddPlanWithTasksUseCase(planRepository),
             deletePlanUseCase = DeletePlanUseCase(planRepository),
+            getPlansUseCase = GetPlansUseCase(planRepository),
             getPlanWithTasksUseCase = GetPlanWithTasksUseCase(planRepository),
+            getPlanUseCase = GetPlanUseCase(planRepository)
         )
     }
 }

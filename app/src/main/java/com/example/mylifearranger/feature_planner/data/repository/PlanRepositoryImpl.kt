@@ -15,6 +15,14 @@ class PlanRepositoryImpl(
         return planDao.getPlanWithTasks(planId)
     }
 
+    override fun getPlans(): Flow<List<Plan>> {
+        return planDao.getPlans()
+    }
+
+    override suspend fun getPlanById(planId: Int): Plan? {
+        return planDao.getPlanById(planId)
+    }
+
     override suspend fun insertPlan(plan: Plan): Long {
         return planDao.insertPlan(plan)
     }

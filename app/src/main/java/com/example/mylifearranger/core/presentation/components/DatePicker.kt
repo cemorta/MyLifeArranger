@@ -2,6 +2,7 @@ package com.example.mylifearranger.core.presentation.components
 
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +43,8 @@ fun DatePicker(
         enabled = false,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
-        modifier = Modifier.clickable { dialog.show() },
+        modifier = Modifier
+            .clickable { dialog.show() }
+            .fillMaxWidth(),
     )
 }

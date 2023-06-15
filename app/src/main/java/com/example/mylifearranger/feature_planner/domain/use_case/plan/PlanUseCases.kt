@@ -5,6 +5,8 @@ data class PlanUseCases(
     val addPlanTaskUseCase: AddPlanTaskUseCase,
     val addPlanWithTasksUseCase: AddPlanWithTasksUseCase,
     val deletePlanUseCase: DeletePlanUseCase,
+    val getPlanUseCase: GetPlanUseCase,
+    val getPlansUseCase: GetPlansUseCase,
     val getPlanWithTasksUseCase: GetPlanWithTasksUseCase,
 //    val getPlanUseCase: GetPlanUseCase,
 //    val getPlansUseCase: GetPlansUseCase,

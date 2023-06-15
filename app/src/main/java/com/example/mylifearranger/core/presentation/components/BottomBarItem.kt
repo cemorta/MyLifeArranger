@@ -34,7 +34,8 @@ data class BottomBarItem(val itemText: String, val icon: Int, val route: String?
             ),
             BottomBarItem(
                 "Plans",
-                R.drawable.baseline_menu_book_24
+                R.drawable.baseline_menu_book_24,
+                Screen.PlanViewScreen.route
             ),
             BottomBarItem(
                 "Tasks",

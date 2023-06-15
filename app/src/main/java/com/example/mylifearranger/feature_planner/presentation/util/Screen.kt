@@ -6,4 +6,7 @@ sealed class Screen(val route: String) {
     object EventDetailsScreen : Screen("event_details_screen")
     object TaskViewScreen : Screen("task_view_screen")
     object AddEditTaskScreen : Screen("add_edit_task_screen")
+    object PlanViewScreen : Screen("plan_view_screen")
+    object AddEditPlanScreen : Screen("add_edit_plan_screen")
+    object PlanOverviewScreen : Screen("plan_overview_screen")
 }

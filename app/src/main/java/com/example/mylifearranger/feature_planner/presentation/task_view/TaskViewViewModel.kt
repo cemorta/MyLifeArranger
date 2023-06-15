@@ -115,11 +115,4 @@ class TaskViewViewModel @Inject constructor(
             else -> throw IllegalArgumentException("Type must be either 'month' or 'year'")
         }
     }
-//
-//    fun onScreenDisplayed(newDate: String) {
-//        if (date != newDate) {
-//            date = newDate
-//            getTasksForDate(newDate)
-//        }
-//    }
 }

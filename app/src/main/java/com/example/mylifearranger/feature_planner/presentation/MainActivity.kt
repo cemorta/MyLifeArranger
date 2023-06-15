@@ -1,10 +1,12 @@
 package com.example.mylifearranger.feature_planner.presentation
 
+import PlanViewScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,9 +14,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mylifearranger.feature_planner.presentation.add_edit_event.AddEditEventScreen
+import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.AddEditPlanScreen
+import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.SharedViewModel
 import com.example.mylifearranger.feature_planner.presentation.add_edit_task.AddEditTaskScreen
 import com.example.mylifearranger.feature_planner.presentation.day_view.DayViewScreen
 import com.example.mylifearranger.feature_planner.presentation.event_details.EventDetailsScreen
+import com.example.mylifearranger.feature_planner.presentation.plan_overview.PlanOverviewScreen
 import com.example.mylifearranger.feature_planner.presentation.task_view.TaskViewScreen
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import com.example.mylifearranger.ui.theme.MyLifeArrangerTheme
@@ -135,6 +140,49 @@ class MainActivity : ComponentActivity() {
                         ) {
                             AddEditTaskScreen(
                                 navController = navController,
+                            )
+                        }
+                        composable(
+                            route = Screen.PlanViewScreen.route,
+                        ) {
+                            PlanViewScreen(
+                                navController = navController,
+                            )
+                        }
+                        composable(
+                            route = Screen.AddEditPlanScreen.route +
+                                    "?planId={planId}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "planId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                            )
+                        ) {
+                            val sharedViewModel: SharedViewModel = viewModel(it)
+                            AddEditPlanScreen(
+                                navController = navController,
+                                sharedViewModel = sharedViewModel,
+                            )
+                        }
+                        composable(
+                            route = Screen.PlanOverviewScreen.route +
+                                    "?planId={planId}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "planId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                            )
+                        ) {
+                            val sharedViewModel: SharedViewModel = viewModel(navController.previousBackStackEntry!!)
+                            PlanOverviewScreen(
+                                navController = navController,
+                                sharedViewModel = sharedViewModel,
                             )
                         }
                     }
