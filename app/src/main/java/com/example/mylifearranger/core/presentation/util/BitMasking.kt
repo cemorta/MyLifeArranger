@@ -3,25 +3,25 @@ package com.example.mylifearranger.core.presentation.util
 fun returnDayStringByBitMasking(bitMask: Int): String {
     var dayString = ""
     if (bitMask and 1 == 1) {
-        dayString += "M"
+        dayString += "Mo"
     }
     if (bitMask and 2 == 2) {
-        dayString += "T"
+        dayString += "Tu"
     }
     if (bitMask and 4 == 4) {
-        dayString += "W"
+        dayString += "We"
     }
     if (bitMask and 8 == 8) {
-        dayString += "T"
+        dayString += "Th"
     }
     if (bitMask and 16 == 16) {
-        dayString += "F"
+        dayString += "Fr"
     }
     if (bitMask and 32 == 32) {
-        dayString += "S"
+        dayString += "Sa"
     }
     if (bitMask and 64 == 64) {
-        dayString += "S"
+        dayString += "Su"
     }
     return dayString
 }

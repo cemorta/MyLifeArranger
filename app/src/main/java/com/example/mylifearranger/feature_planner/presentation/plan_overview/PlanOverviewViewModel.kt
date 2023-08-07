@@ -2,9 +2,14 @@ package com.example.mylifearranger.feature_planner.presentation.plan_overview
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.mylifearranger.feature_planner.domain.model.Plan
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.PlanUseCases
 import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.SharedViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,48 +22,17 @@ class PlanOverviewViewModel @Inject constructor(
 
     fun setViewModel(sharedViewModel: SharedViewModel) {
         this.sharedViewModel = sharedViewModel
-
         println("d " + sharedViewModel.getSharedState())
     }
 
-//    private val _planTitle = mutableStateOf(
-//        PlanTextFieldState(
-//            hint = "Enter title"
-//        )
-//    )
-//    val planTitle: State<PlanTextFieldState> = _planTitle
-//
-//    private val _planType = mutableStateOf(PlanType.TOTAL)
-//    val planType: State<PlanType> = _planType
-//
-//    private val _totalAmount = mutableStateOf<Int?>(null)
-//    val totalAmount: State<Int?> = _totalAmount
-//
-//    private val _unit = mutableStateOf(
-//        PlanTextFieldState(
-//            hint = "Enter unit"
-//        )
-//    )
-//    val unit: State<PlanTextFieldState> = _unit
-//
-//    private val _startRange = mutableStateOf<Int?>(null)
-//    val startRange: State<Int?> = _startRange
-//
-//    private val _endRange = mutableStateOf<Int?>(null)
-//    val endRange: State<Int?> = _endRange
-//
-//    private val _days = mutableStateOf<Int?>(null)
-//    val days: State<Int?> = _days
-//
-//    private val _startDateTimestamp = mutableStateOf(LocalDateTime.now().toTimestamp())
-//    val startDateTimestamp: State<Long> = _startDateTimestamp
-//
-//    private val _endDateTimestamp = mutableStateOf(LocalDateTime.now().plusDays(1).toTimestamp())
-//    val endDateTimestamp: State<Long> = _endDateTimestamp
-//
-//    private val _eventFlow = MutableSharedFlow<UiEvent>()
-//    val eventFlow = _eventFlow.asSharedFlow()
-//
+    fun getViewModel(): Plan {
+        return sharedViewModel.getSharedState()!!
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    //
 //    private var currentPlanId: Long? = null
 //
 //    init {
@@ -88,74 +62,30 @@ class PlanOverviewViewModel @Inject constructor(
 //        }
 //    }
 //
-//    fun onEvent(event: AddEditPlanEvent) {
-//        when (event) {
-//            is AddEditPlanEvent.EnteredTitle -> {
-//                _planTitle.value = planTitle.value.copy(
-//                    text = event.value
-//                )
-//            }
-//
-//            is AddEditPlanEvent.ChangeTitleFocus -> {
-//                _planTitle.value = planTitle.value.copy(
-//                    isHintVisible = !event.focusState.isFocused &&
-//                            planTitle.value.text.isBlank()
-//                )
-//            }
-//
-//            is AddEditPlanEvent.EnteredStartDate -> {
-//
-//                _startDateTimestamp.value = event.value.toEpochDay()
-//
-//                // If the end date is before the start date, set the end date to the start date
-//                if (_endDateTimestamp.value < _startDateTimestamp.value) {
-//                    _endDateTimestamp.value = _startDateTimestamp.value
-//                }
-//            }
-//
-//            is AddEditPlanEvent.EnteredEndDate -> {
-//
-//                _endDateTimestamp.value = event.value.toEpochDay()
-//
-//                // If the start date is after the end date, set the start date to the end date
-//                if (_startDateTimestamp.value > _endDateTimestamp.value) {
-//                    _startDateTimestamp.value = _endDateTimestamp.value
-//                }
-//            }
-//
-//            is AddEditPlanEvent.SaveEvent -> {
-//                viewModelScope.launch {
-//                    try {
-//                        // Create the plan object and save it to the shared view model
-//                        val plan = days.value?.let {
-//                            Plan(
-//                                title = planTitle.value.text,
-//                                planType = planType.value,
-//                                days = it,
-//                                totalAmount = totalAmount.value,
-//                                unit = unit.value.text,
-//                                startRange = startRange.value,
-//                                endRange = endRange.value,
-//                                startDateTimestamp = startDateTimestamp.value,
-//                                endDateTimestamp = endDateTimestamp.value
-//                            )
-//                        }
-//                        sharedViewModel.setSharedState(plan!!)
-//                        _eventFlow.emit(UiEvent.SaveEvent)
-//                    } catch (e: Exception) {
-//                        _eventFlow.emit(
-//                            UiEvent.ShowSnackbar(
-//                                message = e.message ?: "Couldn't save event"
-//                            )
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    sealed class UiEvent {
-//        data class ShowSnackbar(val message: String) : UiEvent()
-//        object SaveEvent : UiEvent()
-//    }
+    fun onEvent(event: PlanOverviewEvent) {
+        when (event) {
+            is PlanOverviewEvent.SaveEvent -> {
+                viewModelScope.launch {
+                    try {
+                        planUseCases.addPlanUseCase(
+                            sharedViewModel.getSharedState()!!
+                        )
+                        sharedViewModel.clearSharedState()
+                        _eventFlow.emit(UiEvent.SaveEvent)
+                    } catch (e: Exception) {
+                        _eventFlow.emit(
+                            UiEvent.ShowSnackbar(
+                                message = e.message ?: "Couldn't save event"
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String) : UiEvent()
+        object SaveEvent : UiEvent()
+    }
 }

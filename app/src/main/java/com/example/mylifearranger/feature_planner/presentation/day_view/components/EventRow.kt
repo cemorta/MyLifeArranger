@@ -41,7 +41,7 @@ fun EventRow(event: Event, offset: Float, endOffset: Float, onClick: () -> Unit)
             .height(endOffset.dp - offset.dp)
     ) {
         Text(
-            event.title + event.startTimestamp.toLocalDateTime() + event.endTimestamp.toLocalDateTime(),
+            event.title,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.Center),
             fontWeight = FontWeight.Bold

@@ -1,19 +1,40 @@
 package com.example.mylifearranger.feature_planner.presentation.plan_overview
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.mylifearranger.R
 import com.example.mylifearranger.core.presentation.components.AppBar
+import com.example.mylifearranger.core.presentation.util.returnDayStringByBitMasking
+import com.example.mylifearranger.feature_planner.domain.util.PlanType
 import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.SharedViewModel
+import toLocalDateTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,27 +43,30 @@ fun PlanOverviewScreen(
     sharedViewModel: SharedViewModel,
     viewModel: PlanOverviewViewModel = hiltViewModel(),
 ) {
-    viewModel.setViewModel(sharedViewModel)
-    println("zl" + sharedViewModel.sharedState.value)
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.setViewModel(sharedViewModel)
+        println("zl" + sharedViewModel.sharedState.value)
+    }
 
     Scaffold(
-//        floatingActionButton = {
-//            FloatingActionButton(
-//                onClick = {
-//                    viewModel.onEvent(AddEditPlanEvent.SaveEvent)
-//                },
-//                Modifier.background(
-//                    MaterialTheme.colorScheme.background,
-//                )
-//            ) {
-//                // TODO: change icon if it is edit mode
-//                Icon(
-//                    painter = painterResource(id = R.drawable.baseline_arrow_right_alt_24),
-//                    contentDescription = "Continue creating plan",
-//                    modifier = Modifier.size(36.dp)
-//                )
-//            }
-//        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    viewModel.onEvent(PlanOverviewEvent.SaveEvent)
+                },
+                Modifier.background(
+                    MaterialTheme.colorScheme.background,
+                )
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_save_24),
+                    contentDescription = "Save plan"
+                )
+            }
+        },
         topBar = {
             AppBar(
                 title = "Plan Overview",
@@ -50,13 +74,13 @@ fun PlanOverviewScreen(
                 navController = navController
             )
         },
-//        snackbarHost = {
-//            snackbarHostState.currentSnackbarData?.let { snackbarData ->
-//                Snackbar(
-//                    snackbarData = snackbarData,
-//                )
-//            }
-//        }
+        snackbarHost = {
+            snackbarHostState.currentSnackbarData?.let { snackbarData ->
+                Snackbar(
+                    snackbarData = snackbarData,
+                )
+            }
+        }
     ) { paddingValues ->
 
         Surface(
@@ -70,6 +94,93 @@ fun PlanOverviewScreen(
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+            ) {
+//                // Title of the Plan
+//                Text(
+//                    text = sharedViewModel.getSharedState()?.title ?: "No title",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    color = MaterialTheme.colorScheme.onSurface,
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//                Spacer(modifier = Modifier.height(16.dp))
+//                // Plan type
+//                Text(
+//                    text = sharedViewModel.getSharedState()?.planType.toString(),
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.onSurface,
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//                Spacer(modifier = Modifier.height(16.dp))
+//                // Total amount and unit
+//                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+//                    Text(
+//                        text = "${sharedViewModel.getSharedState()!!.completedAmount} / ${sharedViewModel.getSharedState()!!.totalAmount}",
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        color = MaterialTheme.colorScheme.onSurface,
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    Text(
+//                        text = sharedViewModel.getSharedState()?.unit ?: "No unit",
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        color = MaterialTheme.colorScheme.onSurface,
+//                    )
+//                }
+                Spacer(modifier = Modifier.height(16.dp))
+                // Start date
+                Text(
+                    text = viewModel.getViewModel().startDateTimestamp.toLocalDateTime()
+                        .format(
+                            DateTimeFormatter.ISO_DATE
+                        ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                // End date
+                Text(
+                    text = viewModel.getViewModel().endDateTimestamp.toLocalDateTime()
+                        .format(
+                            DateTimeFormatter.ISO_DATE
+                        ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                // Days
+                Text(
+                    text = returnDayStringByBitMasking(sharedViewModel.getSharedState()?.days ?: 0),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+//                if (
+//                    sharedViewModel.getSharedState()!!.planType == PlanType.RANGE
+//                ) {
+//                    // Start range
+//                    Text(
+//                        text = sharedViewModel.getSharedState()!!.startRange.toString(),
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        color = MaterialTheme.colorScheme.onSurface,
+//                        modifier = Modifier.fillMaxWidth()
+//                    )
+//                    Spacer(modifier = Modifier.height(16.dp))
+//                    // End range
+//                    Text(
+//                        text = sharedViewModel.getSharedState()!!.endRange.toString(),
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        color = MaterialTheme.colorScheme.onSurface,
+//                        modifier = Modifier.fillMaxWidth()
+//                    )
+//                    Spacer(modifier = Modifier.height(16.dp))
+//                }
+            }
         }
     }
 }
