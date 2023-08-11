@@ -10,21 +10,27 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Plan::class,
             parentColumns = ["id"],
-            childColumns = ["planId"],
+            childColumns = ["assignedPlanId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Event::class,
+            parentColumns = ["id"],
+            childColumns = ["assignedEventId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class PlanTask(
     @ColumnInfo(index = true)
-    val planId: Long,
     val title: String,
-    val description: String,
-    val amountToDo: Int,
-    val startDateTimestamp: Long,
-    val setStartTime: Boolean,
-    val endDateTimestamp: Long? = null,
-    val setEndTime: Boolean = false,
+    val description: String?,
+    val amountToComplete: Int,
+    val taskDuration: Long?,
+    val performedDateTimestamp: Long,
+    val setPlannedTime: Boolean,
     val isDone: Boolean = false,
-    @PrimaryKey(autoGenerate = true) val id: Long? = null
+    val assignedPlanId: Int,
+    val assignedEventId: Int? = null,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0
 )

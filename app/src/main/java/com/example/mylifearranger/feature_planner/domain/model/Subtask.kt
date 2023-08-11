@@ -3,26 +3,28 @@ package com.example.mylifearranger.feature_planner.domain.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.mylifearranger.feature_planner.domain.util.TaskType
 
 @Entity(
     foreignKeys = [
         ForeignKey(
-            entity = Goal::class,
+            entity = Task::class,
             parentColumns = ["id"],
-            childColumns = ["assignedGoalId"],
+            childColumns = ["assignedTaskId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Event::class,
+            parentColumns = ["id"],
+            childColumns = ["assignedEventId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
-data class Task(
+data class Subtask(
     val title: String,
-    val duration: Long?, // Duration in seconds
-    val taskType: TaskType,
-    val plannedTimestamp: Long,
-    val setPlannedTime: Boolean,
+    val description: String?,
     val isDone: Boolean,
-    val dueTimestamp: Long?,
-    val assignedGoalId: Int?,
+    val assignedTaskId: Int? = null,
+    val assignedEventId: Int? = null,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )

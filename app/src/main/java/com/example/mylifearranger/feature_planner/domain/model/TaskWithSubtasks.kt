@@ -3,11 +3,11 @@ package com.example.mylifearranger.feature_planner.domain.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class PlanWithTasks(
-    @Embedded val plan: Plan,
+data class TaskWithSubtasks(
+    @Embedded val task: Task,
     @Relation(
         parentColumn = "id",
-        entityColumn = "assignedPlanId"
+        entityColumn = "assignedTaskId"
     )
-    val tasks: List<PlanTask>
+    val subtasks: List<Subtask>
 )

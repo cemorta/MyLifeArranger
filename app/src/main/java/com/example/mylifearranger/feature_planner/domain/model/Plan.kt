@@ -1,10 +1,20 @@
 package com.example.mylifearranger.feature_planner.domain.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.mylifearranger.feature_planner.domain.util.PlanType
 
-@Entity
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = Goal::class,
+            parentColumns = ["id"],
+            childColumns = ["assignedGoalId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Plan(
     val title: String,
     val planType: PlanType,
@@ -17,5 +27,6 @@ data class Plan(
     val startDateTimestamp: Long,
     val endDateTimestamp: Long,
     val isDone: Boolean = false,
-    @PrimaryKey(autoGenerate = true) val id: Long? = null
+    val assignedGoalId: Int?,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0
 )
