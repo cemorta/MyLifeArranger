@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mylifearranger.feature_planner.domain.model.Event
-import com.example.mylifearranger.feature_planner.domain.use_case.EventUseCases
+import com.example.mylifearranger.feature_planner.domain.use_case.event.EventUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

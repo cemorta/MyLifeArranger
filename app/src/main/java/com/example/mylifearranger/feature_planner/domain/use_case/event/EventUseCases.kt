@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.domain.use_case
+package com.example.mylifearranger.feature_planner.domain.use_case.event
 
 data class EventUseCases(
     val getEventsUseCase: GetEventsUseCase,

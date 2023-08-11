@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.domain.use_case
+package com.example.mylifearranger.feature_planner.domain.use_case.event
 
 import com.example.mylifearranger.feature_planner.domain.model.Event
 import com.example.mylifearranger.feature_planner.domain.model.InvalidEventException
