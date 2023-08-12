@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.data.data_source
+package com.example.mylifearranger.feature_planner.data.data_source.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.mylifearranger.feature_planner.domain.model.Plan
 import com.example.mylifearranger.feature_planner.domain.model.PlanTask
-import com.example.mylifearranger.feature_planner.domain.model.PlanWithTasks
+import com.example.mylifearranger.feature_planner.data.data_source.models.PlanWithTasks
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -36,15 +36,15 @@ interface PlanDao {
 //    fun getTasksForDate(date: String): Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPlan(plan: Plan): Long
+    suspend fun insertPlan(plan: Plan): Int
 
     @Insert
     suspend fun insertPlanTask(planTask: PlanTask)
 
     @Transaction
     suspend fun insertPlanWithTasks(plan: Plan, planTasks: List<PlanTask>) {
-        val planId = insertPlan(plan)
-        val tasksWithPlanId = planTasks.map { it.copy(planId = planId) }
+        val assignedPlanId = insertPlan(plan)
+        val tasksWithPlanId = planTasks.map { it.copy(assignedPlanId = assignedPlanId) }
         tasksWithPlanId.forEach { insertPlanTask(it) }
     }
 

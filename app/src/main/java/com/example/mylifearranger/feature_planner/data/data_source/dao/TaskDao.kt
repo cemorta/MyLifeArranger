@@ -1,4 +1,4 @@
-package com.example.mylifearranger.feature_planner.data.data_source
+package com.example.mylifearranger.feature_planner.data.data_source.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

@@ -1,6 +1,6 @@
 package com.example.mylifearranger.feature_planner.data.repository
 
-import com.example.mylifearranger.feature_planner.data.data_source.TaskDao
+import com.example.mylifearranger.feature_planner.data.data_source.dao.TaskDao
 import com.example.mylifearranger.feature_planner.domain.model.Task
 import com.example.mylifearranger.feature_planner.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
