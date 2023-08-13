@@ -3,9 +3,11 @@ package com.example.mylifearranger.feature_planner.domain.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
+    indices = [Index(value = ["assignedPlanId"]), Index(value = ["assignedEventId"])],
     foreignKeys = [
         ForeignKey(
             entity = Plan::class,
@@ -32,5 +34,5 @@ data class PlanTask(
     val isDone: Boolean = false,
     val assignedPlanId: Int,
     val assignedEventId: Int? = null,
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true) val id: Int? = null
 )

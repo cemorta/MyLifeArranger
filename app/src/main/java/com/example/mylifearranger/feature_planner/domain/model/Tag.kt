@@ -7,5 +7,5 @@ import com.example.mylifearranger.feature_planner.domain.util.TaskType
 @Entity
 data class Tag(
     val tagName: String,
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true) val id: Int? = null
 )

@@ -3,9 +3,11 @@ package com.example.mylifearranger.feature_planner.domain.model
 import androidx.compose.ui.graphics.Color
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
+    indices = [Index(value = ["assignedTaskId"]), Index(value = ["assignedPlanTaskId"])],
     foreignKeys = [
         ForeignKey(
             entity = Task::class,
@@ -23,7 +25,7 @@ import androidx.room.PrimaryKey
 )
 data class Event(
     val title: String,
-    val description: String?,
+    val description: String? = null,
     val startTimestamp: Long,
     val endTimestamp: Long,
     val color: Int,
@@ -32,7 +34,7 @@ data class Event(
     val iconResName: String? = null,
     val assignedTaskId: Int? = null,
     val assignedPlanTaskId: Int? = null,
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true) val id: Int? = null
 ) {
     companion object {
         val eventColors =

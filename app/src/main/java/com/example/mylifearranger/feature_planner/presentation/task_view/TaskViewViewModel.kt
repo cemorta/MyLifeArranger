@@ -64,27 +64,33 @@ class TaskViewViewModel @Inject constructor(
         getTasksJob?.cancel()
         when (taskType) {
             TaskType.DAILY -> {
-                getTasksJob = taskUseCases.getTasksForDateUseCase(date).onEach { tasks ->
+                getTasksJob = taskUseCases.getDailyTasksForDateUseCase(date).onEach { tasks ->
                     _state.value = state.value.copy(tasks = tasks)
                 }.launchIn(viewModelScope)
             }
 
             TaskType.MONTHLY -> {
-                val (startTimestamp, endTimestamp) = getStartAndEndTimestamps(date, taskType)
+                val (timestampStartOfTheMonth, timestampEndOfTheMonth) = getStartAndEndTimestamps(date, taskType)
                 getTasksJob =
-                    taskUseCases.getMonthlyTasksForMonthUseCase(startTimestamp, endTimestamp)
+                    taskUseCases.getMonthlyTasksForMonthUseCase(timestampStartOfTheMonth, timestampEndOfTheMonth)
                         .onEach { tasks ->
                             _state.value = state.value.copy(tasks = tasks)
                         }.launchIn(viewModelScope)
             }
 
             TaskType.YEARLY -> {
-                val (startTimestamp, endTimestamp) = getStartAndEndTimestamps(date, taskType)
+                val (timestampStartOfTheYear, timestampEndOfTheYear) = getStartAndEndTimestamps(date, taskType)
                 getTasksJob =
-                    taskUseCases.getYearlyTasksForYearUseCase(startTimestamp, endTimestamp)
+                    taskUseCases.getYearlyTasksForYearUseCase(timestampStartOfTheYear, timestampEndOfTheYear)
                         .onEach { tasks ->
                             _state.value = state.value.copy(tasks = tasks)
                         }.launchIn(viewModelScope)
+            }
+
+            TaskType.NONE -> {
+                getTasksJob = taskUseCases.getNoneTasksUseCase().onEach { tasks ->
+                    _state.value = state.value.copy(tasks = tasks)
+                }.launchIn(viewModelScope)
             }
         }
     }

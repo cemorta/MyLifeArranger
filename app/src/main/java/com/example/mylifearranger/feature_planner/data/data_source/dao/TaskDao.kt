@@ -14,6 +14,9 @@ interface TaskDao {
     @Query("SELECT * FROM task")
     fun getTasks(): Flow<List<Task>>
 
+    @Query("SELECT * FROM task WHERE taskType = 'NONE'")
+    fun getNoneTasks(): Flow<List<Task>>
+
     @Query("SELECT * FROM task WHERE id = :id")
     suspend fun getTaskById(id: Int): Task?
 

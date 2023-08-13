@@ -23,8 +23,8 @@ class PlanRepositoryImpl(
         return planDao.getPlanById(planId)
     }
 
-    override suspend fun insertPlan(plan: Plan): Long {
-        return planDao.insertPlan(plan)
+    override suspend fun insertPlan(plan: Plan) {
+        planDao.insertPlan(plan)
     }
 
     override suspend fun insertPlanTask(planTask: PlanTask) {

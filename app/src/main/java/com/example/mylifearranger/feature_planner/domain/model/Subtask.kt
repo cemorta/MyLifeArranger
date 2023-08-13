@@ -2,9 +2,11 @@ package com.example.mylifearranger.feature_planner.domain.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
+    indices = [Index(value = ["assignedTaskId"]), Index(value = ["assignedEventId"])],
     foreignKeys = [
         ForeignKey(
             entity = Task::class,
@@ -26,5 +28,5 @@ data class Subtask(
     val isDone: Boolean,
     val assignedTaskId: Int? = null,
     val assignedEventId: Int? = null,
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true) val id: Int? = null
 )

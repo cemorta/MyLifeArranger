@@ -68,7 +68,7 @@ class AddEditPlanViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentPlanId: Long? = null
+    private var currentPlanId: Int? = null
 
     init {
         // print getSharedViewModel
@@ -146,13 +146,14 @@ class AddEditPlanViewModel @Inject constructor(
                             Plan(
                                 title = planTitle.value.text,
                                 planType = planType.value,
-                                days = it,
                                 totalAmount = totalAmount.value,
                                 unit = unit.value.text,
                                 startRange = startRange.value,
                                 endRange = endRange.value,
+                                days = it,
                                 startDateTimestamp = startDateTimestamp.value,
-                                endDateTimestamp = endDateTimestamp.value
+                                endDateTimestamp = endDateTimestamp.value,
+                                assignedGoalId = null,
                             )
                         }
                         sharedViewModel.setSharedState(plan!!)

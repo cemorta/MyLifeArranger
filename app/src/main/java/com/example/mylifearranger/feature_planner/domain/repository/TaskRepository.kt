@@ -7,6 +7,8 @@ interface TaskRepository {
 
     fun getTasks(): Flow<List<Task>>
 
+    fun getNoneTasks(): Flow<List<Task>>
+
     suspend fun getTaskById(id: Int): Task?
 
     fun getYearlyTasksForYear(yearStart: Long, yearEnd: Long): Flow<List<Task>>

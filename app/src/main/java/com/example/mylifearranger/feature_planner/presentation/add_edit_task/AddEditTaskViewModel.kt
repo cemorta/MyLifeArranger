@@ -81,12 +81,14 @@ class AddEditTaskViewModel @Inject constructor(
                         taskUseCases.addTaskUseCase(
                             Task(
                                 title = taskTitle.value.text,
-                                isDone = false,
                                 duration = 1800,
                                 taskType = TaskType.DAILY,
-                                setPlannedTime = false,
                                 plannedTimestamp = LocalDateTime.now().toTimestamp(),
+                                setPlannedTime = false,
+                                isDone = false,
                                 dueTimestamp = null,
+                                assignedGoalId = null,
+                                assignedEventId = null,
                                 id = currentTaskId
                             )
                         )

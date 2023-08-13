@@ -29,7 +29,9 @@ import com.example.mylifearranger.feature_planner.domain.util.Converters
         Subtask::class,
         Tag::class,
         TaskTag::class
-    ], version = 1
+    ],
+    version = 1,
+    exportSchema = false,
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

@@ -16,7 +16,7 @@ interface PlanRepository {
 //
 //    fun getEventsForDate(date: String): Flow<List<Event>>
 
-    suspend fun insertPlan(plan: Plan) : Long
+    suspend fun insertPlan(plan: Plan)
     suspend fun insertPlanTask(planTask: PlanTask)
     suspend fun insertPlanWithTasks(plan: Plan, planTasks: List<PlanTask>)
     suspend fun deletePlan(plan: Plan)

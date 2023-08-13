@@ -9,7 +9,7 @@ interface TagRepository {
 
 //    suspend fun getTagById(id: Int): Tag?
 
-    suspend fun insertTag(event: Tag)
+    suspend fun insertTag(tag: Tag)
 
-    suspend fun deleteTag(event: Tag)
+    suspend fun deleteTag(tag: Tag)
 }

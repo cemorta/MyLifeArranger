@@ -137,11 +137,15 @@ class AddEditEventViewModel @Inject constructor(
                         eventUseCases.addEventUseCase(
                             Event(
                                 title = eventTitle.value.text,
+                                description = null,
                                 startTimestamp = eventStartDateTime.value.toTimestamp(),
                                 endTimestamp = eventEndDateTime.value.toTimestamp(),
                                 color = eventColor.value,
                                 isDone = false,
                                 isAllDay = false,
+                                iconResName = null,
+                                assignedTaskId = null,
+                                assignedPlanTaskId = null,
                                 id = currentEventId,
                             )
                         )

@@ -47,6 +47,7 @@ fun TaskViewScreen(
         TaskType.YEARLY -> "${state.date!!.substring(0, 4)} ${state.taskType}"
         TaskType.MONTHLY -> "${state.date!!.substring(0, 7)} ${state.taskType}"
         TaskType.DAILY -> "${state.date} ${state.taskType}"
+        TaskType.NONE -> "Inbox"
     }
 
     // print task type

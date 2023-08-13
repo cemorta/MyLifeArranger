@@ -25,6 +25,10 @@ class TaskRepositoryImpl(
         return taskDao.getMonthlyTasksForMonth(monthStart, monthEnd)
     }
 
+    override fun getNoneTasks(): Flow<List<Task>> {
+        return taskDao.getNoneTasks()
+    }
+
     override fun getTasksForDate(date: String): Flow<List<Task>> {
         return taskDao.getTasksForDate(date)
     }

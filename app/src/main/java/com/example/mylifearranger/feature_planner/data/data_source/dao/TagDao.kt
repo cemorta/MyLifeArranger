@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TagDao {
 
-    @Query("SELECT * FROM event")
+    @Query("SELECT * FROM tag")
     fun getTags(): Flow<List<Tag>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTag(event: Tag)
+    suspend fun insertTag(tag: Tag)
 
     @Delete
-    suspend fun deleteTag(event: Tag)
+    suspend fun deleteTag(tag: Tag)
 }
