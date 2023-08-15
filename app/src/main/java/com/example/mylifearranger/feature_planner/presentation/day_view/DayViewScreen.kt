@@ -30,6 +30,7 @@ import com.example.mylifearranger.feature_planner.presentation.day_view.componen
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
+import com.example.mylifearranger.feature_planner.presentation.day_view.components.DayViewContent
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -114,22 +115,20 @@ fun DayViewScreen(
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
-            Column {
-                WeekDaysRow(selectedDate) {
-                    selectedDate = it
-                    navController.currentBackStackEntry?.let { currentBackStackEntry ->
-                        navController.navigate(route = Screen.DayViewScreen.route + "?date=${selectedDate}") {
-                            launchSingleTop = true
-                            restoreState = true
-                            popUpTo(currentBackStackEntry.id) {
-                                saveState = true
-                            }
+            DayViewContent(selectedDate = selectedDate!!, events = state.events, onDaySelected = { newDate ->
+                selectedDate = newDate
+                navController.currentBackStackEntry?.let { currentBackStackEntry ->
+                    navController.navigate(route = Screen.DayViewScreen.route + "?date=${selectedDate}") {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(currentBackStackEntry.id) {
+                            saveState = true
                         }
                     }
                 }
-                Divider()
-                TimelineView(events, navController)
-            }
+            }, onEventClick = { event ->
+                navController.navigate(Screen.EventDetailsScreen.route + "?eventId=${event.id}")
+            })
         }
     }
 }

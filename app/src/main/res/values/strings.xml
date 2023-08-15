@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyLifeArranger</string>
+
+    <string name="add_event">Add event</string>
+    <string name="save_event">Save event</string>
+    <string name="change_color">Change color</string>
+    <string name="delete_event">Delete event</string>
+
 </resources>

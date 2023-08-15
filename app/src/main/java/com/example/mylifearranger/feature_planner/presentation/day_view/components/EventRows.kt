@@ -7,7 +7,7 @@ import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import toLocalDateTime
 
 @Composable
-fun EventRows(events: List<Event>, navController: NavController) {
+fun EventRows(events: List<Event>, onEventClick: (Event) -> Unit) {
 //        for (i in events.indices) {
 //            EventRow(events[i], returnClockPosition(String.format("%02d:%02d", events[i].start.hour, events[i].start.minute)))
 //        }
@@ -30,7 +30,7 @@ fun EventRows(events: List<Event>, navController: NavController) {
             ),
         ) {
             println("Clicked on event: ${event.title}")
-            navController.navigate(Screen.EventDetailsScreen.route + "?eventId=${event.id}")
+            onEventClick(event)
         }
     }
     // TODO: How to handle overlapping events?

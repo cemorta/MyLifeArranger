@@ -27,6 +27,7 @@ class DayViewViewModel @Inject constructor(
     private var date: String? = null
 
     init {
+        // Get selected date from arguments and get events for this date
         savedStateHandle.get<String>("date")?.let {
             date = it
             println("DayViewViewModel: init: it = $it")
