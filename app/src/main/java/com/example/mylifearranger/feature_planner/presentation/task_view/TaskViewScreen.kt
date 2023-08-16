@@ -84,17 +84,17 @@ fun TaskViewScreen(
             appTitle, taskViewActionButtons(state.taskType,
                 {
                     viewModel.onEvent(
-                        TaskViewEvent.FilterTaskType(TaskType.YEARLY, state.date!!)
+                        TaskViewAction.FilterTaskType(TaskType.YEARLY, state.date!!)
                     )
                 },
                 {
                     viewModel.onEvent(
-                        TaskViewEvent.FilterTaskType(TaskType.MONTHLY, state.date!!)
+                        TaskViewAction.FilterTaskType(TaskType.MONTHLY, state.date!!)
                     )
                 },
                 {
                     viewModel.onEvent(
-                        TaskViewEvent.FilterTaskType(TaskType.DAILY, state.date!!)
+                        TaskViewAction.FilterTaskType(TaskType.DAILY, state.date!!)
                     )
                 }
             )

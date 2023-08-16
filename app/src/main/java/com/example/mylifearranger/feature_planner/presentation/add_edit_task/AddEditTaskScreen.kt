@@ -58,7 +58,7 @@ fun AddEditTaskScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    viewModel.onEvent(AddEditTaskEvent.SaveEvent)
+                    viewModel.onEvent(AddEditTaskAction.SaveTask)
                 },
                 Modifier.background(
                     MaterialTheme.colorScheme.background,
@@ -106,10 +106,10 @@ fun AddEditTaskScreen(
                     text = titleState.text,
                     hint = titleState.hint,
                     onValueChange = {
-                        viewModel.onEvent(AddEditTaskEvent.EnteredTitle(it))
+                        viewModel.onEvent(AddEditTaskAction.EnteredTitle(it))
                     },
                     onFocusChange = {
-                        viewModel.onEvent(AddEditTaskEvent.ChangeTitleFocus(it))
+                        viewModel.onEvent(AddEditTaskAction.ChangeTitleFocus(it))
                     },
                     isHintVisible = titleState.isHintVisible,
                     singleLine = true,

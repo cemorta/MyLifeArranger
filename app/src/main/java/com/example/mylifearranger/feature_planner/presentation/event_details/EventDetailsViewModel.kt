@@ -31,9 +31,9 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: EventDetailsEvent) {
+    fun onEvent(event: EventDetailsAction) {
         when (event) {
-            is EventDetailsEvent.DeleteEvent -> {
+            is EventDetailsAction.DeleteEvent -> {
                 viewModelScope.launch {
                     eventUseCases.deleteEventUseCase(event.event)
                 }

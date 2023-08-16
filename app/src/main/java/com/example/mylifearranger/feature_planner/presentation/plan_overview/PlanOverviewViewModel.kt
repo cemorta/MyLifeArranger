@@ -62,9 +62,9 @@ class PlanOverviewViewModel @Inject constructor(
 //        }
 //    }
 //
-    fun onEvent(event: PlanOverviewEvent) {
+    fun onEvent(event: PlanOverviewAction) {
         when (event) {
-            is PlanOverviewEvent.SaveEvent -> {
+            is PlanOverviewAction.SavePlan -> {
                 viewModelScope.launch {
                     try {
                         planUseCases.addPlanUseCase(

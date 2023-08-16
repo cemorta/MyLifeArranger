@@ -36,7 +36,7 @@ fun EventDetailsScreen(
                 actionIconButtons = eventDetailsActionButtons({
                     navController.navigate(Screen.AddEditEventScreen.route + "?eventId=${state.event?.id}&eventColor=${state.event?.color}")
                 }, {
-                    viewModel.onEvent(EventDetailsEvent.DeleteEvent(state.event!!))
+                    viewModel.onEvent(EventDetailsAction.DeleteEvent(state.event!!))
                     navController.popBackStack()
                 }),
                 navController = navController

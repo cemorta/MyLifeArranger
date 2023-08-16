@@ -60,22 +60,22 @@ class AddEditTaskViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(task: AddEditTaskEvent) {
+    fun onEvent(task: AddEditTaskAction) {
         when (task) {
-            is AddEditTaskEvent.EnteredTitle -> {
+            is AddEditTaskAction.EnteredTitle -> {
                 _taskTitle.value = taskTitle.value.copy(
                     text = task.value
                 )
             }
 
-            is AddEditTaskEvent.ChangeTitleFocus -> {
+            is AddEditTaskAction.ChangeTitleFocus -> {
                 _taskTitle.value = taskTitle.value.copy(
                     isHintVisible = !task.focusState.isFocused &&
                             taskTitle.value.text.isBlank()
                 )
             }
 
-            is AddEditTaskEvent.SaveEvent -> {
+            is AddEditTaskAction.SaveTask -> {
                 viewModelScope.launch {
                     try {
                         taskUseCases.addTaskUseCase(

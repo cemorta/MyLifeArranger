@@ -35,9 +35,9 @@ class DayViewViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: DayViewEvent) {
+    fun onEvent(event: DayViewAction) {
         when (event) {
-            is DayViewEvent.DeleteEvent -> {
+            is DayViewAction.DeleteEvent -> {
                 viewModelScope.launch {
                     eventUseCases.deleteEventUseCase(event.event)
                 }

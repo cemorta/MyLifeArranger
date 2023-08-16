@@ -64,26 +64,26 @@ class AddEditEventViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: AddEditEventEvent) {
+    fun onEvent(event: AddEditEventAction) {
         when (event) {
-            is AddEditEventEvent.EnteredTitle -> {
+            is AddEditEventAction.EnteredTitle -> {
                 _eventTitle.value = eventTitle.value.copy(
                     text = event.value
                 )
             }
 
-            is AddEditEventEvent.ChangeTitleFocus -> {
+            is AddEditEventAction.ChangeTitleFocus -> {
                 _eventTitle.value = eventTitle.value.copy(
                     isHintVisible = !event.focusState.isFocused &&
                             eventTitle.value.text.isBlank()
                 )
             }
 
-            is AddEditEventEvent.ChangeColor -> {
+            is AddEditEventAction.ChangeColor -> {
                 _eventColor.value = event.value
             }
 
-            is AddEditEventEvent.EnteredStartDate -> {
+            is AddEditEventAction.EnteredStartDate -> {
 
                 val newStartDate = LocalDateTime.of(event.value, _eventStartDateTime.value.toLocalTime())
                 _eventStartDateTime.value = newStartDate
@@ -95,7 +95,7 @@ class AddEditEventViewModel @Inject constructor(
                 }
             }
 
-            is AddEditEventEvent.EnteredEndDate -> {
+            is AddEditEventAction.EnteredEndDate -> {
 
                 val newEndDate = LocalDateTime.of(event.value, _eventEndDateTime.value.toLocalTime())
                 _eventEndDateTime.value = newEndDate
@@ -107,7 +107,7 @@ class AddEditEventViewModel @Inject constructor(
                 }
             }
 
-            is AddEditEventEvent.EnteredStartTime -> {
+            is AddEditEventAction.EnteredStartTime -> {
 
                 val newStartTime = LocalDateTime.of(_eventStartDateTime.value.toLocalDate(), event.value)
                 _eventStartDateTime.value = newStartTime
@@ -119,7 +119,7 @@ class AddEditEventViewModel @Inject constructor(
                 }
             }
 
-            is AddEditEventEvent.EnteredEndTime -> {
+            is AddEditEventAction.EnteredEndTime -> {
 
                 val newEndTime = LocalDateTime.of(_eventEndDateTime.value.toLocalDate(), event.value)
                 _eventEndDateTime.value = newEndTime
@@ -131,7 +131,7 @@ class AddEditEventViewModel @Inject constructor(
                 }
             }
 
-            is AddEditEventEvent.SaveEvent -> {
+            is AddEditEventAction.SaveEvent -> {
                 viewModelScope.launch {
                     try {
                         eventUseCases.addEventUseCase(

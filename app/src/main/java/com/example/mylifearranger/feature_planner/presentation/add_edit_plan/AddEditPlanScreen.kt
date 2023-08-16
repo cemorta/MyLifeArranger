@@ -23,7 +23,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,7 +33,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
 import com.example.mylifearranger.core.presentation.components.AppBar
@@ -78,7 +76,7 @@ viewModel.setViewModel(sharedViewModel)
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    viewModel.onEvent(AddEditPlanEvent.SaveEvent)
+                    viewModel.onEvent(AddEditPlanAction.SavePlan)
                 },
                 Modifier.background(
                     MaterialTheme.colorScheme.background,
@@ -126,8 +124,8 @@ viewModel.setViewModel(sharedViewModel)
                 TransparentHintTextField(
                     text = viewModel.planTitle.value.text,
                     hint = viewModel.planTitle.value.hint,
-                    onValueChange = { viewModel.onEvent(AddEditPlanEvent.EnteredTitle(it)) },
-                    onFocusChange = { viewModel.onEvent(AddEditPlanEvent.ChangeTitleFocus(it)) },
+                    onValueChange = { viewModel.onEvent(AddEditPlanAction.EnteredTitle(it)) },
+                    onFocusChange = { viewModel.onEvent(AddEditPlanAction.ChangeTitleFocus(it)) },
                     isHintVisible = true,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.titleLarge,
@@ -141,7 +139,7 @@ viewModel.setViewModel(sharedViewModel)
                     ),
                     onValueChange = {
                         viewModel.onEvent(
-                            AddEditPlanEvent.EnteredStartDate(
+                            AddEditPlanAction.EnteredStartDate(
                                 LocalDate.parse(
                                     it,
                                     DateTimeFormatter.ISO_DATE
@@ -157,7 +155,7 @@ viewModel.setViewModel(sharedViewModel)
                     ),
                     onValueChange = {
                         viewModel.onEvent(
-                            AddEditPlanEvent.EnteredEndDate(
+                            AddEditPlanAction.EnteredEndDate(
                                 LocalDate.parse(
                                     it,
                                     DateTimeFormatter.ISO_DATE
@@ -187,14 +185,14 @@ viewModel.setViewModel(sharedViewModel)
                                 if (viewModel.planType.value == PlanType.TOTAL) Color.LightGray else Color.White,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                viewModel.onEvent(AddEditPlanEvent.ChangePlanType(PlanType.TOTAL))
+                                viewModel.onEvent(AddEditPlanAction.ChangePlanType(PlanType.TOTAL))
                             }
                             ClickableRectangle(
                                 text = "Range",
                                 if (viewModel.planType.value == PlanType.RANGE) Color.LightGray else Color.White,
                                 modifier = Modifier.weight(1f),
                             ) {
-                                viewModel.onEvent(AddEditPlanEvent.ChangePlanType(PlanType.RANGE))
+                                viewModel.onEvent(AddEditPlanAction.ChangePlanType(PlanType.RANGE))
                             }
 
                         }
@@ -207,7 +205,7 @@ viewModel.setViewModel(sharedViewModel)
                                     hint = "Total",
                                     onValueChange = {
                                         viewModel.onEvent(
-                                            AddEditPlanEvent.EnteredTotalAmount(
+                                            AddEditPlanAction.EnteredTotalAmount(
                                                 it.toInt()
                                             )
                                         )
@@ -277,49 +275,49 @@ viewModel.setViewModel(sharedViewModel)
                         if (viewModel.days.value and 1 == 1) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
-                        viewModel.onEvent(AddEditPlanEvent.SwitchDays(1))
+                        viewModel.onEvent(AddEditPlanAction.SwitchDays(1))
                     }
                     ClickableRectangle(
                         text = "Tu",
                         if (viewModel.days.value and 2 == 2) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
-                        viewModel.onEvent(AddEditPlanEvent.SwitchDays(2))
+                        viewModel.onEvent(AddEditPlanAction.SwitchDays(2))
                     }
                     ClickableRectangle(
                         text = "We",
                         if (viewModel.days.value and 4 == 4) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
-                        viewModel.onEvent(AddEditPlanEvent.SwitchDays(4))
+                        viewModel.onEvent(AddEditPlanAction.SwitchDays(4))
                     }
                     ClickableRectangle(
                         text = "Th",
                         if (viewModel.days.value and 8 == 8) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
-                        viewModel.onEvent(AddEditPlanEvent.SwitchDays(8))
+                        viewModel.onEvent(AddEditPlanAction.SwitchDays(8))
                     }
                     ClickableRectangle(
                         text = "Fr",
                         if (viewModel.days.value and 16 == 16) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
-                        viewModel.onEvent(AddEditPlanEvent.SwitchDays(16))
+                        viewModel.onEvent(AddEditPlanAction.SwitchDays(16))
                     }
                     ClickableRectangle(
                         text = "Sa",
                         if (viewModel.days.value and 32 == 32) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
-                        viewModel.onEvent(AddEditPlanEvent.SwitchDays(32))
+                        viewModel.onEvent(AddEditPlanAction.SwitchDays(32))
                     }
                     ClickableRectangle(
                         text = "Su",
                         if (viewModel.days.value and 64 == 64) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
-                        viewModel.onEvent(AddEditPlanEvent.SwitchDays(64))
+                        viewModel.onEvent(AddEditPlanAction.SwitchDays(64))
                     }
                 }
             }

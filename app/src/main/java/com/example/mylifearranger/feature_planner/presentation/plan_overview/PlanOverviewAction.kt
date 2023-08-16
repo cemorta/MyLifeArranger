@@ -1,6 +1,6 @@
 package com.example.mylifearranger.feature_planner.presentation.plan_overview
 
-sealed class PlanOverviewEvent {
+sealed class PlanOverviewAction {
 
-    object SaveEvent : PlanOverviewEvent()
+    object SavePlan : PlanOverviewAction()
 }

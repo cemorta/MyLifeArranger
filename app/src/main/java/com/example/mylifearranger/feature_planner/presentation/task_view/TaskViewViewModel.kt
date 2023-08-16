@@ -43,9 +43,9 @@ class TaskViewViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: TaskViewEvent) {
+    fun onEvent(event: TaskViewAction) {
         when (event) {
-            is TaskViewEvent.FilterTaskType -> {
+            is TaskViewAction.FilterTaskType -> {
                 _state.value = state.value.copy(taskType = event.taskType)
                 getTasksForDateAndType(event.date, event.taskType)
             }

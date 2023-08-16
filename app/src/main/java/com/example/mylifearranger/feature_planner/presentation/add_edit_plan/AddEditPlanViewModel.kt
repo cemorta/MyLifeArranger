@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mylifearranger.feature_planner.domain.model.Event
 import com.example.mylifearranger.feature_planner.domain.model.Plan
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.PlanUseCases
 import com.example.mylifearranger.feature_planner.domain.util.PlanType
@@ -13,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import toLocalDateTime
 import toTimestamp
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -99,26 +97,26 @@ class AddEditPlanViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: AddEditPlanEvent) {
+    fun onEvent(event: AddEditPlanAction) {
         when (event) {
-            is AddEditPlanEvent.EnteredTitle -> {
+            is AddEditPlanAction.EnteredTitle -> {
                 _planTitle.value = planTitle.value.copy(
                     text = event.value
                 )
             }
 
-            is AddEditPlanEvent.ChangeTitleFocus -> {
+            is AddEditPlanAction.ChangeTitleFocus -> {
                 _planTitle.value = planTitle.value.copy(
                     isHintVisible = !event.focusState.isFocused &&
                             planTitle.value.text.isBlank()
                 )
             }
 
-            is AddEditPlanEvent.EnteredTotalAmount -> {
+            is AddEditPlanAction.EnteredTotalAmount -> {
                 _totalAmount.value = event.value
             }
 
-            is AddEditPlanEvent.EnteredStartDate -> {
+            is AddEditPlanAction.EnteredStartDate -> {
 
                 _startDateTimestamp.value = event.value.toEpochDay()
 
@@ -128,7 +126,7 @@ class AddEditPlanViewModel @Inject constructor(
                 }
             }
 
-            is AddEditPlanEvent.EnteredEndDate -> {
+            is AddEditPlanAction.EnteredEndDate -> {
 
                 _endDateTimestamp.value = event.value.toEpochDay()
 
@@ -138,7 +136,7 @@ class AddEditPlanViewModel @Inject constructor(
                 }
             }
 
-            is AddEditPlanEvent.SaveEvent -> {
+            is AddEditPlanAction.SavePlan -> {
                 viewModelScope.launch {
                     try {
                         // Create the plan object and save it to the shared view model
@@ -172,7 +170,7 @@ class AddEditPlanViewModel @Inject constructor(
                 }
             }
 
-            is AddEditPlanEvent.SwitchDays -> {
+            is AddEditPlanAction.SwitchDays -> {
                 if (days.value and event.value == event.value) {
                     _days.value = days.value and event.value.inv()
                 } else {
@@ -180,13 +178,13 @@ class AddEditPlanViewModel @Inject constructor(
                 }
             }
 
-            is AddEditPlanEvent.EnteredEndRange -> TODO()
-            is AddEditPlanEvent.ChangePlanType -> {
+            is AddEditPlanAction.EnteredEndRange -> TODO()
+            is AddEditPlanAction.ChangePlanType -> {
                 _planType.value = event.value
             }
 
-            is AddEditPlanEvent.EnteredStartRange -> TODO()
-            is AddEditPlanEvent.EnteredUnit -> TODO()
+            is AddEditPlanAction.EnteredStartRange -> TODO()
+            is AddEditPlanAction.EnteredUnit -> TODO()
         }
     }
 
