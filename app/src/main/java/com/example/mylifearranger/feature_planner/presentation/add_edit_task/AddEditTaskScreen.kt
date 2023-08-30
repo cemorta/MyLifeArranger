@@ -41,13 +41,13 @@ fun AddEditTaskScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is AddEditTaskViewModel.UiEvent.ShowSnackbar -> {
+                is AddEditTaskViewModel.UiAction.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(
                         message = event.message
                     )
                 }
 
-                is AddEditTaskViewModel.UiEvent.SaveEvent -> {
+                is AddEditTaskViewModel.UiAction.SaveTask -> {
                     navController.navigateUp()
                 }
             }

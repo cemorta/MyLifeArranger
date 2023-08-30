@@ -60,13 +60,13 @@ viewModel.setViewModel(sharedViewModel)
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is AddEditPlanViewModel.UiEvent.ShowSnackbar -> {
+                is AddEditPlanViewModel.UiAction.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(
                         message = event.message
                     )
                 }
 
-                is AddEditPlanViewModel.UiEvent.SaveEvent -> {
+                is AddEditPlanViewModel.UiAction.SavePlan -> {
                     navController.navigate(Screen.PlanOverviewScreen.route)
                 }
             }

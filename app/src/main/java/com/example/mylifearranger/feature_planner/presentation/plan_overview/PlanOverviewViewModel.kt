@@ -29,7 +29,7 @@ class PlanOverviewViewModel @Inject constructor(
         return sharedViewModel.getSharedState()!!
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    private val _eventFlow = MutableSharedFlow<UiAction>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     //
@@ -71,10 +71,10 @@ class PlanOverviewViewModel @Inject constructor(
                             sharedViewModel.getSharedState()!!
                         )
                         sharedViewModel.clearSharedState()
-                        _eventFlow.emit(UiEvent.SaveEvent)
+                        _eventFlow.emit(UiAction.SavePlan)
                     } catch (e: Exception) {
                         _eventFlow.emit(
-                            UiEvent.ShowSnackbar(
+                            UiAction.ShowSnackbar(
                                 message = e.message ?: "Couldn't save event"
                             )
                         )
@@ -84,8 +84,8 @@ class PlanOverviewViewModel @Inject constructor(
         }
     }
 
-    sealed class UiEvent {
-        data class ShowSnackbar(val message: String) : UiEvent()
-        object SaveEvent : UiEvent()
+    sealed class UiAction {
+        data class ShowSnackbar(val message: String) : UiAction()
+        object SavePlan : UiAction()
     }
 }
