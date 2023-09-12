@@ -53,12 +53,21 @@ fun DayViewScreen(
     LaunchedEffect(key1 = date) {
         println("Launched effect")
 
-        coroutineScope { launch {
-            weekDaysRowState.animateScrollToItem(localDate.dayOfMonth - 3)
-        } }
+        coroutineScope {
+            launch {
+                if (localDate.dayOfMonth > 3 && localDate.dayOfMonth < localDate.lengthOfMonth() - 3) {
+                    weekDaysRowState.animateScrollToItem(localDate.dayOfMonth - 3)
+                } else if (localDate.dayOfMonth <= 3) {
+                    weekDaysRowState.animateScrollToItem(0)
+                } else {
+                    weekDaysRowState.animateScrollToItem(localDate.lengthOfMonth() - 1)
+                }
+            }
+        }
         viewModel.onScreenDisplayed(date)
     }
-    val appTitle: String = "${localDate.toString()} | ${localDate.dayOfWeek.toString().substring(0, 3)}"
+    val appTitle: String =
+        "${localDate.toString()} | ${localDate.dayOfWeek.toString().substring(0, 3)}"
 
     // print current date
     println("Current date: $localDate")
@@ -118,20 +127,25 @@ fun DayViewScreen(
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
-            DayViewContent(selectedDate = selectedDate!!, events = state.events, weekDaysRowState = weekDaysRowState, onDaySelected = { newDate ->
-                selectedDate = newDate
-                navController.currentBackStackEntry?.let { currentBackStackEntry ->
-                    navController.navigate(route = Screen.DayViewScreen.route + "?date=${selectedDate}") {
-                        launchSingleTop = true
-                        restoreState = true
-                        popUpTo(currentBackStackEntry.id) {
-                            saveState = true
+            DayViewContent(
+                selectedDate = selectedDate!!,
+                events = state.events,
+                weekDaysRowState = weekDaysRowState,
+                onDaySelected = { newDate ->
+                    selectedDate = newDate
+                    navController.currentBackStackEntry?.let { currentBackStackEntry ->
+                        navController.navigate(route = Screen.DayViewScreen.route + "?date=${selectedDate}") {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(currentBackStackEntry.id) {
+                                saveState = true
+                            }
                         }
                     }
-                }
-            }, onEventClick = { event ->
-                navController.navigate(Screen.EventDetailsScreen.route + "?eventId=${event.id}")
-            })
+                },
+                onEventClick = { event ->
+                    navController.navigate(Screen.EventDetailsScreen.route + "?eventId=${event.id}")
+                })
         }
     }
 }
