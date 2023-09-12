@@ -1,10 +1,9 @@
 package com.example.mylifearranger.feature_planner.presentation.day_view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,14 +23,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
-import com.example.mylifearranger.feature_planner.presentation.day_view.components.TimelineView
-import com.example.mylifearranger.feature_planner.presentation.day_view.components.WeekDaysRow
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.dayViewActionButtons
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.day_view.components.DayViewContent
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -42,10 +41,6 @@ fun DayViewScreen(
     date: String,
     viewModel: DayViewViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(key1 = date) {
-        println("Launched effect")
-        viewModel.onScreenDisplayed(date)
-    }
 
     val state = viewModel.state.value
     val scope = rememberCoroutineScope()
@@ -54,8 +49,16 @@ fun DayViewScreen(
     val localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
 
     var selectedDate by remember { mutableStateOf<LocalDate?>(localDate) }
+    val weekDaysRowState = rememberLazyListState()
+    LaunchedEffect(key1 = date) {
+        println("Launched effect")
 
-    val appTitle: String = localDate.toString()
+        coroutineScope { launch {
+            weekDaysRowState.animateScrollToItem(localDate.dayOfMonth - 3)
+        } }
+        viewModel.onScreenDisplayed(date)
+    }
+    val appTitle: String = "${localDate.toString()} | ${localDate.dayOfWeek.toString().substring(0, 3)}"
 
     // print current date
     println("Current date: $localDate")
@@ -115,7 +118,7 @@ fun DayViewScreen(
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
-            DayViewContent(selectedDate = selectedDate!!, events = state.events, onDaySelected = { newDate ->
+            DayViewContent(selectedDate = selectedDate!!, events = state.events, weekDaysRowState = weekDaysRowState, onDaySelected = { newDate ->
                 selectedDate = newDate
                 navController.currentBackStackEntry?.let { currentBackStackEntry ->
                     navController.navigate(route = Screen.DayViewScreen.route + "?date=${selectedDate}") {

@@ -2,23 +2,17 @@ package com.example.mylifearranger.feature_planner.presentation.day_view.compone
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 @Composable
-fun WeekDaysRow(selectedDate: LocalDate?, changeSelectedDay: (LocalDate) -> Unit) {
+fun WeekDaysRow(selectedDate: LocalDate?, weekDaysRowState: LazyListState, changeSelectedDay: (LocalDate) -> Unit) {
     val startDate = LocalDate.now().withDayOfMonth(1)
     val endDate = LocalDate.now().withDayOfMonth(startDate.lengthOfMonth())
     val daysOfMonth = ChronoUnit.DAYS.between(startDate, endDate).toInt() + 1
@@ -28,6 +22,7 @@ fun WeekDaysRow(selectedDate: LocalDate?, changeSelectedDay: (LocalDate) -> Unit
 
     LazyRow(
         modifier = Modifier.padding(8.dp), // Add padding around the LazyRow
+        state = weekDaysRowState, // State for scrolling to the selected date
         horizontalArrangement = Arrangement.spacedBy(8.dp) // Add space between items
     ) {
         items(dates) { date ->
