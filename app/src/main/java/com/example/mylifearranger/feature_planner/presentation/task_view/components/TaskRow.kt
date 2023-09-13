@@ -15,11 +15,14 @@ import androidx.compose.ui.unit.dp
 import com.example.mylifearranger.feature_planner.domain.model.Task
 
 @Composable
-fun TaskRow(task: Task) {
+fun TaskRow(task: Task, onTaskClick: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {  }
+            .clickable {
+                // navigate to the task overview screen
+                task.id?.let { onTaskClick(it) }
+            }
             .background(color = Color.LightGray)
             .height(50.dp),
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically

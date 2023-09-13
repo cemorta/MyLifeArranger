@@ -20,6 +20,7 @@ import com.example.mylifearranger.feature_planner.presentation.add_edit_task.Add
 import com.example.mylifearranger.feature_planner.presentation.day_view.DayViewScreen
 import com.example.mylifearranger.feature_planner.presentation.event_details.EventDetailsScreen
 import com.example.mylifearranger.feature_planner.presentation.plan_overview.PlanOverviewScreen
+import com.example.mylifearranger.feature_planner.presentation.task_overview.TaskOverviewScreen
 import com.example.mylifearranger.feature_planner.presentation.task_view.TaskViewScreen
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import com.example.mylifearranger.ui.theme.MyLifeArrangerTheme
@@ -123,6 +124,22 @@ class MainActivity : ComponentActivity() {
                             )
                         ) {
                             TaskViewScreen(
+                                navController = navController,
+                            )
+                        }
+                        composable(
+                            route = Screen.TaskOverviewScreen.route +
+                                    "?taskId={taskId}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "taskId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                            )
+                        ) {
+                            TaskOverviewScreen(
                                 navController = navController,
                             )
                         }

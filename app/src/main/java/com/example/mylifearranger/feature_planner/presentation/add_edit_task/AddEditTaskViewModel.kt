@@ -206,9 +206,10 @@ class AddEditTaskViewModel @Inject constructor(
                                 duration = taskDurationHour.value.text.toInt() * 3600L + taskDurationMinute.value.text.toInt() * 60L,
                                 taskType = taskType.value,
                                 plannedTimestamp = taskPlannedLocalDateTime.value.toTimestamp(),
-                                isTimeSet = true,
+                                isPlannedTimeSet = true,
                                 isDone = false,
                                 dueTimestamp = dueLocalDateTime.value?.toTimestamp(),
+                                isDueTimeSet = true,
                                 assignedGoalId = null,
                                 assignedEventId = null,
                                 id = currentTaskId

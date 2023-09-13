@@ -27,10 +27,11 @@ data class Task(
     val title: String,
     val duration: Long?, // Duration in seconds
     val taskType: TaskType,
-    val plannedTimestamp: Long,
-    val isTimeSet: Boolean,
+    val plannedTimestamp: Long?,
+    val isPlannedTimeSet: Boolean,
     val isDone: Boolean,
     val dueTimestamp: Long?,
+    val isDueTimeSet: Boolean,
     val assignedGoalId: Int? = null,
     val assignedEventId: Int? = null,
     @PrimaryKey(autoGenerate = true) val id: Int? = null

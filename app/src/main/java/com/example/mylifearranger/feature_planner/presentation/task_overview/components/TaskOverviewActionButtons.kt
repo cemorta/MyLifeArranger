@@ -1,9 +1,9 @@
-package com.example.mylifearranger.feature_planner.presentation.task_details.components
+package com.example.mylifearranger.feature_planner.presentation.task_overview.components
 
 import com.example.mylifearranger.R
 import com.example.mylifearranger.core.presentation.components.ActionIconButton
 
-fun taskDetailsActionButtons(
+fun taskOverviewActionButtons(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ): List<ActionIconButton> {

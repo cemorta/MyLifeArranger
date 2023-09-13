@@ -81,7 +81,8 @@ fun TaskViewScreen(
         }
     }, topBar = {
         AppBar(
-            appTitle, taskViewActionButtons(state.taskType,
+            title = appTitle,
+            actionIconButtons = taskViewActionButtons(state.taskType,
                 {
                     viewModel.onEvent(
                         TaskViewAction.FilterTaskType(TaskType.YEARLY, state.date!!)
@@ -111,7 +112,7 @@ fun TaskViewScreen(
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
-            TaskViewContent(state)
+            TaskViewContent(state) { taskId -> navController.navigate(Screen.TaskOverviewScreen.route + "?taskId=${taskId}") }
 
         }
     }
