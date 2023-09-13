@@ -11,6 +11,7 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.unit.dp
 import com.example.mylifearranger.core.presentation.components.DateTimePicker
 import com.example.mylifearranger.core.presentation.components.TransparentHintTextField
+import com.example.mylifearranger.feature_planner.presentation.add_edit_event.AddEditEventAction
 import com.example.mylifearranger.feature_planner.presentation.add_edit_event.EventTextFieldState
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -21,21 +22,16 @@ fun FormContainer(
     titleState: EventTextFieldState,
     startDateState: LocalDateTime,
     endDateState: LocalDateTime,
-    onTitleChange: (String) -> Unit,
-    onTitleFocusChange: (FocusState) -> Unit,
-    onStartDateSelected: (LocalDate) -> Unit,
-    onStartTimeSelected: (LocalTime) -> Unit,
-    onEndDateSelected: (LocalDate) -> Unit,
-    onEndTimeSelected: (LocalTime) -> Unit,
+    onEvent: (AddEditEventAction) -> Unit,
 ) {
     TransparentHintTextField(
         text = titleState.text,
         hint = titleState.hint,
         onValueChange = {
-            onTitleChange(it)
+            onEvent(AddEditEventAction.EnteredTitle(it))
         },
         onFocusChange = {
-            onTitleFocusChange(it)
+            onEvent(AddEditEventAction.ChangeTitleFocus(it))
         },
         isHintVisible = titleState.isHintVisible,
         singleLine = true,
@@ -52,10 +48,10 @@ fun FormContainer(
         initialDateValue = startDateState.toLocalDate(),
         initialTimeValue = startDateState.toLocalTime(),
         onDateSelected = {
-            onStartDateSelected(it)
+            onEvent(AddEditEventAction.EnteredStartDate(it))
         },
         onTimeSelected = {
-            onStartTimeSelected(it)
+            onEvent(AddEditEventAction.EnteredStartTime(it))
         },
     )
     Spacer(modifier = Modifier.height(16.dp))
@@ -69,10 +65,10 @@ fun FormContainer(
         initialDateValue = endDateState.toLocalDate(),
         initialTimeValue = endDateState.toLocalTime(),
         onDateSelected = {
-            onEndDateSelected(it)
+            onEvent(AddEditEventAction.EnteredEndDate(it))
         },
         onTimeSelected = {
-            onEndTimeSelected(it)
+            onEvent(AddEditEventAction.EnteredEndTime(it))
         },
     )
 }

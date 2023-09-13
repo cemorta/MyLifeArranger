@@ -25,7 +25,6 @@ class TaskViewViewModel @Inject constructor(
     private val _state = mutableStateOf(TaskViewState())
     val state: State<TaskViewState> = _state
 
-
     //    private var getTasksForDateJob: Job? = null
     private var getTasksJob: Job? = null
 

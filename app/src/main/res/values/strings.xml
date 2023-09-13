@@ -6,4 +6,10 @@
     <string name="change_color">Change color</string>
     <string name="delete_event">Delete event</string>
 
+
+    <string name="daily">Daily</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="none">None (Inbox)</string>
+
 </resources>

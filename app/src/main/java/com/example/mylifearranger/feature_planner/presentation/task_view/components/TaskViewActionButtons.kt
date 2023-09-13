@@ -26,6 +26,7 @@ fun taskViewActionButtons(
                 ),
             )
         }
+
         TaskType.MONTHLY -> {
             return listOf(
                 ActionIconButton(
@@ -40,6 +41,7 @@ fun taskViewActionButtons(
                 ),
             )
         }
+
         TaskType.DAILY -> {
             return listOf(
                 ActionIconButton(
@@ -54,6 +56,7 @@ fun taskViewActionButtons(
                 ),
             )
         }
+
         else -> {
 
             return listOf(

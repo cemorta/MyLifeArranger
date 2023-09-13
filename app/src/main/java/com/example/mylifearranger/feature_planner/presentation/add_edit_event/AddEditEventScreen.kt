@@ -119,12 +119,9 @@ fun AddEditEventScreen(
                     titleState = titleState,
                     startDateState = startDateState,
                     endDateState = endDateState,
-                    onTitleChange = { viewModel.onEvent(AddEditEventAction.EnteredTitle(it)) },
-                    onTitleFocusChange = { viewModel.onEvent(AddEditEventAction.ChangeTitleFocus(it)) },
-                    onStartDateSelected = { viewModel.onEvent(AddEditEventAction.EnteredStartDate(it)) },
-                    onStartTimeSelected = { viewModel.onEvent(AddEditEventAction.EnteredStartTime(it)) },
-                    onEndDateSelected = { viewModel.onEvent(AddEditEventAction.EnteredEndDate(it)) },
-                    onEndTimeSelected = { viewModel.onEvent(AddEditEventAction.EnteredEndTime(it)) },
+                    onEvent = { event ->
+                        viewModel.onEvent(event)
+                    }
                 )
             }
         }

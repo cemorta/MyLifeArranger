@@ -14,8 +14,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mylifearranger.R
-import com.example.mylifearranger.feature_planner.domain.model.Plan
-import com.example.mylifearranger.feature_planner.domain.util.PlanType
 import com.example.mylifearranger.feature_planner.presentation.plan_view.components.PlanList
 import com.example.mylifearranger.core.presentation.components.ActionIconButton
 import com.example.mylifearranger.core.presentation.components.AppBar
@@ -23,8 +21,6 @@ import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.plan_view.PlanViewViewModel
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
-import java.time.LocalDateTime
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

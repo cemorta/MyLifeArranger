@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,9 +21,10 @@ fun TaskRow(task: Task) {
             .fillMaxWidth()
             .clickable {  }
             .background(color = Color.LightGray)
-            .height(50.dp)
+            .height(50.dp),
+        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {
-        Column {
+        Column(Modifier.padding(start = 5.dp)) {
             Text(text = task.title)
         }
     }

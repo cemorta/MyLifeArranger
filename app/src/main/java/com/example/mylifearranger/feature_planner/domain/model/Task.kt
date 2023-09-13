@@ -28,7 +28,7 @@ data class Task(
     val duration: Long?, // Duration in seconds
     val taskType: TaskType,
     val plannedTimestamp: Long,
-    val setPlannedTime: Boolean,
+    val isTimeSet: Boolean,
     val isDone: Boolean,
     val dueTimestamp: Long?,
     val assignedGoalId: Int? = null,

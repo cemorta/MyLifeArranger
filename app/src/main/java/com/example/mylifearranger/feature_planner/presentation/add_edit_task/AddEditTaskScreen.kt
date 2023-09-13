@@ -1,11 +1,14 @@
 package com.example.mylifearranger.feature_planner.presentation.add_edit_task
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -26,6 +29,9 @@ import androidx.navigation.NavController
 import com.example.mylifearranger.R
 import com.example.mylifearranger.core.presentation.components.TransparentHintTextField
 import com.example.mylifearranger.core.presentation.components.AppBar
+import com.example.mylifearranger.core.presentation.components.TransparentHintNumberField
+import com.example.mylifearranger.feature_planner.presentation.add_edit_task.components.AddEditTaskContent
+import com.example.mylifearranger.feature_planner.presentation.add_edit_task.components.TaskTypeDropdown
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +41,12 @@ fun AddEditTaskScreen(
     viewModel: AddEditTaskViewModel = hiltViewModel()
 ) {
     val titleState = viewModel.taskTitle.value
+    val durationHourState = viewModel.taskDurationHour.value
+    val durationMinuteState = viewModel.taskDurationMinute.value
+    val taskTypeState = viewModel.taskType.value
+    val plannedLocalDateTimeState = viewModel.taskPlannedLocalDateTime.value
+    val isTimeSetState = viewModel.isTimeSet.value
+    val dueLocalDateTimeState = viewModel.dueLocalDateTime.value
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -102,20 +114,19 @@ fun AddEditTaskScreen(
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
             ) {
-                TransparentHintTextField(
-                    text = titleState.text,
-                    hint = titleState.hint,
-                    onValueChange = {
-                        viewModel.onEvent(AddEditTaskAction.EnteredTitle(it))
-                    },
-                    onFocusChange = {
-                        viewModel.onEvent(AddEditTaskAction.ChangeTitleFocus(it))
-                    },
-                    isHintVisible = titleState.isHintVisible,
-                    singleLine = true,
-                    textStyle = MaterialTheme.typography.titleLarge,
+                AddEditTaskContent(
+                    titleState = titleState,
+                    durationHourState = durationHourState,
+                    durationMinuteState = durationMinuteState,
+                    taskTypeState = taskTypeState,
+                    plannedLocalDateTimeState = plannedLocalDateTimeState,
+                    isTimeSetState = isTimeSetState,
+                    dueLocalDateTimeState = dueLocalDateTimeState,
+                    onEvent = { action ->
+                        viewModel.onEvent(action)
+                    }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+
 //                Text(
 //                    text = "Start date",
 //                    style = MaterialTheme.typography.bodyMedium,
