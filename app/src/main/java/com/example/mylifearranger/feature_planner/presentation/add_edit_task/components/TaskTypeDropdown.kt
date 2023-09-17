@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import com.example.mylifearranger.R
+import com.example.mylifearranger.core.presentation.util.toResId
 import com.example.mylifearranger.feature_planner.domain.util.TaskType
 
 @Composable
@@ -31,14 +31,5 @@ fun TaskTypeDropdown(selectedType: TaskType, onTypeSelected: (TaskType) -> Unit)
                 Text(text = context.getString(type.toResId()))
             })
         }
-    }
-}
-
-fun TaskType.toResId(): Int {
-    return when (this) {
-        TaskType.DAILY -> R.string.daily
-        TaskType.MONTHLY -> R.string.monthly
-        TaskType.YEARLY -> R.string.yearly
-        TaskType.NONE -> R.string.none
     }
 }

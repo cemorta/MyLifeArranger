@@ -25,8 +25,8 @@ class PlanOverviewViewModel @Inject constructor(
         println("d " + sharedViewModel.getSharedState())
     }
 
-    fun getViewModel(): Plan {
-        return sharedViewModel.getSharedState()!!
+    fun getViewModel(): Plan? {
+        return sharedViewModel.getSharedState()
     }
 
     private val _eventFlow = MutableSharedFlow<UiAction>()

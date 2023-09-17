@@ -31,7 +31,10 @@ fun PlanInfoRow(plan: Plan) {
         Column {
 
             Text(text = plan.title, fontWeight = FontWeight.Bold)
-            Text(text = returnDayStringByBitMasking(plan.days))
+            val daysOfWeek = androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(
+                com.example.mylifearranger.R.array.days_of_week
+            )
+            Text(text = returnDayStringByBitMasking(plan.days, daysOfWeek))
 //            Text(text = plan.planType.toString())
         }
         Column(horizontalAlignment = Alignment.End) {

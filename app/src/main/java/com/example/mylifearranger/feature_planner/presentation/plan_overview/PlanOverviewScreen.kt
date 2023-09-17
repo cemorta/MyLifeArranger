@@ -29,6 +29,7 @@ import com.example.mylifearranger.R
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.util.returnDayStringByBitMasking
 import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.SharedViewModel
+import com.example.mylifearranger.feature_planner.presentation.plan_overview.components.PlanOverviewContent
 import toLocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -41,11 +42,12 @@ fun PlanOverviewScreen(
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
+    viewModel.setViewModel(sharedViewModel)
 
-    LaunchedEffect(key1 = true) {
-        viewModel.setViewModel(sharedViewModel)
-        println("zl" + sharedViewModel.sharedState.value)
-    }
+//    LaunchedEffect(key1 = true) {
+//        viewModel.setViewModel(sharedViewModel)
+//        println("zl" + sharedViewModel.sharedState.value)
+//    }
 
     Scaffold(
         floatingActionButton = {
@@ -90,93 +92,8 @@ fun PlanOverviewScreen(
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-            ) {
-//                // Title of the Plan
-//                Text(
-//                    text = sharedViewModel.getSharedState()?.title ?: "No title",
-//                    style = MaterialTheme.typography.titleLarge,
-//                    color = MaterialTheme.colorScheme.onSurface,
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//                Spacer(modifier = Modifier.height(16.dp))
-//                // Plan type
-//                Text(
-//                    text = sharedViewModel.getSharedState()?.planType.toString(),
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    color = MaterialTheme.colorScheme.onSurface,
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//                Spacer(modifier = Modifier.height(16.dp))
-//                // Total amount and unit
-//                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-//                    Text(
-//                        text = "${sharedViewModel.getSharedState()!!.completedAmount} / ${sharedViewModel.getSharedState()!!.totalAmount}",
-//                        style = MaterialTheme.typography.bodyMedium,
-//                        color = MaterialTheme.colorScheme.onSurface,
-//                    )
-//                    Spacer(modifier = Modifier.width(4.dp))
-//                    Text(
-//                        text = sharedViewModel.getSharedState()?.unit ?: "No unit",
-//                        style = MaterialTheme.typography.bodyMedium,
-//                        color = MaterialTheme.colorScheme.onSurface,
-//                    )
-//                }
-                Spacer(modifier = Modifier.height(16.dp))
-                // Start date
-                Text(
-                    text = viewModel.getViewModel().startDateTimestamp.toLocalDateTime()
-                        .format(
-                            DateTimeFormatter.ISO_DATE
-                        ),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                // End date
-                Text(
-                    text = viewModel.getViewModel().endDateTimestamp.toLocalDateTime()
-                        .format(
-                            DateTimeFormatter.ISO_DATE
-                        ),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                // Days
-                Text(
-                    text = returnDayStringByBitMasking(sharedViewModel.getSharedState()?.days ?: 0),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-//                if (
-//                    sharedViewModel.getSharedState()!!.planType == PlanType.RANGE
-//                ) {
-//                    // Start range
-//                    Text(
-//                        text = sharedViewModel.getSharedState()!!.startRange.toString(),
-//                        style = MaterialTheme.typography.bodyMedium,
-//                        color = MaterialTheme.colorScheme.onSurface,
-//                        modifier = Modifier.fillMaxWidth()
-//                    )
-//                    Spacer(modifier = Modifier.height(16.dp))
-//                    // End range
-//                    Text(
-//                        text = sharedViewModel.getSharedState()!!.endRange.toString(),
-//                        style = MaterialTheme.typography.bodyMedium,
-//                        color = MaterialTheme.colorScheme.onSurface,
-//                        modifier = Modifier.fillMaxWidth()
-//                    )
-//                    Spacer(modifier = Modifier.height(16.dp))
-//                }
-            }
+
+            PlanOverviewContent(state = sharedViewModel)
         }
     }
 }

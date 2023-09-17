@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import toTimestamp
 import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,8 +39,8 @@ class AddEditPlanViewModel @Inject constructor(
     private val _planType = mutableStateOf(PlanType.TOTAL)
     val planType: State<PlanType> = _planType
 
-    private val _totalAmount = mutableStateOf<Int?>(null)
-    val totalAmount: State<Int?> = _totalAmount
+    private val _totalAmount = mutableStateOf<String?>(null)
+    val totalAmount: State<String?> = _totalAmount
 
     private val _unit = mutableStateOf(
         PlanTextFieldState(
@@ -82,7 +83,7 @@ class AddEditPlanViewModel @Inject constructor(
                         )
                         _planType.value = plan.planType
                         _days.value = plan.days
-                        _totalAmount.value = plan.totalAmount
+                        _totalAmount.value = plan.totalAmount.toString()
                         _unit.value = unit.value.copy(
                             text = plan.unit,
                             isHintVisible = false
@@ -118,22 +119,22 @@ class AddEditPlanViewModel @Inject constructor(
 
             is AddEditPlanAction.EnteredStartDate -> {
 
-                _startDateTimestamp.value = event.value.toEpochDay()
+                _startDateTimestamp.value = LocalDateTime.of(event.value, LocalTime.MIDNIGHT).toTimestamp()
 
-                // If the end date is before the start date, set the end date to the start date
-                if (_endDateTimestamp.value < _startDateTimestamp.value) {
-                    _endDateTimestamp.value = _startDateTimestamp.value
-                }
+//                // If the end date is before the start date, set the end date to the start date
+//                if (_endDateTimestamp.value < _startDateTimestamp.value) {
+//                    _endDateTimestamp.value = _startDateTimestamp.value
+//                }
             }
 
             is AddEditPlanAction.EnteredEndDate -> {
 
-                _endDateTimestamp.value = event.value.toEpochDay()
+                _endDateTimestamp.value = LocalDateTime.of(event.value, LocalTime.MIDNIGHT).toTimestamp()
 
-                // If the start date is after the end date, set the start date to the end date
-                if (_startDateTimestamp.value > _endDateTimestamp.value) {
-                    _startDateTimestamp.value = _endDateTimestamp.value
-                }
+//                // If the start date is after the end date, set the start date to the end date
+//                if (_startDateTimestamp.value > _endDateTimestamp.value) {
+//                    _startDateTimestamp.value = _endDateTimestamp.value
+//                }
             }
 
             is AddEditPlanAction.SavePlan -> {
@@ -144,7 +145,7 @@ class AddEditPlanViewModel @Inject constructor(
                             Plan(
                                 title = planTitle.value.text,
                                 planType = planType.value,
-                                totalAmount = totalAmount.value,
+                                totalAmount = totalAmount.value?.toIntOrNull(),
                                 unit = unit.value.text,
                                 startRange = startRange.value,
                                 endRange = endRange.value,

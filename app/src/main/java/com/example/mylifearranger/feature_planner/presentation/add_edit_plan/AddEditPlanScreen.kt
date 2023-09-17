@@ -54,7 +54,7 @@ fun AddEditPlanScreen(
     sharedViewModel: SharedViewModel,
     viewModel: AddEditPlanViewModel = hiltViewModel(),
 ) {
-viewModel.setViewModel(sharedViewModel)
+    viewModel.setViewModel(sharedViewModel)
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(key1 = true) {
@@ -134,7 +134,7 @@ viewModel.setViewModel(sharedViewModel)
                 // Start date and End date
                 DatePicker(
                     label = "start",
-                    value = viewModel.startDateTimestamp.value.toLocalDateTime().format(
+                    value = viewModel.startDateTimestamp.value.toLocalDateTime().toLocalDate().format(
                         DateTimeFormatter.ISO_DATE
                     ),
                     onValueChange = {
@@ -150,7 +150,7 @@ viewModel.setViewModel(sharedViewModel)
                 )
                 DatePicker(
                     label = "end",
-                    value = viewModel.endDateTimestamp.value.toLocalDateTime().format(
+                    value = viewModel.endDateTimestamp.value.toLocalDateTime().toLocalDate().format(
                         DateTimeFormatter.ISO_DATE
                     ),
                     onValueChange = {
@@ -206,7 +206,7 @@ viewModel.setViewModel(sharedViewModel)
                                     onValueChange = {
                                         viewModel.onEvent(
                                             AddEditPlanAction.EnteredTotalAmount(
-                                                it.toInt()
+                                                it
                                             )
                                         )
                                     },
@@ -270,50 +270,51 @@ viewModel.setViewModel(sharedViewModel)
                         .height(50.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
+                    val daysOfWeek = androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(R.array.days_of_week)
                     ClickableRectangle(
-                        text = "Mo",
+                        text = daysOfWeek[0],
                         if (viewModel.days.value and 1 == 1) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
                         viewModel.onEvent(AddEditPlanAction.SwitchDays(1))
                     }
                     ClickableRectangle(
-                        text = "Tu",
+                        text = daysOfWeek[1],
                         if (viewModel.days.value and 2 == 2) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
                         viewModel.onEvent(AddEditPlanAction.SwitchDays(2))
                     }
                     ClickableRectangle(
-                        text = "We",
+                        text = daysOfWeek[2],
                         if (viewModel.days.value and 4 == 4) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
                         viewModel.onEvent(AddEditPlanAction.SwitchDays(4))
                     }
                     ClickableRectangle(
-                        text = "Th",
+                        text = daysOfWeek[3],
                         if (viewModel.days.value and 8 == 8) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
                         viewModel.onEvent(AddEditPlanAction.SwitchDays(8))
                     }
                     ClickableRectangle(
-                        text = "Fr",
+                        text = daysOfWeek[4],
                         if (viewModel.days.value and 16 == 16) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
                         viewModel.onEvent(AddEditPlanAction.SwitchDays(16))
                     }
                     ClickableRectangle(
-                        text = "Sa",
+                        text = daysOfWeek[5],
                         if (viewModel.days.value and 32 == 32) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {
                         viewModel.onEvent(AddEditPlanAction.SwitchDays(32))
                     }
                     ClickableRectangle(
-                        text = "Su",
+                        text = daysOfWeek[6],
                         if (viewModel.days.value and 64 == 64) Color.LightGray else Color.White,
                         modifier = Modifier.weight(1f)
                     ) {

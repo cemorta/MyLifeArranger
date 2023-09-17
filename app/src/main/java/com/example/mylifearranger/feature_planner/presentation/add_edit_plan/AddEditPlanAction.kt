@@ -9,7 +9,7 @@ sealed class AddEditPlanAction {
     data class ChangeTitleFocus(val focusState: FocusState) : AddEditPlanAction()
     data class EnteredStartDate(val value: LocalDate) : AddEditPlanAction()
     data class EnteredEndDate(val value: LocalDate) : AddEditPlanAction()
-    data class EnteredTotalAmount(val value: Int) : AddEditPlanAction()
+    data class EnteredTotalAmount(val value: String) : AddEditPlanAction()
     data class EnteredUnit(val value: String) : AddEditPlanAction()
     data class EnteredStartRange(val value: Int) : AddEditPlanAction()
     data class EnteredEndRange(val value: Int) : AddEditPlanAction()
