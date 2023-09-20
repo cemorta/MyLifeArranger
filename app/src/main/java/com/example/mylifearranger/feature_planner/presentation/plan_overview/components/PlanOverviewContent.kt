@@ -158,9 +158,10 @@ fun changePlanDaysArrayByPlanDays(
 ) {
     var tempDate = startDate
     for (i in 1..7) {
-        if (days.and(1 shl (i - 1)) == 1 shl (i - 1) && !tempDate.isAfter(endDate)) {
+        if (days.and(1 shl (tempDate.dayOfWeek.value - 1)) == 1 shl (tempDate.dayOfWeek.value - 1) && !tempDate.isAfter(endDate)) {
             planDaysArray[tempDate.dayOfWeek.value - 1] = 0
         }
+        tempDate = tempDate.plusDays(1)
     }
 }
 
