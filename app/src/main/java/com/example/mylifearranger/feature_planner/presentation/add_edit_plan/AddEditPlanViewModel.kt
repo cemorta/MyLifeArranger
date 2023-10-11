@@ -44,7 +44,7 @@ class AddEditPlanViewModel @Inject constructor(
 
     private val _unit = mutableStateOf(
         PlanTextFieldState(
-            hint = "Enter unit"
+            hint = "Unit"
         )
     )
     val unit: State<PlanTextFieldState> = _unit
@@ -185,7 +185,19 @@ class AddEditPlanViewModel @Inject constructor(
             }
 
             is AddEditPlanAction.EnteredStartRange -> TODO()
-            is AddEditPlanAction.EnteredUnit -> TODO()
+
+            is AddEditPlanAction.EnteredUnit -> {
+                _unit.value = unit.value.copy(
+                    text = event.value
+                )
+            }
+
+            is AddEditPlanAction.ChangeUnitFocus -> {
+                _unit.value = unit.value.copy(
+                    isHintVisible = !event.focusState.isFocused &&
+                            unit.value.text.isBlank()
+                )
+            }
         }
     }
 

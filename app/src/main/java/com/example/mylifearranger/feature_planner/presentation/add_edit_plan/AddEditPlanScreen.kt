@@ -126,7 +126,7 @@ fun AddEditPlanScreen(
                     hint = viewModel.planTitle.value.hint,
                     onValueChange = { viewModel.onEvent(AddEditPlanAction.EnteredTitle(it)) },
                     onFocusChange = { viewModel.onEvent(AddEditPlanAction.ChangeTitleFocus(it)) },
-                    isHintVisible = true,
+                    isHintVisible = viewModel.planTitle.value.isHintVisible,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.titleLarge,
                 )
@@ -134,9 +134,10 @@ fun AddEditPlanScreen(
                 // Start date and End date
                 DatePicker(
                     label = "start",
-                    value = viewModel.startDateTimestamp.value.toLocalDateTime().toLocalDate().format(
-                        DateTimeFormatter.ISO_DATE
-                    ),
+                    value = viewModel.startDateTimestamp.value.toLocalDateTime().toLocalDate()
+                        .format(
+                            DateTimeFormatter.ISO_DATE
+                        ),
                     onValueChange = {
                         viewModel.onEvent(
                             AddEditPlanAction.EnteredStartDate(
@@ -220,9 +221,21 @@ fun AddEditPlanScreen(
                                 TransparentHintTextField(
                                     text = viewModel.unit.value.text,
                                     hint = viewModel.unit.value.hint,
-                                    onValueChange = {},
-                                    onFocusChange = {},
-                                    isHintVisible = true,
+                                    onValueChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.EnteredUnit(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    onFocusChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.ChangeUnitFocus(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    isHintVisible = viewModel.unit.value.isHintVisible,
                                     modifier = Modifier.weight(1f),
                                     singleLine = true,
                                     textStyle = MaterialTheme.typography.bodyMedium,
@@ -270,7 +283,8 @@ fun AddEditPlanScreen(
                         .height(50.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    val daysOfWeek = androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(R.array.days_of_week)
+                    val daysOfWeek =
+                        androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(R.array.days_of_week)
                     ClickableRectangle(
                         text = daysOfWeek[0],
                         if (viewModel.days.value and 1 == 1) Color.LightGray else Color.White,

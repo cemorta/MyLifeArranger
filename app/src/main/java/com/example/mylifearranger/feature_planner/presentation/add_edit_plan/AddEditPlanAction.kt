@@ -11,6 +11,7 @@ sealed class AddEditPlanAction {
     data class EnteredEndDate(val value: LocalDate) : AddEditPlanAction()
     data class EnteredTotalAmount(val value: String) : AddEditPlanAction()
     data class EnteredUnit(val value: String) : AddEditPlanAction()
+    data class ChangeUnitFocus(val focusState: FocusState) : AddEditPlanAction()
     data class EnteredStartRange(val value: Int) : AddEditPlanAction()
     data class EnteredEndRange(val value: Int) : AddEditPlanAction()
     data class SwitchDays(val value: Int) : AddEditPlanAction()
