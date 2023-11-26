@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import com.example.mylifearranger.R
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.components.DatePicker
+import com.example.mylifearranger.core.presentation.components.TransparentHintNumberField
 import com.example.mylifearranger.core.presentation.components.TransparentHintTextField
 import com.example.mylifearranger.feature_planner.domain.util.PlanType
 import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.components.ClickableRectangle
@@ -201,8 +202,8 @@ fun AddEditPlanScreen(
                             Row() {
 
                                 // Text input with number
-                                TransparentHintTextField(
-                                    text = viewModel.totalAmount.value?.toString() ?: "",
+                                TransparentHintNumberField(
+                                    text = viewModel.totalAmount.value ?: "",
                                     hint = "Total",
                                     onValueChange = {
                                         viewModel.onEvent(
@@ -244,23 +245,47 @@ fun AddEditPlanScreen(
                         } else {
                             Row(horizontalArrangement = Arrangement.SpaceAround) {
                                 // Text input with number start range
-                                TransparentHintTextField(
-                                    text = "start range",
-                                    hint = "start range",
-                                    onValueChange = {},
-                                    onFocusChange = {},
-                                    isHintVisible = true,
+                                TransparentHintNumberField(
+                                    text = viewModel.startRange.value.text,
+                                    hint = viewModel.startRange.value.hint,
+                                    onValueChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.EnteredStartRange(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    onFocusChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.ChangeStartRangeFocus(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    isHintVisible = viewModel.startRange.value.isHintVisible,
                                     modifier = Modifier.weight(1f),
                                     singleLine = true,
                                     textStyle = MaterialTheme.typography.bodyMedium,
                                 )
                                 // Text input with number end range
-                                TransparentHintTextField(
-                                    text = "end range",
-                                    hint = "end range",
-                                    onValueChange = {},
-                                    onFocusChange = {},
-                                    isHintVisible = true,
+                                TransparentHintNumberField(
+                                    text = viewModel.endRange.value.text,
+                                    hint = viewModel.endRange.value.hint,
+                                    onValueChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.EnteredEndRange(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    onFocusChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.ChangeEndRangeFocus(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    isHintVisible = viewModel.endRange.value.isHintVisible,
                                     modifier = Modifier.weight(1f),
                                     singleLine = true,
                                     textStyle = MaterialTheme.typography.bodyMedium,

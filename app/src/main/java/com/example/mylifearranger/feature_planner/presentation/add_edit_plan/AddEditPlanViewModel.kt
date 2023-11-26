@@ -49,11 +49,19 @@ class AddEditPlanViewModel @Inject constructor(
     )
     val unit: State<PlanTextFieldState> = _unit
 
-    private val _startRange = mutableStateOf<Int?>(null)
-    val startRange: State<Int?> = _startRange
+    private val _startRange = mutableStateOf(
+        PlanTextFieldState(
+            hint = "Start range"
+        )
+    )
+    val startRange: State<PlanTextFieldState> = _startRange
 
-    private val _endRange = mutableStateOf<Int?>(null)
-    val endRange: State<Int?> = _endRange
+    private val _endRange = mutableStateOf(
+        PlanTextFieldState(
+            hint = "End range"
+        )
+    )
+    val endRange: State<PlanTextFieldState> = _endRange
 
     private val _days = mutableStateOf(0)
     val days: State<Int> = _days
@@ -88,8 +96,16 @@ class AddEditPlanViewModel @Inject constructor(
                             text = plan.unit,
                             isHintVisible = false
                         )
-                        _startRange.value = plan.startRange
-                        _endRange.value = plan.endRange
+                        _startRange.value =
+                            startRange.value.copy(
+                                text = plan.startRange.toString(),
+                                isHintVisible = false
+                            )
+                        _endRange.value =
+                            endRange.value.copy(
+                                text = plan.endRange.toString(),
+                                isHintVisible = false
+                            )
                         _startDateTimestamp.value = plan.startDateTimestamp
                         _endDateTimestamp.value = plan.endDateTimestamp
                     }
@@ -119,7 +135,8 @@ class AddEditPlanViewModel @Inject constructor(
 
             is AddEditPlanAction.EnteredStartDate -> {
 
-                _startDateTimestamp.value = LocalDateTime.of(event.value, LocalTime.MIDNIGHT).toTimestamp()
+                _startDateTimestamp.value =
+                    LocalDateTime.of(event.value, LocalTime.MIDNIGHT).toTimestamp()
 
 //                // If the end date is before the start date, set the end date to the start date
 //                if (_endDateTimestamp.value < _startDateTimestamp.value) {
@@ -129,7 +146,8 @@ class AddEditPlanViewModel @Inject constructor(
 
             is AddEditPlanAction.EnteredEndDate -> {
 
-                _endDateTimestamp.value = LocalDateTime.of(event.value, LocalTime.MIDNIGHT).toTimestamp()
+                _endDateTimestamp.value =
+                    LocalDateTime.of(event.value, LocalTime.MIDNIGHT).toTimestamp()
 
 //                // If the start date is after the end date, set the start date to the end date
 //                if (_startDateTimestamp.value > _endDateTimestamp.value) {
@@ -147,8 +165,8 @@ class AddEditPlanViewModel @Inject constructor(
                                 planType = planType.value,
                                 totalAmount = totalAmount.value?.toIntOrNull(),
                                 unit = unit.value.text,
-                                startRange = startRange.value,
-                                endRange = endRange.value,
+                                startRange = startRange.value.text.toIntOrNull(),
+                                endRange = endRange.value.text.toIntOrNull(),
                                 days = it,
                                 startDateTimestamp = startDateTimestamp.value,
                                 endDateTimestamp = endDateTimestamp.value,
@@ -179,12 +197,21 @@ class AddEditPlanViewModel @Inject constructor(
                 }
             }
 
-            is AddEditPlanAction.EnteredEndRange -> TODO()
+            is AddEditPlanAction.EnteredEndRange -> {
+                _endRange.value = endRange.value.copy(
+                    text = event.value
+                )
+            }
+
             is AddEditPlanAction.ChangePlanType -> {
                 _planType.value = event.value
             }
 
-            is AddEditPlanAction.EnteredStartRange -> TODO()
+            is AddEditPlanAction.EnteredStartRange -> {
+                _startRange.value = startRange.value.copy(
+                    text = event.value
+                )
+            }
 
             is AddEditPlanAction.EnteredUnit -> {
                 _unit.value = unit.value.copy(
@@ -196,6 +223,19 @@ class AddEditPlanViewModel @Inject constructor(
                 _unit.value = unit.value.copy(
                     isHintVisible = !event.focusState.isFocused &&
                             unit.value.text.isBlank()
+                )
+            }
+
+            is AddEditPlanAction.ChangeEndRangeFocus -> {
+                _endRange.value = endRange.value.copy(
+                    isHintVisible = !event.focusState.isFocused &&
+                            endRange.value.text.isBlank()
+                )
+            }
+            is AddEditPlanAction.ChangeStartRangeFocus -> {
+                _startRange.value = startRange.value.copy(
+                    isHintVisible = !event.focusState.isFocused &&
+                            startRange.value.text.isBlank()
                 )
             }
         }

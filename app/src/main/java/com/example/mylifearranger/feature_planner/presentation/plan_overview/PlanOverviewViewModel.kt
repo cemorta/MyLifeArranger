@@ -124,112 +124,112 @@ class PlanOverviewViewModel @Inject constructor(
     }
 }
 
-fun calculatePlan(plan: Plan?, _eachPlanDayAmount: MutableState<Int?>, _planDayCount: MutableState<Int?>, _planDaysArray: MutableState<Array<Int>?>) {
+fun calculatePlan(
+    plan: Plan?,
+    stateEachPlanDayAmount: MutableState<Int?>,
+    statePlanDayCount: MutableState<Int?>,
+    statePlanDaysArray: MutableState<Array<Int>?>
+) {
+
+    var planDaysArray: Array<Int>? = null;
+    var planDaysCount: Int? = null;
+
+    // Validate if the start date and end date are not null
+    if (plan?.startDateTimestamp != null && plan?.endDateTimestamp != null) {
+
+        // Create an array of 7 elements and initialize it to -1
+        // -1 means that the day is not included in the plan
+        planDaysArray = arrayOf(-1, -1, -1, -1, -1, -1, -1)
+
+        // Change the -1 values of the array of planDaysArray to 0 if the day is included in the plan
+        changePlanDaysArrayByPlanDays(
+            planDaysArray,
+            plan?.startDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
+            plan?.endDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
+            plan?.days ?: 0
+        )
+
+        // Get the number of plan days between the start date and end date
+        planDaysCount = returnCountOfPlanDaysBetweenTwoLocalDateTimes(
+            plan?.startDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
+            plan?.endDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
+            planDaysArray
+        )
+
+        // Store the number of plan days between the start date and end date
+        statePlanDayCount.value = planDaysCount
+    }
 
     // If it is a total amount plan, do the following:
-    if (plan?.planType == PlanType.TOTAL) {
+    if (plan?.planType == PlanType.TOTAL && planDaysArray != null && planDaysCount != null) {
 
-//        // Get the week day of the start date
-//        val startDateWeekDay =
-//            plan?.startDateTimestamp?.toLocalDateTime()?.dayOfWeek?.value ?: 0
-//        // Get the week day of the end date
-//        val endDateWeekDay = plan?.endDateTimestamp?.toLocalDateTime()?.dayOfWeek?.value ?: 0
+        // ----------------------- Total amount of work and distribution of work -----------------------------
 
-        // Validate if the start date and end date are not null
-        if (plan?.startDateTimestamp != null && plan?.endDateTimestamp != null) {
+        // Check if the total amount is not null by let keyword
+        plan?.totalAmount?.let { totalAmount ->
 
-            // Create an array of 7 elements and initialize it to -1
-            // -1 means that the day is not included in the plan
-            var planDaysArray: Array<Int> = arrayOf(-1, -1, -1, -1, -1, -1, -1)
+            // If the total amount is greater than or equal to the number of plan days between the start date and end date
+            if (totalAmount >= planDaysCount) {
 
-            // Change the -1 values of the array of planDaysArray to 0 if the day is included in the plan
-            changePlanDaysArrayByPlanDays(
-                planDaysArray,
-                plan?.startDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
-                plan?.endDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
-                plan?.days ?: 0
-            )
+                // Check if the total amount is divisible by the number of plan days between the start date and end date
+                if (totalAmount % planDaysCount == 0) {
 
-            // Get the number of plan days between the start date and end date
-            val planDaysCount = returnCountOfPlanDaysBetweenTwoLocalDateTimes(
-                plan?.startDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
-                plan?.endDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
-                planDaysArray
-            )
+                    // If it is divisible, then distribute the work equally
 
-            // Store the number of plan days between the start date and end date
-            _planDayCount.value = planDaysCount
-
-//            // Show the number of plan days between the start date and end date
-//            Text(text = planDaysCount.toString())
-
-            // ----------------------- Total amount of work and distribution of work -----------------------------
-            // Check if the total amount is not null by let keyword
-            plan?.totalAmount?.let { totalAmount ->
-
-                // If the total amount is greater than or equal to the number of plan days between the start date and end date
-                if (totalAmount >= planDaysCount) {
-
-                    // Check if the total amount is divisible by the number of plan days between the start date and end date
-                    if (totalAmount % planDaysCount == 0) {
-
-                        // If it is divisible, then distribute the work equally
-
-                        // Get work amount per each plan day (totalAmount / planDaysCount)
-                        _eachPlanDayAmount.value = totalAmount / planDaysCount
-                        // Change the 0 values of the array of planDaysArray to (eachPlanDayAmount)
-                        for (i in 0..6) {
-                            if (planDaysArray[i] == 0) {
-                                planDaysArray[i] = _eachPlanDayAmount.value!!
-                            }
+                    // Get work amount per each plan day (totalAmount / planDaysCount)
+                    stateEachPlanDayAmount.value = totalAmount / planDaysCount
+                    // Change the 0 values of the array of planDaysArray to (eachPlanDayAmount)
+                    for (i in 0..6) {
+                        if (planDaysArray[i] == 0) {
+                            planDaysArray[i] = stateEachPlanDayAmount.value!!
                         }
-                        _planDaysArray.value = planDaysArray
-
-                    } else {
-
-                        // If it is not divisible, then distribute the work equally and add the remainder to the first days
-
-                        // Get approx. value of each plan day (totalAmount / planDaysCount)
-                        _eachPlanDayAmount.value = totalAmount / planDaysCount
-                        // Get the remainder of (totalAmount / planDaysCount)
-                        var remainder = totalAmount % planDaysCount
-                        // Change the 0 values of the array of planDaysArray to (eachPlanDayAmount + 1) until the remainder is 0
-                        for (i in 0..6) {
-                            if (planDaysArray[i] == 0) {
-                                if (remainder > 0) {
-                                    planDaysArray[i] = _eachPlanDayAmount.value!! + 1
-                                    remainder--
-                                } else {
-                                    planDaysArray[i] = _eachPlanDayAmount.value!!
-                                }
-                            }
-                        }
-                        _planDaysArray.value = planDaysArray
                     }
-
-//                    ClickableWeekDayList(dayAmount = planDaysArray)
+                    statePlanDaysArray.value = planDaysArray
 
                 } else {
 
-                    // If the total amount is less than the number of plan days, the work amount per day would be less than 1.
-                    // So, we need to change the end day to make the work amount per day equal to 1.
+                    // If it is not divisible, then distribute the work equally and add the remainder to the first days
 
-                    // planDaysCount > totalAmount
-                    val newEndDate = returnMaxEndDateByTotalAmount(
-                        plan?.startDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
-                        totalAmount,
-                        planDaysArray
-                    )
+                    // Get approx. value of each plan day (totalAmount / planDaysCount)
+                    stateEachPlanDayAmount.value = totalAmount / planDaysCount
+                    // Get the remainder of (totalAmount / planDaysCount)
+                    var remainder = totalAmount % planDaysCount
+                    // Change the 0 values of the array of planDaysArray to (eachPlanDayAmount + 1) until the remainder is 0
+                    for (i in 0..6) {
+                        if (planDaysArray[i] == 0) {
+                            if (remainder > 0) {
+                                planDaysArray[i] = stateEachPlanDayAmount.value!! + 1
+                                remainder--
+                            } else {
+                                planDaysArray[i] = stateEachPlanDayAmount.value!!
+                            }
+                        }
+                    }
+                    statePlanDaysArray.value = planDaysArray
+                }
+
+            } else {
+
+                // If the total amount is less than the number of plan days, the work amount per day would be less than 1.
+                // So, we need to change the end day to make the work amount per day equal to 1.
+
+                // planDaysCount > totalAmount
+                val newEndDate = returnMaxEndDateByTotalAmount(
+                    plan?.startDateTimestamp?.toLocalDateTime()?.toLocalDate()!!,
+                    totalAmount,
+                    planDaysArray
+                )
 //                    changeEndDateTimestamp(LocalDateTime.of(newEndDate, plan?.endDateTimestamp?.toLocalDateTime()?.toLocalTime()!!).toTimestamp())
 
 //                    Text(newEndDate.toString())
 //                    ClickableWeekDayList(dayAmount = planDaysArray)
 
 
-                }
             }
         }
 
+    } else if (plan?.planType == PlanType.RANGE && planDaysArray != null && planDaysCount != null) {
+        // If it is a range plan, do the following:
 
     }
 }
@@ -243,7 +243,10 @@ fun changePlanDaysArrayByPlanDays(
 ) {
     var tempDate = startDate
     for (i in 1..7) {
-        if (days.and(1 shl (tempDate.dayOfWeek.value - 1)) == 1 shl (tempDate.dayOfWeek.value - 1) && !tempDate.isAfter(endDate)) {
+        if (days.and(1 shl (tempDate.dayOfWeek.value - 1)) == 1 shl (tempDate.dayOfWeek.value - 1) && !tempDate.isAfter(
+                endDate
+            )
+        ) {
             planDaysArray[tempDate.dayOfWeek.value - 1] = 0
         }
         tempDate = tempDate.plusDays(1)

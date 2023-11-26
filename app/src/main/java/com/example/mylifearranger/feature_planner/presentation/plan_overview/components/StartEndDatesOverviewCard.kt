@@ -27,7 +27,7 @@ fun StartEndDatesOverviewCard(
         Text(text = "Start & End Dates", modifier = Modifier.padding(start = 10.dp, top = 5.dp))
         Column(modifier = Modifier.padding(20.dp)) {
             Text(text = "$startDate - $endDate")
-            Text(text = "$dayCount plan day(s) between")
+            Text(text = "$dayCount plan day(s)")
         }
     }
 }
