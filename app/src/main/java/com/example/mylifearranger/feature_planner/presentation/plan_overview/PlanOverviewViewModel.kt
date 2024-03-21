@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mylifearranger.feature_planner.domain.model.Plan
+import com.example.mylifearranger.feature_planner.domain.model.PlanTask
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.PlanUseCases
 import com.example.mylifearranger.feature_planner.domain.util.PlanType
 import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.SharedViewModel
@@ -28,6 +29,7 @@ class PlanOverviewViewModel @Inject constructor(
 
     private lateinit var sharedViewModel: SharedViewModel
     var plan: Plan? = null
+    val planTasks: MutableList<PlanTask> = mutableListOf()
 //    var eachPlanDayAmount: Int? = null
 
     fun setViewModel(sharedViewModel: SharedViewModel) {
@@ -35,7 +37,7 @@ class PlanOverviewViewModel @Inject constructor(
         plan = sharedViewModel.getSharedState() ?: null
 
         // Make calculations for the plan and store the results in the following variables
-        calculatePlan(plan, _eachPlanDayAmount, _planDayCount, _planDaysArray)
+        calculatePlan(plan, _eachPlanDayAmount, _planDayCount, _planDaysArray, planTasks)
     }
 
     fun getViewModel(): Plan? {
@@ -101,8 +103,9 @@ class PlanOverviewViewModel @Inject constructor(
             is PlanOverviewAction.SavePlan -> {
                 viewModelScope.launch {
                     try {
-                        planUseCases.addPlanUseCase(
-                            sharedViewModel.getSharedState()!!
+                        planUseCases.addPlanWithTasksUseCase(
+                            sharedViewModel.getSharedState()!!,
+                            planTasks
                         )
                         sharedViewModel.clearSharedState()
                         _eventFlow.emit(UiAction.SavePlan)
@@ -128,7 +131,8 @@ fun calculatePlan(
     plan: Plan?,
     stateEachPlanDayAmount: MutableState<Int?>,
     statePlanDayCount: MutableState<Int?>,
-    statePlanDaysArray: MutableState<Array<Int>?>
+    statePlanDaysArray: MutableState<Array<Int>?>,
+    planTasks: MutableList<PlanTask>,
 ) {
 
     var planDaysArray: Array<Int>? = null;
@@ -186,6 +190,14 @@ fun calculatePlan(
                     }
                     statePlanDaysArray.value = planDaysArray
 
+                    createPlanTasks(
+                        plan,
+                        planDaysCount,
+                        planDaysArray,
+                        stateEachPlanDayAmount.value!!,
+                        planTasks
+                    )
+
                 } else {
 
                     // If it is not divisible, then distribute the work equally and add the remainder to the first days
@@ -234,6 +246,39 @@ fun calculatePlan(
     }
 }
 
+fun createPlanTasks(
+    plan: Plan,
+    planDaysCount: Int,
+    planDaysArray: Array<Int>,
+    value: Int,
+    planTasks: MutableList<PlanTask>
+) {
+    var workDay: LocalDate = plan.startDateTimestamp.toLocalDateTime().toLocalDate()
+    // Create PlanTask objects for each plan day
+    for (i in 0 until planDaysCount) {
+        workDay = returnNextWorkDay(
+            workDay,
+            planDaysArray
+        )
+
+        planTasks.add(
+            PlanTask(
+                title = "",
+                description = "",
+                amountToComplete = value,
+                taskDuration = null,
+                performedDateTimestamp = workDay.atStartOfDay().toTimestamp(),
+                setPlannedTime = false,
+                isDone = false,
+                assignedPlanId = -1, // assignedPlanId is not assigned, it will assigned after the plan is saved
+                assignedEventId = null
+            )
+        )
+        // 1 day added to the workDay
+        workDay = workDay.plusDays(1)
+    }
+}
+
 // Function to changes the -1 values of the array of planDaysArray to 0 if the day is included in the plan
 fun changePlanDaysArrayByPlanDays(
     planDaysArray: Array<Int>,
@@ -251,6 +296,17 @@ fun changePlanDaysArrayByPlanDays(
         }
         tempDate = tempDate.plusDays(1)
     }
+}
+
+fun returnNextWorkDay(
+    startDate: LocalDate,
+    planDaysArray: Array<Int>
+): LocalDate {
+    var tempDate = startDate
+    while (planDaysArray[tempDate.dayOfWeek.value - 1] < 1) {
+        tempDate = tempDate.plusDays(1)
+    }
+    return tempDate
 }
 
 fun returnCountOfPlanDaysBetweenTwoLocalDateTimes(

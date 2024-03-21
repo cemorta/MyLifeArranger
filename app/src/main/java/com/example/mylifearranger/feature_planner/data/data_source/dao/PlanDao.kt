@@ -36,15 +36,15 @@ interface PlanDao {
 //    fun getTasksForDate(date: String): Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPlan(plan: Plan)
+    suspend fun insertPlan(plan: Plan) : Long
 
     @Insert
     suspend fun insertPlanTask(planTask: PlanTask)
 
     @Transaction
     suspend fun insertPlanWithTasks(plan: Plan, planTasks: List<PlanTask>) {
-        insertPlan(plan)
-        val tasksWithPlanId = planTasks.map { it.copy(assignedPlanId = plan.id!!) }
+        val planId = insertPlan(plan)
+        val tasksWithPlanId = planTasks.map { it.copy(assignedPlanId = planId.toInt()) }
         tasksWithPlanId.forEach { insertPlanTask(it) }
     }
 

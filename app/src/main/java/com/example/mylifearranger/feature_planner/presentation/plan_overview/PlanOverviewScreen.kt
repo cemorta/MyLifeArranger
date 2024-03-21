@@ -9,6 +9,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
@@ -28,12 +29,10 @@ fun PlanOverviewScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     // Todo: precautions for null states of sharedViewModel
-    viewModel.setViewModel(sharedViewModel)
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.setViewModel(sharedViewModel)
-//        println("zl" + sharedViewModel.sharedState.value)
-//    }
+    LaunchedEffect(Unit) {
+        viewModel.setViewModel(sharedViewModel)
+    }
 
     Scaffold(
         topBar = {
