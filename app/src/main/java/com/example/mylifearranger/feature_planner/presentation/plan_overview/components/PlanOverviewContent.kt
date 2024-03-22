@@ -59,7 +59,7 @@ fun PlanOverviewContent(
             StartEndDatesOverviewCard(
                 startDate = plan?.startDateTimestamp.toLocalDateTime().format(
                     DateTimeFormatter.ISO_DATE
-                ), endDate = plan?.endDateTimestamp.toLocalDateTime().format(
+                ), endDate = plan?.endDateTimestamp!!.toLocalDateTime().format(
                     DateTimeFormatter.ISO_DATE
                 ), dayCount = planDayCount.value!!
             )

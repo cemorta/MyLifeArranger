@@ -37,7 +37,9 @@ class PlanOverviewViewModel @Inject constructor(
         plan = sharedViewModel.getSharedState() ?: null
 
         // Make calculations for the plan and store the results in the following variables
-        calculatePlan(plan, _eachPlanDayAmount, _planDayCount, _planDaysArray, planTasks)
+        calculatePlan(plan, _eachPlanDayAmount, _planDayCount, _planDaysArray, planTasks) {
+            sharedViewModel.setEndDateTimestamp(it)
+        }
     }
 
     fun getViewModel(): Plan? {
@@ -133,6 +135,7 @@ fun calculatePlan(
     statePlanDayCount: MutableState<Int?>,
     statePlanDaysArray: MutableState<Array<Int>?>,
     planTasks: MutableList<PlanTask>,
+    changeEndDateTimestamp: (Long) -> Unit
 ) {
 
     var planDaysArray: Array<Int>? = null;
@@ -218,6 +221,15 @@ fun calculatePlan(
                         }
                     }
                     statePlanDaysArray.value = planDaysArray
+
+                    createPlanTasks(
+                        plan,
+                        planDaysCount,
+                        planDaysArray,
+                        stateEachPlanDayAmount.value!!,
+                        planTasks,
+                        remainder
+                    )
                 }
 
             } else {
@@ -231,6 +243,15 @@ fun calculatePlan(
                     totalAmount,
                     planDaysArray
                 )
+                changeEndDateTimestamp(LocalDateTime.of(newEndDate, plan?.endDateTimestamp?.toLocalDateTime()?.toLocalTime()!!).toTimestamp())
+                createPlanTasks(
+                    plan,
+                    totalAmount,
+                    planDaysArray,
+                    1,
+                    planTasks
+                )
+
 //                    changeEndDateTimestamp(LocalDateTime.of(newEndDate, plan?.endDateTimestamp?.toLocalDateTime()?.toLocalTime()!!).toTimestamp())
 
 //                    Text(newEndDate.toString())
@@ -251,7 +272,8 @@ fun createPlanTasks(
     planDaysCount: Int,
     planDaysArray: Array<Int>,
     value: Int,
-    planTasks: MutableList<PlanTask>
+    planTasks: MutableList<PlanTask>,
+    remainder: Int = 0
 ) {
     var workDay: LocalDate = plan.startDateTimestamp.toLocalDateTime().toLocalDate()
     // Create PlanTask objects for each plan day
@@ -261,19 +283,35 @@ fun createPlanTasks(
             planDaysArray
         )
 
-        planTasks.add(
-            PlanTask(
-                title = "",
-                description = "",
-                amountToComplete = value,
-                taskDuration = null,
-                performedDateTimestamp = workDay.atStartOfDay().toTimestamp(),
-                setPlannedTime = false,
-                isDone = false,
-                assignedPlanId = -1, // assignedPlanId is not assigned, it will assigned after the plan is saved
-                assignedEventId = null
+        if (remainder - i > 0) {
+            planTasks.add(
+                PlanTask(
+                    title = "",
+                    description = "",
+                    amountToComplete = value + 1,
+                    taskDuration = null,
+                    performedDateTimestamp = workDay.atStartOfDay().toTimestamp(),
+                    setPlannedTime = false,
+                    isDone = false,
+                    assignedPlanId = -1, // assignedPlanId is not assigned, it will assigned after the plan is saved
+                    assignedEventId = null
+                )
             )
-        )
+        } else {
+            planTasks.add(
+                PlanTask(
+                    title = "",
+                    description = "",
+                    amountToComplete = value,
+                    taskDuration = null,
+                    performedDateTimestamp = workDay.atStartOfDay().toTimestamp(),
+                    setPlannedTime = false,
+                    isDone = false,
+                    assignedPlanId = -1, // assignedPlanId is not assigned, it will assigned after the plan is saved
+                    assignedEventId = null
+                )
+            )
+        }
         // 1 day added to the workDay
         workDay = workDay.plusDays(1)
     }

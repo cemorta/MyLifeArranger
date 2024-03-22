@@ -16,6 +16,10 @@ class SharedViewModel @Inject constructor() : ViewModel() {
         return sharedState.value
     }
 
+    fun setEndDateTimestamp(endDateTimestamp: Long) {
+        sharedState.value?.endDateTimestamp = endDateTimestamp
+    }
+
     fun clearSharedState() {
         sharedState.value = null
     }

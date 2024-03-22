@@ -27,7 +27,7 @@ data class Plan(
     val endRange: Int? = null,
     val days: Int,
     val startDateTimestamp: Long,
-    val endDateTimestamp: Long,
+    var endDateTimestamp: Long,
     val isDone: Boolean = false,
     val assignedGoalId: Int? = null,
     @PrimaryKey(autoGenerate = true) val id: Int? = null
