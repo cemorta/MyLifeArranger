@@ -20,6 +20,10 @@ class SharedViewModel @Inject constructor() : ViewModel() {
         sharedState.value?.endDateTimestamp = endDateTimestamp
     }
 
+    fun setTotalAmount(totalAmount: Int) {
+        sharedState.value?.totalAmount = totalAmount
+    }
+
     fun clearSharedState() {
         sharedState.value = null
     }

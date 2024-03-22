@@ -36,19 +36,21 @@ fun PlanOverviewContent(
         )
 
         // Show Plan Name, Plan Days, Plan Total Amount, and Plan Unit
-        if (plan?.planType == PlanType.TOTAL && plan?.totalAmount != null && plan?.unit != null) {
+        if (plan?.totalAmount != null && plan?.unit != null) {
 
             val planDays = returnDayStringByBitMasking(plan?.days ?: 0, daysOfWeek)
             PlanDetailsCard(
-                planName = plan?.title!!,
+                planName = plan.title,
                 planDays = planDays,
-                totalAmount = plan?.totalAmount!!,
-                unit = plan?.unit!!
+                totalAmount = plan.totalAmount!!,
+                unit = plan.unit,
+                startRange = plan.startRange,
+                endRange = plan.endRange
             )
         }
 
         // Show One-Week Overview
-        if (plan?.planType == PlanType.TOTAL && planDaysArray.value != null) {
+        if (planDaysArray.value != null) {
 
             OneWeekOverviewCard(planDaysArray = planDaysArray.value!!)
         }

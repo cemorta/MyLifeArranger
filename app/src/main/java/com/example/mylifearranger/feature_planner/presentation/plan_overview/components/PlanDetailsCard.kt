@@ -16,6 +16,8 @@ fun PlanDetailsCard(
     planDays: String,
     totalAmount: Int,
     unit: String,
+    startRange: Int? = null,
+    endRange: Int? = null
 ) {
 
     Card(
@@ -28,6 +30,10 @@ fun PlanDetailsCard(
         Column(modifier = Modifier.padding(20.dp)) {
             Text(text = "Title: $planName")
             Text(text = "Days: $planDays")
+            // If startRange and endRange are not null, show the range
+            if (startRange != null && endRange != null) {
+                Text(text = "Range: $startRange - $endRange")
+            }
             Text(text = "Total: $totalAmount $unit")
         }
     }

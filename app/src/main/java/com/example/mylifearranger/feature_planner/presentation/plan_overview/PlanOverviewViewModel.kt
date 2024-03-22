@@ -37,8 +37,14 @@ class PlanOverviewViewModel @Inject constructor(
         plan = sharedViewModel.getSharedState() ?: null
 
         // Make calculations for the plan and store the results in the following variables
-        calculatePlan(plan, _eachPlanDayAmount, _planDayCount, _planDaysArray, planTasks) {
-            sharedViewModel.setEndDateTimestamp(it)
+        calculatePlan(
+            plan,
+            _eachPlanDayAmount,
+            _planDayCount,
+            _planDaysArray,
+            planTasks,
+            { sharedViewModel.setEndDateTimestamp(it) }) {
+            sharedViewModel.setTotalAmount(it)
         }
     }
 
@@ -135,7 +141,8 @@ fun calculatePlan(
     statePlanDayCount: MutableState<Int?>,
     statePlanDaysArray: MutableState<Array<Int>?>,
     planTasks: MutableList<PlanTask>,
-    changeEndDateTimestamp: (Long) -> Unit
+    changeEndDateTimestamp: (Long) -> Unit,
+    changeTotalAmount: (Int) -> Unit
 ) {
 
     var planDaysArray: Array<Int>? = null;
@@ -167,8 +174,25 @@ fun calculatePlan(
         statePlanDayCount.value = planDaysCount
     }
 
-    // If it is a total amount plan, do the following:
-    if (plan?.planType == PlanType.TOTAL && planDaysArray != null && planDaysCount != null) {
+    // If it is a range plan, do the following:
+    if (plan?.planType == PlanType.RANGE && planDaysArray != null && planDaysCount != null) {
+        // ----------------------- Range plan -----------------------------
+        // Check if the start range and end range are not null by let keyword
+        plan?.startRange?.let { startRange ->
+            plan?.endRange?.let { endRange ->
+
+                // The end range must be greater or equal to start range
+                if (startRange <= endRange) {
+
+                    // The total amount is the difference between the end range and start range + 1
+                    // Modify the total amount of the plan
+                    changeTotalAmount(endRange - startRange + 1)
+                }
+            }
+        }
+    }
+
+    if (planDaysArray != null && planDaysCount != null) {
 
         // ----------------------- Total amount of work and distribution of work -----------------------------
 
@@ -228,7 +252,7 @@ fun calculatePlan(
                         planDaysArray,
                         stateEachPlanDayAmount.value!!,
                         planTasks,
-                        remainder
+                        totalAmount % planDaysCount
                     )
                 }
 
@@ -243,7 +267,12 @@ fun calculatePlan(
                     totalAmount,
                     planDaysArray
                 )
-                changeEndDateTimestamp(LocalDateTime.of(newEndDate, plan?.endDateTimestamp?.toLocalDateTime()?.toLocalTime()!!).toTimestamp())
+                changeEndDateTimestamp(
+                    LocalDateTime.of(
+                        newEndDate,
+                        plan?.endDateTimestamp?.toLocalDateTime()?.toLocalTime()!!
+                    ).toTimestamp()
+                )
                 createPlanTasks(
                     plan,
                     totalAmount,
@@ -257,13 +286,8 @@ fun calculatePlan(
 //                    Text(newEndDate.toString())
 //                    ClickableWeekDayList(dayAmount = planDaysArray)
 
-
             }
         }
-
-    } else if (plan?.planType == PlanType.RANGE && planDaysArray != null && planDaysCount != null) {
-        // If it is a range plan, do the following:
-
     }
 }
 

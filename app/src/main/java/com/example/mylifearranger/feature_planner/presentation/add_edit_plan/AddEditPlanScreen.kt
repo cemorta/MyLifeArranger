@@ -290,6 +290,29 @@ fun AddEditPlanScreen(
                                     singleLine = true,
                                     textStyle = MaterialTheme.typography.bodyMedium,
                                 )
+                                // Text input for unit
+                                TransparentHintTextField(
+                                    text = viewModel.unit.value.text,
+                                    hint = viewModel.unit.value.hint,
+                                    onValueChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.EnteredUnit(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    onFocusChange = {
+                                        viewModel.onEvent(
+                                            AddEditPlanAction.ChangeUnitFocus(
+                                                it
+                                            )
+                                        )
+                                    },
+                                    isHintVisible = viewModel.unit.value.isHintVisible,
+                                    modifier = Modifier.weight(1f),
+                                    singleLine = true,
+                                    textStyle = MaterialTheme.typography.bodyMedium,
+                                )
                             }
                         }
                     }
