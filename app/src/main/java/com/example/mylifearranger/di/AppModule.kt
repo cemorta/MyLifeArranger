@@ -30,6 +30,7 @@ import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanTa
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.AddPlanWithTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.DeletePlanUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanTasksBetweenTwoDatesUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanWithTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlansUseCase
@@ -127,6 +128,7 @@ object AppModule {
             deletePlanUseCase = DeletePlanUseCase(planRepository),
             getPlansUseCase = GetPlansUseCase(planRepository),
             getPlanWithTasksUseCase = GetPlanWithTasksUseCase(planRepository),
+            getPlanTasksBetweenTwoDatesUseCase = GetPlanTasksBetweenTwoDatesUseCase(planRepository),
             getPlanUseCase = GetPlanUseCase(planRepository)
         )
     }

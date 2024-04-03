@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 
 @Composable
-fun DaySquare(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
+fun DaySquare(date: LocalDate, planTaskInThatDay: Int, isSelected: Boolean, onClick: () -> Unit) {
     val dayOfWeek = date.dayOfWeek.getDisplayName(
         java.time.format.TextStyle.SHORT,
         java.util.Locale.getDefault()
@@ -25,7 +25,7 @@ fun DaySquare(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
             .clickable(onClick = onClick) // Add a click listener
             .size(50.dp) // Set the size of the square
             .background(
-                color = if (isSelected) Color.Blue else Color.LightGray,
+                color = if (isSelected) { Color.Blue } else if(planTaskInThatDay > 0) {Color.Green} else {Color.LightGray},
                 shape = RoundedCornerShape(4.dp)
             ), // Set the background color and shape
         contentAlignment = Alignment.Center // Align the content to the center

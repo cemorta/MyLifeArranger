@@ -15,6 +15,10 @@ class PlanRepositoryImpl(
         return planDao.getPlanWithTasks(planId)
     }
 
+    override fun getPlanTasksBetweenTwoDates(dateStart: Long, dateEnd: Long): Flow<List<PlanTask>> {
+        return planDao.getPlanTasksBetweenTwoDates(dateStart, dateEnd)
+    }
+
     override fun getPlans(): Flow<List<Plan>> {
         return planDao.getPlans()
     }

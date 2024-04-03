@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface PlanRepository {
 
     fun getPlanWithTasks(planId: Int): Flow<PlanWithTasks>
+    fun getPlanTasksBetweenTwoDates(dateStart: Long, dateEnd: Long): Flow<List<PlanTask>>
     fun getPlans(): Flow<List<Plan>>
 
     suspend fun getPlanById(planId: Int): Plan?

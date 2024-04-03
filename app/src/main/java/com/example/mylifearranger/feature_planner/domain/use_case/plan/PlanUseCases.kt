@@ -8,6 +8,7 @@ data class PlanUseCases(
     val getPlanUseCase: GetPlanUseCase,
     val getPlansUseCase: GetPlansUseCase,
     val getPlanWithTasksUseCase: GetPlanWithTasksUseCase,
+    val getPlanTasksBetweenTwoDatesUseCase: GetPlanTasksBetweenTwoDatesUseCase
 //    val getPlanUseCase: GetPlanUseCase,
 //    val getPlansUseCase: GetPlansUseCase,
 //    val updatePlanUseCase: UpdatePlanUseCase

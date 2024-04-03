@@ -17,6 +17,10 @@ interface PlanDao {
     @Query("SELECT * FROM plan WHERE id = :planId")
     fun getPlanWithTasks(planId: Int): Flow<PlanWithTasks>
 
+    @Transaction
+    @Query("SELECT * FROM PlanTask WHERE performedDateTimestamp >= :dateStart AND performedDateTimestamp < :dateEnd")
+    fun getPlanTasksBetweenTwoDates(dateStart: Long, dateEnd: Long): Flow<List<PlanTask>>
+
     @Query("SELECT * FROM plan")
     fun getPlans(): Flow<List<Plan>>
 

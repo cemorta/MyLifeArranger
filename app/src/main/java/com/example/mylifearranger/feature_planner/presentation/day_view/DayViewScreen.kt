@@ -130,6 +130,7 @@ fun DayViewScreen(
             DayViewContent(
                 selectedDate = selectedDate!!,
                 events = state.events,
+                planTasks = state.planTasks,
                 weekDaysRowState = weekDaysRowState,
                 onDaySelected = { newDate ->
                     selectedDate = newDate
