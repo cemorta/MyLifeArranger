@@ -15,9 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.navOptions
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.SharedViewModel
 import com.example.mylifearranger.feature_planner.presentation.plan_overview.components.PlanOverviewContent
+import com.example.mylifearranger.feature_planner.presentation.util.Screen
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,6 +35,24 @@ fun PlanOverviewScreen(
 
     LaunchedEffect(Unit) {
         viewModel.setViewModel(sharedViewModel)
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is PlanOverviewViewModel.UiAction.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
+                }
+
+                is PlanOverviewViewModel.UiAction.SavePlan -> {
+                    if (viewModel.plan != null) {
+                        // pop back to the plan list screen
+                        navController.navigate(Screen.PlanViewScreen.route) {
+                            popUpTo(Screen.PlanViewScreen.route) { inclusive = true }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Scaffold(
