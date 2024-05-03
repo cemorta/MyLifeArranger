@@ -12,19 +12,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.mylifearranger.feature_planner.domain.model.Plan
 import com.example.mylifearranger.feature_planner.domain.util.PlanType
 import com.example.mylifearranger.core.presentation.util.returnDayStringByBitMasking
+import com.example.mylifearranger.feature_planner.presentation.util.Screen
 import toLocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun PlanInfoRow(plan: Plan) {
+fun PlanInfoRow(plan: Plan, navController: NavController) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { }
+            .clickable {
+                // Go to plan details screen
+                navController.navigate(Screen.PlanDetailsScreen.route + "?planId=${plan.id}")
+            }
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

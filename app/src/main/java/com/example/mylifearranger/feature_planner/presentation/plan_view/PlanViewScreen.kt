@@ -132,7 +132,7 @@ fun PlanViewScreen(
 //            )
 
             // Plan view content
-            PlanList(state.plans)
+            PlanList(state.plans, navController)
 
 
         }

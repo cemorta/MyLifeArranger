@@ -19,6 +19,7 @@ import com.example.mylifearranger.feature_planner.presentation.add_edit_plan.Sha
 import com.example.mylifearranger.feature_planner.presentation.add_edit_task.AddEditTaskScreen
 import com.example.mylifearranger.feature_planner.presentation.day_view.DayViewScreen
 import com.example.mylifearranger.feature_planner.presentation.event_details.EventDetailsScreen
+import com.example.mylifearranger.feature_planner.presentation.plan_details.PlanDetailsScreen
 import com.example.mylifearranger.feature_planner.presentation.plan_overview.PlanOverviewScreen
 import com.example.mylifearranger.feature_planner.presentation.task_overview.TaskOverviewScreen
 import com.example.mylifearranger.feature_planner.presentation.task_view.TaskViewScreen
@@ -200,6 +201,22 @@ class MainActivity : ComponentActivity() {
                             PlanOverviewScreen(
                                 navController = navController,
                                 sharedViewModel = sharedViewModel,
+                            )
+                        }
+                        composable(
+                            route = Screen.PlanDetailsScreen.route +
+                                    "?planId={planId}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "planId"
+                                ) {
+                                    type = NavType.IntType
+                                    defaultValue = -1
+                                },
+                            )
+                        ) {
+                            PlanDetailsScreen(
+                                navController = navController,
                             )
                         }
                     }

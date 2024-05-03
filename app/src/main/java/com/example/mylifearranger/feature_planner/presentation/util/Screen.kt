@@ -10,4 +10,5 @@ sealed class Screen(val route: String) {
     object PlanViewScreen : Screen("plan_view_screen")
     object AddEditPlanScreen : Screen("add_edit_plan_screen")
     object PlanOverviewScreen : Screen("plan_overview_screen")
+    object PlanDetailsScreen : Screen("plan_details_screen")
 }
