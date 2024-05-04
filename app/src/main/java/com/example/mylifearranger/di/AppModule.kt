@@ -35,6 +35,7 @@ import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanUs
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlanWithTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.GetPlansUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.PlanUseCases
+import com.example.mylifearranger.feature_planner.domain.use_case.plan.UpdatePlanCompletedAmountUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.AddSubtaskUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.DeleteSubtaskUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.GetSubtasksForEventIdUseCase
@@ -129,7 +130,8 @@ object AppModule {
             getPlansUseCase = GetPlansUseCase(planRepository),
             getPlanWithTasksUseCase = GetPlanWithTasksUseCase(planRepository),
             getPlanTasksBetweenTwoDatesUseCase = GetPlanTasksBetweenTwoDatesUseCase(planRepository),
-            getPlanUseCase = GetPlanUseCase(planRepository)
+            getPlanUseCase = GetPlanUseCase(planRepository),
+            updatePlanCompletedAmountUseCase = UpdatePlanCompletedAmountUseCase(planRepository)
         )
     }
 

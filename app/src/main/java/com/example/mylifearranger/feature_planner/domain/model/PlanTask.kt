@@ -31,7 +31,7 @@ data class PlanTask(
     val taskDuration: Long?,
     val performedDateTimestamp: Long,
     val setPlannedTime: Boolean,
-    val isDone: Boolean = false,
+    var isDone: Boolean = false,
     val assignedPlanId: Int,
     val assignedEventId: Int? = null,
     @PrimaryKey(autoGenerate = true) val id: Int? = null

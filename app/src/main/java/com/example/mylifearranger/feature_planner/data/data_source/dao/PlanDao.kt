@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 interface PlanDao {
     @Transaction
     @Query("SELECT * FROM plan WHERE id = :planId")
-    fun getPlanWithTasks(planId: Int): Flow<PlanWithTasks>
+    suspend fun getPlanWithTasks(planId: Int): PlanWithTasks
 
     @Transaction
     @Query("SELECT * FROM PlanTask WHERE performedDateTimestamp >= :dateStart AND performedDateTimestamp < :dateEnd")
@@ -42,7 +42,7 @@ interface PlanDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlan(plan: Plan) : Long
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlanTask(planTask: PlanTask)
 
     @Transaction
@@ -54,4 +54,7 @@ interface PlanDao {
 
     @Delete
     suspend fun deletePlan(plan: Plan)
+
+    @Query("UPDATE plan SET completedAmount = :completedAmount WHERE id = :planId")
+    suspend fun updatePlanCompletedAmount(planId: Int, completedAmount: Int)
 }

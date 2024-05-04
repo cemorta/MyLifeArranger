@@ -23,21 +23,30 @@ class PlanDetailsViewModel @Inject constructor(
         savedStateHandle.get<Int>("planId")?.let { planId ->
             if (planId != -1) {
                 viewModelScope.launch {
-                    planUseCases.getPlanUseCase(planId).also { plan ->
-                        _state.value = state.value.copy(plan = plan)
+                    planUseCases.getPlanWithTasksUseCase(planId).also {
+                        planWithTasks -> _state.value = state.value.copy(planWithTasks = planWithTasks)
                     }
                 }
             }
         }
     }
 
-//    fun onAction(action: PlanDetailsAction) {
-//        when (action) {
-//            is PlanDetailsAction.DeleteEvent -> {
-//                viewModelScope.launch {
-//                    planUseCases.deleteEventUseCase(action.action)
-//                }
-//            }
-//        }
-//    }
+    fun onAction(action: PlanDetailsAction) {
+        when (action) {
+            is PlanDetailsAction.UpdatePlanCompletedAmount -> {
+                viewModelScope.launch {
+                    planUseCases.updatePlanCompletedAmountUseCase(action.plan, action.completedAmount)
+                    refreshPlanWithTasks()
+                }
+            }
+        }
+    }
+
+    private fun refreshPlanWithTasks() {
+        viewModelScope.launch {
+            planUseCases.getPlanWithTasksUseCase(state.value.planWithTasks?.plan?.id!!).also {
+                planWithTasks -> _state.value = state.value.copy(planWithTasks = planWithTasks)
+            }
+        }
+    }
 }

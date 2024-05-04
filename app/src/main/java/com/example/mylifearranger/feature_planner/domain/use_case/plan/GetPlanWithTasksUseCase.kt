@@ -8,7 +8,7 @@ class GetPlanWithTasksUseCase(
     private val planRepository: PlanRepository
 ) {
 
-    operator fun invoke(planId: Int): Flow<PlanWithTasks> {
+    suspend operator fun invoke(planId: Int): PlanWithTasks {
         return planRepository.getPlanWithTasks(planId)
     }
 }
