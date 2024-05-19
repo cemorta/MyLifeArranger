@@ -61,8 +61,14 @@ class PlanRepositoryImpl(
             } else {
                 // Update the task as not completed
                 task.isDone = false
-                break
             }
+        }
+
+        // If the completed amount is greater than the total amount, set the plan as done
+        if (completedAmount >= plan.totalAmount!!) {
+            planDao.updatePlanIsDone(plan.id, true)
+        } else {
+            planDao.updatePlanIsDone(plan.id, false)
         }
 
         // Update the planTasks in the database
@@ -71,5 +77,9 @@ class PlanRepositoryImpl(
         }
         // Update the completedAmount for the plan
         planDao.updatePlanCompletedAmount(plan.id, completedAmount)
+    }
+
+    override suspend fun updatePlanIsDone(plan: Plan, isDone: Boolean) {
+        planDao.updatePlanIsDone(plan.id!!, isDone)
     }
 }

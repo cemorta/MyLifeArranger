@@ -10,6 +10,7 @@ data class PlanUseCases(
     val getPlanWithTasksUseCase: GetPlanWithTasksUseCase,
     val getPlanTasksBetweenTwoDatesUseCase: GetPlanTasksBetweenTwoDatesUseCase,
     val updatePlanCompletedAmountUseCase: UpdatePlanCompletedAmountUseCase,
+    val updatePlanIsDoneUseCase: UpdatePlanIsDoneUseCase
 //    val getPlanUseCase: GetPlanUseCase,
 //    val getPlansUseCase: GetPlansUseCase,
 //    val updatePlanUseCase: UpdatePlanUseCase

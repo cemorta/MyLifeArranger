@@ -22,4 +22,5 @@ interface PlanRepository {
     suspend fun insertPlanWithTasks(plan: Plan, planTasks: List<PlanTask>)
     suspend fun deletePlan(plan: Plan)
     suspend fun updatePlanCompletedAmount(plan: Plan, completedAmount: Int)
+    suspend fun updatePlanIsDone(plan: Plan, isDone: Boolean)
 }

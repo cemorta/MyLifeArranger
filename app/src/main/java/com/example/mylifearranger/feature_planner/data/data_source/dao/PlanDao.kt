@@ -57,4 +57,7 @@ interface PlanDao {
 
     @Query("UPDATE plan SET completedAmount = :completedAmount WHERE id = :planId")
     suspend fun updatePlanCompletedAmount(planId: Int, completedAmount: Int)
+
+    @Query("UPDATE plan SET isDone = :isDone WHERE id = :planId")
+    suspend fun updatePlanIsDone(planId: Int, isDone: Boolean)
 }
