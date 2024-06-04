@@ -21,7 +21,9 @@ import androidx.navigation.NavController
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
+import com.example.mylifearranger.core.presentation.util.returnDayArrayByBitMasking
 import com.example.mylifearranger.core.presentation.util.returnDayStringByBitMasking
+import com.example.mylifearranger.feature_planner.presentation.plan_details.components.CalendarPlanTasksView
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.ChangeCompletedAmountDialog
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanInfoRow
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanTaskBoxes
@@ -70,7 +72,12 @@ fun PlanDetailsScreen(
                 ChangeCompletedAmountDialog(
                     onConfirm = { newAmount ->
                         // Update logic here
-                        viewModel.onAction(PlanDetailsAction.UpdatePlanCompletedAmount(state.planWithTasks?.plan!!, newAmount))
+                        viewModel.onAction(
+                            PlanDetailsAction.UpdatePlanCompletedAmount(
+                                state.planWithTasks?.plan!!,
+                                newAmount
+                            )
+                        )
                         showCompletedAmountDialog = false
                     },
                     onDismiss = {
@@ -96,12 +103,21 @@ fun PlanDetailsScreen(
                         completedAmount = plan.completedAmount,
                         unit = plan.unit
                     )
+
+                    // Display calendar with plan tasks
+                    CalendarPlanTasksView(
+                        startDate =
+                        state.planWithTasks!!.plan.startDateTimestamp.toLocalDateTime(),
+                        endDate =
+                        state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
+                        workingDays = returnDayArrayByBitMasking(
+                            state.planWithTasks!!.plan.days,
+                        ),
+                    )
+
+                    // Display the plan tasks
+                    PlanTaskList(planTasks = state.planWithTasks?.tasks ?: emptyList())
                 }
-
-                // Display the plan tasks
-                PlanTaskList(planTasks = state.planWithTasks?.tasks ?: emptyList())
-
-
             }
         }
     }

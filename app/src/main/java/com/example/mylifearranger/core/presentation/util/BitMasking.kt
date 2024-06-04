@@ -25,3 +25,29 @@ fun returnDayStringByBitMasking(bitMask: Int, daysOfWeek: Array<String>): String
     }
     return dayString
 }
+
+fun returnDayArrayByBitMasking(bitMask: Int): Array<Boolean> {
+    val dayArray: Array<Boolean> = arrayOf(false, false, false, false, false, false, false)
+    if (bitMask and 1 == 1) {
+        dayArray[0] = true
+    }
+    if (bitMask and 2 == 2) {
+        dayArray[1] = true
+    }
+    if (bitMask and 4 == 4) {
+        dayArray[2] = true
+    }
+    if (bitMask and 8 == 8) {
+        dayArray[3] = true
+    }
+    if (bitMask and 16 == 16) {
+        dayArray[4] = true
+    }
+    if (bitMask and 32 == 32) {
+        dayArray[5] = true
+    }
+    if (bitMask and 64 == 64) {
+        dayArray[6] = true
+    }
+    return dayArray
+}

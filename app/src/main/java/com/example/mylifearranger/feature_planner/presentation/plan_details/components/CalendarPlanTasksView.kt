@@ -3,6 +3,9 @@ package com.example.mylifearranger.feature_planner.presentation.plan_details.com
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +19,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
@@ -34,26 +41,30 @@ import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.domain.model.PlanTask
 import toLocalDateTime
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun CalendarPlanTasksView() {
+fun CalendarPlanTasksView(
+    startDate: LocalDateTime,
+    endDate: LocalDateTime,
+    workingDays: Array<Boolean>
+) {
     // display 7 squares in a row
+    val scrollState = rememberScrollState()
     Box(
         modifier = Modifier
-            .defaultMinSize(
-                minWidth = Dp.Unspecified,
-                minHeight = 200.dp
-            )
-            .fillMaxWidth()
-            .fillMaxHeight(
-                fraction = 0.5f
-            )
             .border(3.dp, Color.Gray, RoundedCornerShape(8.dp))
+            .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
-//                .padding(top = 4.dp, bottom = 4.dp),
+//                .padding(8.dp)
+                .verticalScroll(
+                    scrollState
+                )
+                .fillMaxWidth()
+                .padding(top = 4.dp, bottom = 4.dp),
         ) {
             Row {
                 repeat(7) {
@@ -69,34 +80,36 @@ fun CalendarPlanTasksView() {
                     }
                 }
             }
-            Row {
-                // display 7 squares in a row
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-            }
-            Row {
-                // display 7 squares in a row
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-                PlanTaskSquare()
-            }
+            // Get the monday of the week of the start date
+            val mondayOfStartDate = startDate.toLocalDate()
+                .minusDays(startDate.toLocalDate().dayOfWeek.value.toLong() - 1).atStartOfDay()
+            // Get the sunday of the week of the end date
+            val sundayOfEndDate =
+                endDate.toLocalDate().plusDays(7 - endDate.toLocalDate().dayOfWeek.value.toLong())
+                    .atStartOfDay()
 
+            // Get the number of days between the start and end date
+            val daysBetween =
+                sundayOfEndDate.toLocalDate().toEpochDay() - mondayOfStartDate.toLocalDate()
+                    .toEpochDay()
+            repeat((daysBetween / 7 + 1).toInt()) { week ->
+                Row {
+                    repeat(7) {
+                        val date = mondayOfStartDate.plusDays((week * 7 + it).toLong())
+                        PlanTaskSquare(
+                            date,
+                            date.toLocalDate() in startDate.toLocalDate()..endDate.toLocalDate() &&
+                                    workingDays[it]
+                        )
+                    }
+                }
+            }
         }
     }
-
 }
 
 @Composable
-fun PlanTaskSquare() {
+fun PlanTaskSquare(date: LocalDateTime, isWorkingDay: Boolean) {
     val widthSizePx =
         LocalContext.current.resources.displayMetrics.widthPixels // Screen width in pixels
     val density = LocalDensity.current.density // Current screen density
@@ -118,10 +131,14 @@ fun PlanTaskSquare() {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-//                .background(
-//                    color =
-//                    if (planTask.isDone) {
-//                        Color.Green
+                .background(
+                    color =
+                    if (isWorkingDay) {
+                        Color.Yellow
+                    } else {
+                        Color.LightGray
+                    },
+                )
 //
 //                    } else if (planTask.performedDateTimestamp
 //                            .toLocalDateTime()
@@ -142,18 +159,21 @@ fun PlanTaskSquare() {
                 .fillMaxSize()
         ) {
             Text(
-                text = "Task",
+                text = date.dayOfMonth.toString(),
             )
 
         }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun CalendarPlanTasksViewPreview() {
     MaterialTheme {
-        CalendarPlanTasksView()
+        CalendarPlanTasksView(
+            startDate = LocalDate.now().atStartOfDay(),
+            endDate = LocalDate.now().plusDays(20).atStartOfDay(),
+            workingDays = arrayOf(true, true, true, true, true, true, true)
+        )
     }
 }
