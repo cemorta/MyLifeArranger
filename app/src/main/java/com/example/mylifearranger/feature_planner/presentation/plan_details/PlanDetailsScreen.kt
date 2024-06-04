@@ -21,8 +21,11 @@ import androidx.navigation.NavController
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
+import com.example.mylifearranger.core.presentation.util.returnDayStringByBitMasking
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.ChangeCompletedAmountDialog
+import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanInfoRow
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanTaskBoxes
+import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanTaskList
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.planDetailsActionButtons
 import toLocalDateTime
 
@@ -78,26 +81,27 @@ fun PlanDetailsScreen(
 
             Column {
 
-                Text(text = "Title: ${state.planWithTasks?.plan?.title}")
-                Text(text = "Plan Type: ${state.planWithTasks?.plan?.planType}")
-                Text(text = "Total Amount: ${state.planWithTasks?.plan?.totalAmount}")
-                Text(text = "Completed Amount: ${state.planWithTasks?.plan?.completedAmount}")
-                Text(text = "Unit: ${state.planWithTasks?.plan?.unit}")
-                Text(text = "Start Range: ${state.planWithTasks?.plan?.startRange}")
-                Text(text = "End Range: ${state.planWithTasks?.plan?.endRange}")
-                Text(text = "Days: ${state.planWithTasks?.plan?.days}")
-                if (state.planWithTasks?.plan?.startDateTimestamp != null) {
-                    Text(text = "Start Date: ${state.planWithTasks?.plan?.startDateTimestamp!!.toLocalDateTime()}")
+                // Display the plan information
+                state.planWithTasks?.plan?.let { plan ->
+                    PlanInfoRow(
+                        startDate = state.planWithTasks!!.plan.startDateTimestamp.toLocalDateTime(),
+                        endDate = state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
+                        workingDays = returnDayStringByBitMasking(
+                            state.planWithTasks!!.plan.days,
+                            androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(
+                                com.example.mylifearranger.R.array.days_of_week
+                            ),
+                        ),
+                        totalAmount = state.planWithTasks?.plan?.totalAmount!!,
+                        completedAmount = plan.completedAmount,
+                        unit = plan.unit
+                    )
                 }
-                if (state.planWithTasks?.plan?.endDateTimestamp != null) {
-                    Text(text = "End Date: ${state.planWithTasks?.plan?.endDateTimestamp!!.toLocalDateTime()}")
-                }
-                Text(text = "Is Done: ${state.planWithTasks?.plan?.isDone}")
 
-                // Display the PlanTaskBoxes
-                state.planWithTasks?.tasks?.let { planTasks ->
-                    PlanTaskBoxes(planTasks)
-                }
+                // Display the plan tasks
+                PlanTaskList(planTasks = state.planWithTasks?.tasks ?: emptyList())
+
+
             }
         }
     }
