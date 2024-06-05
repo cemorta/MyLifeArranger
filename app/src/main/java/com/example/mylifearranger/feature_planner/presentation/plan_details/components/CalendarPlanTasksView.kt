@@ -3,30 +3,17 @@ package com.example.mylifearranger.feature_planner.presentation.plan_details.com
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,21 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mylifearranger.R
 import com.example.mylifearranger.feature_planner.domain.model.PlanTask
 import toLocalDateTime
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun CalendarPlanTasksView(
     startDate: LocalDateTime,
     endDate: LocalDateTime,
-    workingDays: Array<Boolean>
+    planTasks: List<PlanTask>
 ) {
     // display 7 squares in a row
     val scrollState = rememberScrollState()
@@ -88,6 +72,7 @@ fun CalendarPlanTasksView(
                 endDate.toLocalDate().plusDays(7 - endDate.toLocalDate().dayOfWeek.value.toLong())
                     .atStartOfDay()
 
+            var i = 0
             // Get the number of days between the start and end date
             val daysBetween =
                 sundayOfEndDate.toLocalDate().toEpochDay() - mondayOfStartDate.toLocalDate()
@@ -96,11 +81,18 @@ fun CalendarPlanTasksView(
                 Row {
                     repeat(7) {
                         val date = mondayOfStartDate.plusDays((week * 7 + it).toLong())
-                        PlanTaskSquare(
-                            date,
-                            date.toLocalDate() in startDate.toLocalDate()..endDate.toLocalDate() &&
-                                    workingDays[it]
-                        )
+                        // if plantask is on this date, display it
+                        if (i < planTasks.size && planTasks[i].performedDateTimestamp.toLocalDateTime()
+                                .toLocalDate() == date.toLocalDate()
+                        ) {
+                            PlanTaskSquare(
+                                date,
+                                planTasks[i]
+                            )
+                            i++
+                        } else {
+                            PlanTaskSquare(date)
+                        }
                     }
                 }
             }
@@ -109,7 +101,7 @@ fun CalendarPlanTasksView(
 }
 
 @Composable
-fun PlanTaskSquare(date: LocalDateTime, isWorkingDay: Boolean) {
+fun PlanTaskSquare(date: LocalDateTime, planTask: PlanTask? = null) {
     val widthSizePx =
         LocalContext.current.resources.displayMetrics.widthPixels // Screen width in pixels
     val density = LocalDensity.current.density // Current screen density
@@ -133,26 +125,25 @@ fun PlanTaskSquare(date: LocalDateTime, isWorkingDay: Boolean) {
             modifier = Modifier
                 .background(
                     color =
-                    if (isWorkingDay) {
-                        Color.Yellow
+                    if (planTask != null) {
+                        if (planTask.isDone) {
+                            Color.Green
+                        } else if (planTask.performedDateTimestamp
+                                .toLocalDateTime()
+                                .isBefore(
+                                    LocalDate
+                                        .now()
+                                        .atStartOfDay()
+                                )
+                        ) {
+                            Color.Red
+                        } else {
+                            Color.LightGray
+                        }
                     } else {
-                        Color.LightGray
+                        Color.Transparent
                     },
                 )
-//
-//                    } else if (planTask.performedDateTimestamp
-//                            .toLocalDateTime()
-//                            .isBefore(
-//                                LocalDate
-//                                    .now()
-//                                    .atStartOfDay()
-//                            )
-//                    ) {
-//                        Color.Red
-//                    } else {
-//                        Color.LightGray
-//                    },
-//                )  // Background color of the card content
                 .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))  // Border for the card
                 .padding(8.dp)  // Padding inside the card
                 .fillMaxWidth()
@@ -166,14 +157,14 @@ fun PlanTaskSquare(date: LocalDateTime, isWorkingDay: Boolean) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CalendarPlanTasksViewPreview() {
-    MaterialTheme {
-        CalendarPlanTasksView(
-            startDate = LocalDate.now().atStartOfDay(),
-            endDate = LocalDate.now().plusDays(20).atStartOfDay(),
-            workingDays = arrayOf(true, true, true, true, true, true, true)
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CalendarPlanTasksViewPreview() {
+//    MaterialTheme {
+//        CalendarPlanTasksView(
+//            startDate = LocalDate.now().atStartOfDay(),
+//            endDate = LocalDate.now().plusDays(20).atStartOfDay(),
+//            workingDays = arrayOf(true, true, true, true, true, true, true)
+//        )
+//    }
+//}

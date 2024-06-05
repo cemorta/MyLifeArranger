@@ -83,10 +83,13 @@ fun BottomBarItemComposable(
             }
             .width(with(LocalDensity.current) { width.toDp() })
             .background(
-                color = if (isSelected) Color.Blue else Color.LightGray,
+                color = if (isSelected) Color.DarkGray else Color.LightGray,
             )
     ) {
         Icon(painter = painterResource(id = barItem.icon), contentDescription = null)
-        Text(barItem.itemText)
+        Text(
+            barItem.itemText,
+            color = if (isSelected) Color.White else Color.Black
+        )
     }
 }

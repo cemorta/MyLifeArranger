@@ -110,9 +110,7 @@ fun PlanDetailsScreen(
                         state.planWithTasks!!.plan.startDateTimestamp.toLocalDateTime(),
                         endDate =
                         state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
-                        workingDays = returnDayArrayByBitMasking(
-                            state.planWithTasks!!.plan.days,
-                        ),
+                        planTasks = state.planWithTasks!!.tasks,
                     )
 
                     // Display the plan tasks

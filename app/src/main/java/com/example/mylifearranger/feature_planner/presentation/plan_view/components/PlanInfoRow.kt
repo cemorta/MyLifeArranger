@@ -36,9 +36,10 @@ fun PlanInfoRow(plan: Plan, navController: NavController) {
         Column {
 
             Text(text = plan.title, fontWeight = FontWeight.Bold)
-            val daysOfWeek = androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(
-                com.example.mylifearranger.R.array.days_of_week
-            )
+            val daysOfWeek =
+                androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(
+                    com.example.mylifearranger.R.array.days_of_week
+                )
             Text(text = returnDayStringByBitMasking(plan.days, daysOfWeek))
 //            Text(text = plan.planType.toString())
         }
@@ -47,8 +48,22 @@ fun PlanInfoRow(plan: Plan, navController: NavController) {
             // Show start and end date
             Text(
                 text = "${
-                    plan.startDateTimestamp.toLocalDateTime().format(DateTimeFormatter.ISO_DATE)
-                } - ${plan.endDateTimestamp.toLocalDateTime().format(DateTimeFormatter.ISO_DATE)}"
+                    plan.startDateTimestamp.toLocalDateTime().dayOfMonth
+                } ${
+                    plan.startDateTimestamp.toLocalDateTime().month.getDisplayName(
+                        java.time.format.TextStyle.SHORT,
+                        java.util.Locale.getDefault()
+                    )
+                }" +
+                        " - ${
+                            plan.endDateTimestamp.toLocalDateTime()
+                                .dayOfMonth
+                        } ${
+                            plan.endDateTimestamp.toLocalDateTime().month.getDisplayName(
+                                java.time.format.TextStyle.SHORT,
+                                java.util.Locale.getDefault()
+                            )
+                        }"
             )
 
             when (plan.planType) {
