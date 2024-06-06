@@ -1,7 +1,10 @@
 package com.example.mylifearranger.feature_planner.presentation.task_view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -22,6 +25,7 @@ import com.example.mylifearranger.feature_planner.presentation.task_view.compone
 import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
+import com.example.mylifearranger.feature_planner.presentation.task_view.components.IconButtonBar
 import com.example.mylifearranger.feature_planner.presentation.util.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,21 +47,21 @@ fun TaskViewScreen(
 //
 //    var selectedDate by remember { mutableStateOf<LocalDate?>(localDate) }
 //
-    val appTitle = when (state.taskType) {
-        TaskType.YEARLY -> "${state.date!!.substring(0, 4)} ${state.taskType}"
-        TaskType.MONTHLY -> "${state.date!!.substring(0, 7)} ${state.taskType}"
-        TaskType.DAILY -> "${state.date} ${state.taskType}"
-        TaskType.NONE -> "Inbox"
-    }
+//    val appTitle = when (state.taskType) {
+//        TaskType.YEARLY -> "${state.date!!.substring(0, 4)} ${state.taskType}"
+//        TaskType.MONTHLY -> "${state.date!!.substring(0, 7)} ${state.taskType}"
+//        TaskType.DAILY -> "${state.date} ${state.taskType}"
+//        TaskType.NONE -> "Inbox"
+//    }
 
-    // print task type
-    println("Task type: ${state.taskType}")
-    // print tasks
-    try {
-        println("Tasks: ${state.tasks}")
-    } catch (e: Exception) {
-        println("No tasks")
-    }
+//    // print task type
+//    println("Task type: ${state.taskType}")
+//    // print tasks
+//    try {
+//        println("Tasks: ${state.tasks}")
+//    } catch (e: Exception) {
+//        println("No tasks")
+//    }
 //
 //    // print current date
 //    println("Current date: $localDate")
@@ -70,37 +74,18 @@ fun TaskViewScreen(
 //    // Get events for the current date
 //    val events = state.events
 //
-    Scaffold(floatingActionButton = {
-        FloatingActionButton(
-            onClick = {
-                navController.navigate(Screen.AddEditTaskScreen.route)
-            },
-            Modifier.background(color = MaterialTheme.colorScheme.background)
-        ) {
-            Icon(painterResource(id = R.drawable.baseline_add_24), contentDescription = "Add task")
-        }
-    }, topBar = {
-        AppBar(
-            title = appTitle,
-            actionIconButtons = taskViewActionButtons(state.taskType,
-                {
-                    viewModel.onEvent(
-                        TaskViewAction.FilterTaskType(TaskType.YEARLY, state.date!!)
-                    )
-                },
-                {
-                    viewModel.onEvent(
-                        TaskViewAction.FilterTaskType(TaskType.MONTHLY, state.date!!)
-                    )
-                },
-                {
-                    viewModel.onEvent(
-                        TaskViewAction.FilterTaskType(TaskType.DAILY, state.date!!)
-                    )
-                }
-            )
-        )
-    }, bottomBar = { BottomBar(navController, BottomBarItem.items[2]) }) { paddingValues ->
+    Scaffold(
+//        floatingActionButton = {
+//        FloatingActionButton(
+//            onClick = {
+//                navController.navigate(Screen.AddEditTaskScreen.route)
+//            },
+//            Modifier.background(color = MaterialTheme.colorScheme.background)
+//        ) {
+//            Icon(painterResource(id = R.drawable.baseline_add_24), contentDescription = "Add task")
+//        }
+//    },
+        bottomBar = { BottomBar(navController, BottomBarItem.items[2]) }) { paddingValues ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -112,8 +97,16 @@ fun TaskViewScreen(
                 ),
             color = MaterialTheme.colorScheme.background
         ) {
-            TaskViewContent(state) { taskId -> navController.navigate(Screen.TaskOverviewScreen.route + "?taskId=${taskId}") }
-
+            Column(
+                verticalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
+            ) {
+                TaskViewContent(state) { taskId -> navController.navigate(Screen.TaskOverviewScreen.route + "?taskId=${taskId}") }
+                IconButtonBar(
+                    onAddClick = {
+                        navController.navigate(Screen.AddEditTaskScreen.route)
+                    },
+                )
+            }
         }
     }
 //            Column {
