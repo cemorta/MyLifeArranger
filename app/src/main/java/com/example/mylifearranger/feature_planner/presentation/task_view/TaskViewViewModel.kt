@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import toTimestamp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -42,11 +43,16 @@ class TaskViewViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: TaskViewAction) {
+    fun onAction(event: TaskViewAction) {
         when (event) {
             is TaskViewAction.FilterTaskType -> {
                 _state.value = state.value.copy(taskType = event.taskType)
                 getTasksForDateAndType(event.date, event.taskType)
+            }
+            is TaskViewAction.UpdateTaskCompletion -> {
+                viewModelScope.launch {
+                    taskUseCases.updateTaskCompletionUseCase(event.id, event.isCompleted)
+                }
             }
         }
     }

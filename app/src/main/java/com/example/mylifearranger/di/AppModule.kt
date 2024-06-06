@@ -55,6 +55,7 @@ import com.example.mylifearranger.feature_planner.domain.use_case.task.GetDailyT
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetYearlyTasksForYearUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.TaskUseCases
+import com.example.mylifearranger.feature_planner.domain.use_case.task.UpdateTaskCompletionUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -111,6 +112,7 @@ object AppModule {
             getMonthlyTasksForMonthUseCase = GetMonthlyTasksForMonthUseCase(taskRepository),
             getNoneTasksUseCase = GetNoneTasksUseCase(taskRepository),
             getDailyTasksForDateUseCase = GetDailyTasksForDateUseCase(taskRepository),
+            updateTaskCompletionUseCase = UpdateTaskCompletionUseCase(taskRepository),
         )
     }
 

@@ -1,28 +1,18 @@
 package com.example.mylifearranger.feature_planner.presentation.task_view
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.mylifearranger.R
-import com.example.mylifearranger.feature_planner.domain.util.TaskType
 import com.example.mylifearranger.feature_planner.presentation.task_view.components.TaskViewContent
-import com.example.mylifearranger.feature_planner.presentation.task_view.components.taskViewActionButtons
-import com.example.mylifearranger.core.presentation.components.AppBar
 import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
 import com.example.mylifearranger.feature_planner.presentation.task_view.components.IconButtonBar
@@ -100,7 +90,15 @@ fun TaskViewScreen(
             Column(
                 verticalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
             ) {
-                TaskViewContent(state) { taskId -> navController.navigate(Screen.TaskOverviewScreen.route + "?taskId=${taskId}") }
+                TaskViewContent(
+                    state = state,
+                    onTaskClick = { taskId ->
+                        navController.navigate(Screen.TaskOverviewScreen.route + "?taskId=${taskId}")
+                    },
+                    onTaskCheckedChange = { taskId, isChecked ->
+                        viewModel.onAction(TaskViewAction.UpdateTaskCompletion(taskId, isChecked))
+                    },
+                )
                 IconButtonBar(
                     onAddClick = {
                         navController.navigate(Screen.AddEditTaskScreen.route)

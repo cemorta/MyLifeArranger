@@ -8,5 +8,6 @@ data class TaskUseCases(
     val getYearlyTasksForYearUseCase: GetYearlyTasksForYearUseCase,
     val getMonthlyTasksForMonthUseCase: GetMonthlyTasksForMonthUseCase,
     val getNoneTasksUseCase: GetNoneTasksUseCase,
-    val getDailyTasksForDateUseCase: GetDailyTasksForDateUseCase
+    val getDailyTasksForDateUseCase: GetDailyTasksForDateUseCase,
+    val updateTaskCompletionUseCase: UpdateTaskCompletionUseCase
 )

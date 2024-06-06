@@ -20,4 +20,5 @@ interface TaskRepository {
     suspend fun insertTask(task: Task)
 
     suspend fun deleteTask(task: Task)
+    suspend fun updateTaskCompletionById(id: Int, isCompleted: Boolean)
 }

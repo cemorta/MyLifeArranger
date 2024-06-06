@@ -40,4 +40,8 @@ class TaskRepositoryImpl(
     override suspend fun deleteTask(task: Task) {
         taskDao.deleteTask(task)
     }
+
+    override suspend fun updateTaskCompletionById(id: Int, isCompleted: Boolean) {
+        taskDao.updateTaskCompletionById(id, isCompleted)
+    }
 }
