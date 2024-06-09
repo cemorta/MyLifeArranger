@@ -1,5 +1,6 @@
 package com.example.mylifearranger.feature_planner.domain.repository
 
+import com.example.mylifearranger.feature_planner.data.data_source.models.TaskWithSubtasks
 import com.example.mylifearranger.feature_planner.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 
@@ -9,7 +10,7 @@ interface TaskRepository {
 
     fun getNoneTasks(): Flow<List<Task>>
 
-    suspend fun getTaskById(id: Int): Task?
+    suspend fun getTaskByIdWithSubtasks(id: Int): TaskWithSubtasks
 
     fun getYearlyTasksForYear(yearStart: Long, yearEnd: Long): Flow<List<Task>>
 

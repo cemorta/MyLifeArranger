@@ -77,10 +77,10 @@ class AddEditTaskViewModel @Inject constructor(
         savedStateHandle.get<Int>("taskId")?.let { taskId ->
             if (taskId != -1) {
                 viewModelScope.launch {
-                    taskUseCases.getTaskUseCase(taskId)?.also { task ->
-                        currentTaskId = task.id
+                    taskUseCases.getTaskUseCase(taskId)?.also { taskWithSubtasks ->
+                        currentTaskId = taskWithSubtasks.task.id
                         _taskTitle.value = taskTitle.value.copy(
-                            text = task.title,
+                            text = taskWithSubtasks.task.title,
                             isHintVisible = false
                         )
 //                        _taskColor.value = task.color

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mylifearranger.feature_planner.domain.model.Subtask
 import com.example.mylifearranger.feature_planner.domain.use_case.task.TaskUseCases
 import com.example.mylifearranger.feature_planner.domain.util.TaskType
 import com.example.mylifearranger.feature_planner.presentation.add_edit_task.TaskTextFieldState
@@ -73,6 +74,9 @@ class TaskOverviewViewModel @Inject constructor(
     private val _assignedEventId = mutableStateOf<Int?>(null)
     val assignedEventId: State<Int?> = _assignedEventId
 
+    private val _subtasks = mutableStateOf<List<Subtask>>(ArrayList())
+    val subtasks: State<List<Subtask>> = _subtasks
+
     private var getTasksJob: Job? = null
 
     init {
@@ -82,32 +86,35 @@ class TaskOverviewViewModel @Inject constructor(
             // If task id is not -1, get task from database
             if (taskId != -1) {
                 viewModelScope.launch {
-                    taskUseCases.getTaskUseCase(taskId)?.also { task ->
+                    taskUseCases.getTaskUseCase(taskId)?.also { taskWithSubtask ->
 
-                        currentTaskId = task.id
+                        currentTaskId = taskWithSubtask.task.id
                         _taskTitle.value = taskTitle.value.copy(
-                            text = task.title,
+                            text = taskWithSubtask.task.title,
                             isHintVisible = false
                         )
-                        if (task.duration != null) {
+                        if (taskWithSubtask.task.duration != null) {
                             _taskDurationHour.value = taskDurationHour.value.copy(
-                                text = (task.duration!! / 60).toString(),
+                                text = (taskWithSubtask.task.duration / 3600).toString(),
                                 isHintVisible = false
                             )
                             _taskDurationMinute.value = taskDurationMinute.value.copy(
-                                text = (task.duration!! % 60).toString(),
+                                text = ((taskWithSubtask.task.duration % 3600) / 60).toString(),
                                 isHintVisible = false
                             )
                         }
-                        _taskType.value = task.taskType
-                        if (task.plannedTimestamp != null) {
-                            _isPlannedTimeSet.value = task.isPlannedTimeSet
+                        _taskType.value = taskWithSubtask.task.taskType
+                        if (taskWithSubtask.task.plannedTimestamp != null) {
+                            _isPlannedTimeSet.value = taskWithSubtask.task.isPlannedTimeSet
                             _taskPlannedLocalDateTime.value =
-                                task.plannedTimestamp.toLocalDateTime()
+                                taskWithSubtask.task.plannedTimestamp.toLocalDateTime()
                         }
-                        if (task.dueTimestamp != null) {
-                            _isDueTimeSet.value = task.isDueTimeSet
-                            _dueLocalDateTime.value = task.dueTimestamp.toLocalDateTime()
+                        if (taskWithSubtask.task.dueTimestamp != null) {
+                            _isDueTimeSet.value = taskWithSubtask.task.isDueTimeSet
+                            _dueLocalDateTime.value = taskWithSubtask.task.dueTimestamp.toLocalDateTime()
+                        }
+                        if (taskWithSubtask.subtasks.isNotEmpty()) {
+                            _subtasks.value = taskWithSubtask.subtasks
                         }
                     }
                 }
@@ -117,9 +124,39 @@ class TaskOverviewViewModel @Inject constructor(
 
     fun onAction(action: TaskOverviewAction) {
         when (action) {
-            TaskOverviewAction.MarkAsCompleted -> TODO()
-            TaskOverviewAction.MarkAsIncomplete -> TODO()
-            TaskOverviewAction.DeleteTask -> TODO()
+            is TaskOverviewAction.AddNewSubtask -> {
+                _subtasks.value = subtasks.value.plus(
+                    Subtask(
+                        title = "",
+                        isDone = false,
+                        id = action.subtaskId,
+                        assignedTaskId = null,
+                        description = null,
+                        assignedEventId = null,
+                    )
+                )
+            }
+            is TaskOverviewAction.UpdateSubtaskTitle -> {
+                _subtasks.value = subtasks.value.map {
+                    if (it.id == action.subtaskId) {
+                        it.copy(title = action.title)
+                    } else {
+                        it
+                    }
+                }
+            }
+            is TaskOverviewAction.UpdateSubtaskStatus -> {
+                _subtasks.value = subtasks.value.map {
+                    if (it.id == action.subtaskId) {
+                        it.copy(isDone = action.isDone)
+                    } else {
+                        it
+                    }
+                }
+            }
+            is TaskOverviewAction.RemoveSubtask -> {
+                _subtasks.value = subtasks.value.filter { it.id != action.subtaskId }
+            }
         }
     }
 }

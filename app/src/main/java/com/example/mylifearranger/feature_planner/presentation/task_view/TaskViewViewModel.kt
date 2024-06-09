@@ -37,10 +37,11 @@ class TaskViewViewModel @Inject constructor(
             state.value.taskType = TaskType.valueOf(taskType)
         }
 
-        if (date != null && taskType != null) {
-            println("TaskViewViewModel: init: date = $date, taskType = $taskType")
-            getTasksForDateAndType(date, state.value.taskType)
-        }
+        getTasks(dueDate = null)
+//        if (date != null && taskType != null) {
+//            println("TaskViewViewModel: init: date = $date, taskType = $taskType")
+//            getTasksForDateAndType(date, state.value.taskType)
+//        }
     }
 
     fun onAction(event: TaskViewAction) {
@@ -124,6 +125,22 @@ class TaskViewViewModel @Inject constructor(
             }
 
             else -> throw IllegalArgumentException("Type must be either 'month' or 'year'")
+        }
+    }
+
+    private fun getTasks(
+        dueDate: String? = null,
+    )
+    {
+        getTasksJob?.cancel()
+        if (dueDate != null) {
+//            getTasksJob = taskUseCases.getTasksForDateUseCase(dueDate).onEach { tasks ->
+//                _state.value = state.value.copy(tasks = tasks)
+//            }.launchIn(viewModelScope)
+        } else {
+            getTasksJob = taskUseCases.getTasksUseCase().onEach { tasks ->
+                _state.value = state.value.copy(tasks = tasks)
+            }.launchIn(viewModelScope)
         }
     }
 }

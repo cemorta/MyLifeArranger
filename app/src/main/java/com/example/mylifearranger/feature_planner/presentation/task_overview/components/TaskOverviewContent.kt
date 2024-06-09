@@ -3,7 +3,9 @@ package com.example.mylifearranger.feature_planner.presentation.task_overview.co
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.example.mylifearranger.feature_planner.domain.model.Subtask
 import com.example.mylifearranger.feature_planner.domain.util.TaskType
+import com.example.mylifearranger.feature_planner.presentation.task_overview.TaskOverviewViewModel
 import java.time.LocalDateTime
 
 @Composable
@@ -17,21 +19,13 @@ fun TaskOverviewContent(
     isDone: Boolean?,
     isDueTimeSet: Boolean?,
     isPlannedTimeSet: Boolean?,
+    subtasks: List<Subtask>,
+    viewModel: TaskOverviewViewModel
 ) {
 
     Column {
-        TaskOverviewTitle(taskTitle = taskTitle)
-        TaskOverviewDuration(durationHour = durationHour, durationMinute = durationMinute)
-        TaskOverviewType(taskType = taskType)
-        TaskOverviewPlannedTime(
-            taskPlannedLocalDateTime = taskPlannedLocalDateTime,
-            isPlannedTimeSet = isPlannedTimeSet
-        )
-        TaskOverviewDueTime(
-            taskDueLocalDateTime = taskDueLocalDateTime,
-            isDueTimeSet = isDueTimeSet
-        )
-        TaskOverviewIsDone(isDone = isDone)
+        TaskDetailsCard(taskDurationHour = durationHour, taskDurationMinute = durationMinute, dueDateTime = taskDueLocalDateTime, plannedDateTime = taskPlannedLocalDateTime)
+        TaskSubtasksCard(subtasks, viewModel)
     }
 
 

@@ -23,9 +23,9 @@ import androidx.room.PrimaryKey
     ]
 )
 data class Subtask(
-    val title: String,
+    var title: String,
     val description: String?,
-    val isDone: Boolean,
+    var isDone: Boolean,
     val assignedTaskId: Int? = null,
     val assignedEventId: Int? = null,
     @PrimaryKey(autoGenerate = true) val id: Int? = null

@@ -50,8 +50,8 @@ import com.example.mylifearranger.feature_planner.domain.use_case.task.AddTaskUs
 import com.example.mylifearranger.feature_planner.domain.use_case.task.DeleteTaskUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetMonthlyTasksForMonthUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetNoneTasksUseCase
-import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTaskUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetDailyTasksForDateUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTaskWithSubtasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetYearlyTasksForYearUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.TaskUseCases
@@ -107,7 +107,7 @@ object AppModule {
             getTasksUseCase = GetTasksUseCase(taskRepository),
             deleteTaskUseCase = DeleteTaskUseCase(taskRepository),
             addTaskUseCase = AddTaskUseCase(taskRepository),
-            getTaskUseCase = GetTaskUseCase(taskRepository),
+            getTaskUseCase = GetTaskWithSubtasksUseCase(taskRepository),
             getYearlyTasksForYearUseCase = GetYearlyTasksForYearUseCase(taskRepository),
             getMonthlyTasksForMonthUseCase = GetMonthlyTasksForMonthUseCase(taskRepository),
             getNoneTasksUseCase = GetNoneTasksUseCase(taskRepository),

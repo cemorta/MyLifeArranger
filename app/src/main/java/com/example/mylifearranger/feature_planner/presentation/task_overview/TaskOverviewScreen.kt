@@ -74,6 +74,8 @@ fun TaskOverviewScreen(
                 viewModel.isDone.value,
                 viewModel.isDueTimeSet.value,
                 viewModel.isPlannedTimeSet.value,
+                viewModel.subtasks.value,
+                viewModel
             )
         }
     }

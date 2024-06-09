@@ -5,6 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import com.example.mylifearranger.feature_planner.data.data_source.models.TaskWithSubtasks
 import com.example.mylifearranger.feature_planner.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 
@@ -17,8 +19,9 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE taskType = 'NONE'")
     fun getNoneTasks(): Flow<List<Task>>
 
+    @Transaction
     @Query("SELECT * FROM task WHERE id = :id")
-    suspend fun getTaskById(id: Int): Task?
+    suspend fun getTaskByIdWithSubtasks(id: Int): TaskWithSubtasks
 
     @Query("SELECT * FROM task WHERE taskType = 'YEARLY' AND plannedTimestamp >= :yearStart AND plannedTimestamp < :yearEnd")
     fun getYearlyTasksForYear(yearStart: Long, yearEnd: Long): Flow<List<Task>>

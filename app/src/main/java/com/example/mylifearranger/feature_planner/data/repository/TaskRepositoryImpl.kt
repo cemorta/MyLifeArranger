@@ -1,6 +1,7 @@
 package com.example.mylifearranger.feature_planner.data.repository
 
 import com.example.mylifearranger.feature_planner.data.data_source.dao.TaskDao
+import com.example.mylifearranger.feature_planner.data.data_source.models.TaskWithSubtasks
 import com.example.mylifearranger.feature_planner.domain.model.Task
 import com.example.mylifearranger.feature_planner.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,8 +14,8 @@ class TaskRepositoryImpl(
         return taskDao.getTasks()
     }
 
-    override suspend fun getTaskById(id: Int): Task? {
-        return taskDao.getTaskById(id)
+    override suspend fun getTaskByIdWithSubtasks(id: Int): TaskWithSubtasks {
+        return taskDao.getTaskByIdWithSubtasks(id)
     }
 
     override fun getYearlyTasksForYear(yearStart: Long, yearEnd: Long): Flow<List<Task>> {
