@@ -38,7 +38,9 @@ import com.example.mylifearranger.feature_planner.domain.use_case.plan.PlanUseCa
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.UpdatePlanCompletedAmountUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.plan.UpdatePlanIsDoneUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.AddSubtaskUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.subtask.AddSubtasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.DeleteSubtaskUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.subtask.DeleteSubtasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.GetSubtasksForEventIdUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.GetSubtasksForTaskIdUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.subtask.SubtaskUseCases
@@ -167,7 +169,9 @@ object AppModule {
     fun provideSubtaskUseCases(subtaskRepository: SubtaskRepository): SubtaskUseCases {
         return SubtaskUseCases(
             addSubtaskUseCase = AddSubtaskUseCase(subtaskRepository),
+            addSubtasksUseCase = AddSubtasksUseCase(subtaskRepository),
             deleteSubtaskUseCase = DeleteSubtaskUseCase(subtaskRepository),
+            deleteSubtasksUseCase = DeleteSubtasksUseCase(subtaskRepository),
             getSubtasksForEventIdUseCase = GetSubtasksForEventIdUseCase(subtaskRepository),
             getSubtasksForTaskIdUseCase = GetSubtasksForTaskIdUseCase(subtaskRepository),
         )

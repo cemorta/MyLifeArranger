@@ -6,27 +6,30 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mylifearranger.feature_planner.domain.model.Subtask
+import com.example.mylifearranger.feature_planner.domain.use_case.subtask.SubtaskUseCases
 import com.example.mylifearranger.feature_planner.domain.use_case.task.TaskUseCases
 import com.example.mylifearranger.feature_planner.domain.util.TaskType
 import com.example.mylifearranger.feature_planner.presentation.add_edit_task.TaskTextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import toLocalDateTime
-import toTimestamp
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class TaskOverviewViewModel @Inject constructor(
     private val taskUseCases: TaskUseCases,
+    private val subtaskUseCases: SubtaskUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var currentTaskId: Int? = null
+
+    private val _eventFlow = MutableSharedFlow<UiAction>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     private val _taskTitle = mutableStateOf(
         TaskTextFieldState(
@@ -76,6 +79,9 @@ class TaskOverviewViewModel @Inject constructor(
 
     private val _subtasks = mutableStateOf<List<Subtask>>(ArrayList())
     val subtasks: State<List<Subtask>> = _subtasks
+
+    private val _deletedSubtasks = mutableStateOf<List<Subtask>>(ArrayList())
+    val deletedSubtasks: State<List<Subtask>> = _deletedSubtasks
 
     private var getTasksJob: Job? = null
 
@@ -130,7 +136,7 @@ class TaskOverviewViewModel @Inject constructor(
                         title = "",
                         isDone = false,
                         id = action.subtaskId,
-                        assignedTaskId = null,
+                        assignedTaskId = currentTaskId,
                         description = null,
                         assignedEventId = null,
                     )
@@ -155,8 +161,38 @@ class TaskOverviewViewModel @Inject constructor(
                 }
             }
             is TaskOverviewAction.RemoveSubtask -> {
+                if (action.subtaskId > 0) {
+                    _deletedSubtasks.value = deletedSubtasks.value.plus(
+                        subtasks.value.find { it.id == action.subtaskId }!!
+                    )
+                }
                 _subtasks.value = subtasks.value.filter { it.id != action.subtaskId }
             }
+            is TaskOverviewAction.SaveTask -> {
+                viewModelScope.launch {
+                    try {
+                        subtaskUseCases.deleteSubtasksUseCase(deletedSubtasks.value)
+                        subtaskUseCases.addSubtasksUseCase(subtasks.value.map {
+                            if (it.id == null) {
+                                it
+                            } else if (it.id < 0) {
+                                it.copy(id = null)
+                            } else {
+                                it
+                            }
+                        })
+                        _eventFlow.emit(UiAction.SaveTask)
+                    } catch (e: Exception) {
+                        _eventFlow.emit(UiAction.ShowSnackbar(
+                            message = e.message ?: "Couldn't save subtasks"
+                        ))}
+                }
+            }
         }
+    }
+
+    sealed class UiAction {
+        data class ShowSnackbar(val message: String) : UiAction()
+        object SaveTask : UiAction()
     }
 }

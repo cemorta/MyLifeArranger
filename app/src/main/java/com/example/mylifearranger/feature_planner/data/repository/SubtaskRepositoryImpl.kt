@@ -20,6 +20,14 @@ class SubtaskRepositoryImpl(
         return subtaskDao.insertSubtask(event)
     }
 
+    override suspend fun insertSubtasks(events: List<Subtask>) {
+        return subtaskDao.insertSubtasks(events)
+    }
+
+    override suspend fun deleteSubtasks(events: List<Subtask>) {
+        return subtaskDao.deleteSubtasks(events)
+    }
+
     override suspend fun deleteSubtask(event: Subtask) {
         return subtaskDao.deleteSubtask(event)
     }

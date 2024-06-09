@@ -13,5 +13,9 @@ interface SubtaskRepository {
 
     suspend fun insertSubtask(event: Subtask)
 
+    suspend fun insertSubtasks(events: List<Subtask>)
+
+    suspend fun deleteSubtasks(events: List<Subtask>)
+
     suspend fun deleteSubtask(event: Subtask)
 }
