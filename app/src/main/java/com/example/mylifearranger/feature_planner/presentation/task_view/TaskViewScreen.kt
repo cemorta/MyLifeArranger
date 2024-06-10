@@ -103,6 +103,11 @@ fun TaskViewScreen(
                     onAddClick = {
                         navController.navigate(Screen.AddEditTaskScreen.route)
                     },
+                    onClickCompleted = {
+                        if (viewModel.filter.intValue == 1) viewModel.onAction(TaskViewAction.FilterTask(0))
+                        else viewModel.onAction(TaskViewAction.FilterTask(1))
+                    },
+                    viewModel.filter.intValue
                 )
             }
         }

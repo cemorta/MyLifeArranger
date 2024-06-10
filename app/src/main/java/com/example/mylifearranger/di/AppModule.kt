@@ -54,6 +54,7 @@ import com.example.mylifearranger.feature_planner.domain.use_case.task.GetMonthl
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetNoneTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetDailyTasksForDateUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTaskWithSubtasksUseCase
+import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTasksByCompletionUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetTasksUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.GetYearlyTasksForYearUseCase
 import com.example.mylifearranger.feature_planner.domain.use_case.task.TaskUseCases
@@ -107,6 +108,7 @@ object AppModule {
     fun provideTaskUseCases(taskRepository: TaskRepository): TaskUseCases {
         return TaskUseCases(
             getTasksUseCase = GetTasksUseCase(taskRepository),
+            getTasksByCompletionUseCase = GetTasksByCompletionUseCase(taskRepository),
             deleteTaskUseCase = DeleteTaskUseCase(taskRepository),
             addTaskUseCase = AddTaskUseCase(taskRepository),
             getTaskUseCase = GetTaskWithSubtasksUseCase(taskRepository),

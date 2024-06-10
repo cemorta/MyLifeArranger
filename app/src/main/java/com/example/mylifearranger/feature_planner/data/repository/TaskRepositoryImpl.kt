@@ -14,6 +14,10 @@ class TaskRepositoryImpl(
         return taskDao.getTasks()
     }
 
+    override fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>> {
+        return taskDao.getTasksByCompletion(isCompleted)
+    }
+
     override suspend fun getTaskByIdWithSubtasks(id: Int): TaskWithSubtasks {
         return taskDao.getTaskByIdWithSubtasks(id)
     }

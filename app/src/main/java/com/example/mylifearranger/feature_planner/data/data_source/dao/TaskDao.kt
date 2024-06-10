@@ -16,6 +16,9 @@ interface TaskDao {
     @Query("SELECT * FROM task")
     fun getTasks(): Flow<List<Task>>
 
+    @Query("SELECT * FROM task WHERE isDone = :isCompleted")
+    fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>>
+
     @Query("SELECT * FROM task WHERE taskType = 'NONE'")
     fun getNoneTasks(): Flow<List<Task>>
 

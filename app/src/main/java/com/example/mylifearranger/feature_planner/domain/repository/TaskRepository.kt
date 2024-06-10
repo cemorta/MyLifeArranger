@@ -8,6 +8,8 @@ interface TaskRepository {
 
     fun getTasks(): Flow<List<Task>>
 
+    fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>>
+
     fun getNoneTasks(): Flow<List<Task>>
 
     suspend fun getTaskByIdWithSubtasks(id: Int): TaskWithSubtasks

@@ -1,6 +1,7 @@
 package com.example.mylifearranger.feature_planner.presentation.task_view
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ class TaskViewViewModel @Inject constructor(
 
     private val _state = mutableStateOf(TaskViewState())
     val state: State<TaskViewState> = _state
+    val filter = mutableIntStateOf(0)
 
     //    private var getTasksForDateJob: Job? = null
     private var getTasksJob: Job? = null
@@ -53,6 +55,19 @@ class TaskViewViewModel @Inject constructor(
             is TaskViewAction.UpdateTaskCompletion -> {
                 viewModelScope.launch {
                     taskUseCases.updateTaskCompletionUseCase(event.id, event.isCompleted)
+                }
+            }
+            is TaskViewAction.FilterTask -> {
+                // if event.filter is 0 get all tasks, if 1 get completed tasks, if 2 get none tasks
+                when (event.filter) {
+                    0 -> {
+                        filter.intValue = 0
+                        getTasks()
+                    }
+                    1 -> {
+                        filter.intValue = 1
+                        getTasks(isDone = true)
+                    }
                 }
             }
         }
@@ -130,13 +145,18 @@ class TaskViewViewModel @Inject constructor(
 
     private fun getTasks(
         dueDate: String? = null,
-    )
-    {
+        isDone: Boolean? = null,
+        taskType: TaskType? = null
+    ) {
         getTasksJob?.cancel()
         if (dueDate != null) {
 //            getTasksJob = taskUseCases.getTasksForDateUseCase(dueDate).onEach { tasks ->
 //                _state.value = state.value.copy(tasks = tasks)
 //            }.launchIn(viewModelScope)
+        } else if (isDone != null) {
+            getTasksJob = taskUseCases.getTasksByCompletionUseCase(isDone).onEach { tasks ->
+                _state.value = state.value.copy(tasks = tasks)
+            }.launchIn(viewModelScope)
         } else {
             getTasksJob = taskUseCases.getTasksUseCase().onEach { tasks ->
                 _state.value = state.value.copy(tasks = tasks)

@@ -1,5 +1,6 @@
 package com.example.mylifearranger.feature_planner.presentation.task_view.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -22,7 +23,7 @@ import androidx.compose.ui.Alignment
 
 @Composable
 fun IconButtonBar(
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit, onClickCompleted: () -> Unit, filter: Int
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -79,11 +80,16 @@ fun IconButtonBar(
 
         // Icon for Check
         IconButton(
-            onClick = { /* handle click */ },
+            onClick = {
+                      onClickCompleted()
+            },
             modifier = Modifier.border(
                 width = 1.dp,
                 color = Color.Black,
             )
+                .background(
+                    color = if (filter == 1) Color.Green else Color.White
+                )
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
