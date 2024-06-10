@@ -34,14 +34,16 @@ class AddEditTaskViewModel @Inject constructor(
 
     private val _taskDurationHour = mutableStateOf(
         TaskTextFieldState(
-            hint = "hour"
+            hint = "hour",
+            text = "0"
         )
     )
     val taskDurationHour: State<TaskTextFieldState> = _taskDurationHour
 
     private val _taskDurationMinute = mutableStateOf(
         TaskTextFieldState(
-            hint = "minute"
+            hint = "minute",
+            text = "0"
         )
     )
     val taskDurationMinute: State<TaskTextFieldState> = _taskDurationMinute
