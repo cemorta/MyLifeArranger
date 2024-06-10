@@ -8,7 +8,7 @@ fun planDetailsActionButtons(
 ): List<ActionIconButton> {
     return listOf(
         ActionIconButton(
-            icon = R.drawable.baseline_wb_sunny_24,
+            icon = R.drawable.baseline_task_alt_24,
             contentDescription = "Change Completed Amount",
             onClick = { onClick() }
         ),
