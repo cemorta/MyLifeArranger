@@ -1,8 +1,13 @@
 package com.example.mylifearranger.feature_planner.presentation.add_edit_event.components
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,37 +43,52 @@ fun FormContainer(
         textStyle = MaterialTheme.typography.titleLarge,
     )
     Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        text = "Start date",
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = Modifier.fillMaxWidth()
-    )
-    DateTimePicker(
-        initialDateValue = startDateState.toLocalDate(),
-        initialTimeValue = startDateState.toLocalTime(),
-        onDateSelected = {
-            onEvent(AddEditEventAction.EnteredStartDate(it))
-        },
-        onTimeSelected = {
-            onEvent(AddEditEventAction.EnteredStartTime(it))
-        },
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        text = "End date",
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = Modifier.fillMaxWidth()
-    )
-    DateTimePicker(
-        initialDateValue = endDateState.toLocalDate(),
-        initialTimeValue = endDateState.toLocalTime(),
-        onDateSelected = {
-            onEvent(AddEditEventAction.EnteredEndDate(it))
-        },
-        onTimeSelected = {
-            onEvent(AddEditEventAction.EnteredEndTime(it))
-        },
-    )
+    Card(
+        shape = RoundedCornerShape(14.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        Text(
+            text = "Start date",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+        )
+        Column(modifier = Modifier.padding(20.dp, 10.dp, 10.dp, 10.dp)) {
+            DateTimePicker(
+                initialDateValue = startDateState.toLocalDate(),
+                initialTimeValue = startDateState.toLocalTime(),
+                onDateSelected = {
+                    onEvent(AddEditEventAction.EnteredStartDate(it))
+                },
+                onTimeSelected = {
+                    onEvent(AddEditEventAction.EnteredStartTime(it))
+                },
+            )
+        }
+    }
+    Card(
+        shape = RoundedCornerShape(14.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        Text(
+            text = "End date",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(start = 10.dp, top = 5.dp)
+        )
+        Column(modifier = Modifier.padding(20.dp, 10.dp, 10.dp, 10.dp)) {
+            DateTimePicker(
+                initialDateValue = endDateState.toLocalDate(),
+                initialTimeValue = endDateState.toLocalTime(),
+                onDateSelected = {
+                    onEvent(AddEditEventAction.EnteredEndDate(it))
+                },
+                onTimeSelected = {
+                    onEvent(AddEditEventAction.EnteredEndTime(it))
+                },
+            )
+        }
+    }
 }

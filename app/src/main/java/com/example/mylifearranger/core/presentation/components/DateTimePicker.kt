@@ -18,22 +18,20 @@ fun DateTimePicker(
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    Column {
-        DatePicker(
-            label = "Date",
-            value = initialDateValue?.format(dateFormatter) ?: "",
-            onValueChange = {
-                onDateSelected(LocalDate.parse(it, dateFormatter))
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-        TimePicker(
-            label = "Time",
-            value = initialTimeValue?.format(timeFormatter) ?: "",
-            onValueChange = {
-                onTimeSelected(LocalTime.parse(it, timeFormatter))
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-    }
+    DatePicker(
+        label = "Date",
+        value = initialDateValue?.format(dateFormatter) ?: "",
+        onValueChange = {
+            onDateSelected(LocalDate.parse(it, dateFormatter))
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+    )
+    TimePicker(
+        label = "Time",
+        value = initialTimeValue?.format(timeFormatter) ?: "",
+        onValueChange = {
+            onTimeSelected(LocalTime.parse(it, timeFormatter))
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+    )
 }
