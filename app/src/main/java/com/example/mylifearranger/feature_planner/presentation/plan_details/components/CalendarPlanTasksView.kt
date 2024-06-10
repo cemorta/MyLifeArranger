@@ -32,7 +32,8 @@ import java.time.LocalDateTime
 fun CalendarPlanTasksView(
     startDate: LocalDateTime,
     endDate: LocalDateTime,
-    planTasks: List<PlanTask>
+    planTasks: List<PlanTask>,
+    schedulePlanTask: (PlanTask?) -> Unit
 ) {
     // display 7 squares in a row
     Box(
@@ -83,7 +84,10 @@ fun CalendarPlanTasksView(
                         ) {
                             PlanTaskSquare(
                                 date,
-                                planTasks[i]
+                                planTasks[i],
+                                onClickPlanTaskSquare = {
+                                    schedulePlanTask(it)
+                                }
                             )
                             i++
                         } else {
@@ -97,7 +101,7 @@ fun CalendarPlanTasksView(
 }
 
 @Composable
-fun PlanTaskSquare(date: LocalDateTime, planTask: PlanTask? = null) {
+fun PlanTaskSquare(date: LocalDateTime, planTask: PlanTask? = null, onClickPlanTaskSquare: (PlanTask?) -> Unit = {}) {
     val widthSizePx =
         LocalContext.current.resources.displayMetrics.widthPixels // Screen width in pixels
     val density = LocalDensity.current.density // Current screen density
@@ -113,6 +117,7 @@ fun PlanTaskSquare(date: LocalDateTime, planTask: PlanTask? = null) {
             .size(squareSize, squareSize)
             .clickable {
                 // Handle click event here
+                       onClickPlanTaskSquare(planTask)
             },
         shape = RoundedCornerShape(8.dp)  // Rounded corners for the card
     ) {

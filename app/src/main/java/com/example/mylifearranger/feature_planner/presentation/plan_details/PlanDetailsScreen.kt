@@ -24,11 +24,13 @@ import com.example.mylifearranger.core.presentation.components.BottomBar
 import com.example.mylifearranger.core.presentation.components.BottomBarItem
 import com.example.mylifearranger.core.presentation.util.returnDayArrayByBitMasking
 import com.example.mylifearranger.core.presentation.util.returnDayStringByBitMasking
+import com.example.mylifearranger.feature_planner.domain.model.PlanTask
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.CalendarPlanTasksView
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.ChangeCompletedAmountDialog
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanInfoRow
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanTaskBoxes
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.PlanTaskList
+import com.example.mylifearranger.feature_planner.presentation.plan_details.components.SchedulePlanTaskDialog
 import com.example.mylifearranger.feature_planner.presentation.plan_details.components.planDetailsActionButtons
 import toLocalDateTime
 
@@ -41,6 +43,15 @@ fun PlanDetailsScreen(
     val state = viewModel.state.value
 
     var showCompletedAmountDialog by remember { mutableStateOf(false) }
+    var showSchedulePlanTaskDialog by remember { mutableStateOf(false) }
+
+    var selectedTask by remember { mutableStateOf<PlanTask?>(null) }
+
+    // Whenever you want to show the dialog, update showDialog and selectedTask
+    val handleTaskClick = { task: PlanTask ->
+        selectedTask = task
+        showSchedulePlanTaskDialog = true
+    }
 
     Scaffold(
         topBar = {
@@ -72,7 +83,6 @@ fun PlanDetailsScreen(
             if (showCompletedAmountDialog) {
                 ChangeCompletedAmountDialog(
                     onConfirm = { newAmount ->
-                        // Update logic here
                         viewModel.onAction(
                             PlanDetailsAction.UpdatePlanCompletedAmount(
                                 state.planWithTasks?.plan!!,
@@ -87,8 +97,28 @@ fun PlanDetailsScreen(
                 )
             }
 
-            LazyColumn(
-            ) {
+            // Conditional dialog based on showDialog state
+            if (showSchedulePlanTaskDialog) {
+                selectedTask?.let {
+                    SchedulePlanTaskDialog(
+                        onConfirm = { startDate, endDate ->
+                            viewModel.onAction(
+                                PlanDetailsAction.SchedulePlanTask(
+                                    it,
+                                    startDate,
+                                    endDate
+                                )
+                            )
+                            showSchedulePlanTaskDialog = false  // Hide the dialog after confirming
+                        },
+                        onDismiss = {
+                            showSchedulePlanTaskDialog = false
+                        }  // Hide the dialog if dismissed
+                    )
+                }
+            }
+
+            LazyColumn {
                 item {
                     // Display the plan information
                     state.planWithTasks?.plan?.let { plan ->
@@ -112,6 +142,11 @@ fun PlanDetailsScreen(
                             endDate =
                             state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
                             planTasks = state.planWithTasks!!.tasks,
+                            schedulePlanTask = { planTask ->
+                                if (planTask != null) {
+                                    handleTaskClick(planTask)
+                                }
+                            }
                         )
 
                         // Display the plan tasks
