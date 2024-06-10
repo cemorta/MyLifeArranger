@@ -3,6 +3,7 @@ package com.example.mylifearranger.feature_planner.presentation.plan_details
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -86,35 +87,36 @@ fun PlanDetailsScreen(
                 )
             }
 
-            Column {
-
-                // Display the plan information
-                state.planWithTasks?.plan?.let { plan ->
-                    PlanInfoRow(
-                        startDate = state.planWithTasks!!.plan.startDateTimestamp.toLocalDateTime(),
-                        endDate = state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
-                        workingDays = returnDayStringByBitMasking(
-                            state.planWithTasks!!.plan.days,
-                            androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(
-                                com.example.mylifearranger.R.array.days_of_week
+            LazyColumn(
+            ) {
+                item {
+                    // Display the plan information
+                    state.planWithTasks?.plan?.let { plan ->
+                        PlanInfoRow(
+                            startDate = state.planWithTasks!!.plan.startDateTimestamp.toLocalDateTime(),
+                            endDate = state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
+                            workingDays = returnDayStringByBitMasking(
+                                state.planWithTasks!!.plan.days,
+                                androidx.compose.ui.platform.LocalContext.current.resources.getStringArray(
+                                    com.example.mylifearranger.R.array.days_of_week
+                                ),
                             ),
-                        ),
-                        totalAmount = state.planWithTasks?.plan?.totalAmount!!,
-                        completedAmount = plan.completedAmount,
-                        unit = plan.unit
-                    )
+                            totalAmount = state.planWithTasks?.plan?.totalAmount!!,
+                            completedAmount = plan.completedAmount,
+                            unit = plan.unit
+                        )
+                        // Display calendar with plan tasks
+                        CalendarPlanTasksView(
+                            startDate =
+                            state.planWithTasks!!.plan.startDateTimestamp.toLocalDateTime(),
+                            endDate =
+                            state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
+                            planTasks = state.planWithTasks!!.tasks,
+                        )
 
-                    // Display calendar with plan tasks
-                    CalendarPlanTasksView(
-                        startDate =
-                        state.planWithTasks!!.plan.startDateTimestamp.toLocalDateTime(),
-                        endDate =
-                        state.planWithTasks!!.plan.endDateTimestamp.toLocalDateTime(),
-                        planTasks = state.planWithTasks!!.tasks,
-                    )
-
-                    // Display the plan tasks
-                    PlanTaskList(planTasks = state.planWithTasks?.tasks ?: emptyList())
+                        // Display the plan tasks
+                        PlanTaskList(planTasks = state.planWithTasks?.tasks ?: emptyList())
+                    }
                 }
             }
         }

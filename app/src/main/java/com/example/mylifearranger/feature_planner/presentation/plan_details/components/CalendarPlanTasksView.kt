@@ -35,7 +35,6 @@ fun CalendarPlanTasksView(
     planTasks: List<PlanTask>
 ) {
     // display 7 squares in a row
-    val scrollState = rememberScrollState()
     Box(
         modifier = Modifier
             .border(3.dp, Color.Gray, RoundedCornerShape(8.dp))
@@ -44,9 +43,6 @@ fun CalendarPlanTasksView(
         Column(
             modifier = Modifier
 //                .padding(8.dp)
-                .verticalScroll(
-                    scrollState
-                )
                 .fillMaxWidth()
                 .padding(top = 4.dp, bottom = 4.dp),
         ) {
