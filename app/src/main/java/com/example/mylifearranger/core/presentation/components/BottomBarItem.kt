@@ -47,14 +47,14 @@ data class BottomBarItem(val itemText: String, val icon: Int, val route: String?
                     )
                 }"
             ),
-            BottomBarItem(
-                "Calendar",
-                R.drawable.baseline_calendar_view_month_24
-            ),
-            BottomBarItem(
-                "Settings",
-                R.drawable.baseline_settings_24
-            )
+//            BottomBarItem(
+//                "Calendar",
+//                R.drawable.baseline_calendar_view_month_24
+//            ),
+//            BottomBarItem(
+//                "Settings",
+//                R.drawable.baseline_settings_24
+//            )
         )
     }
 }
