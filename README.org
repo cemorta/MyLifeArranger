@@ -2,40 +2,38 @@
 #+AUTHOR: Cem Orta
 #+STARTUP: showeverything
 
-* MyLifeArranger Documentation
-
 ** Project Overview
-*** The app contains standard features of calendar apps but stands out with its unique ability to breakdown tasks into subtasks. This intelligent system divides a task over a specified period, ensuring users can manage their workload in a systematic way.
-*** The app aims to be a comprehensive productivity tool, eliminating the need for multiple apps. It offers a complete system for planning tasks, goals, and daily routines.
-*** The target audience is anyone looking for an advanced productivity app. This includes people who want more than just a simple to-do list and seek a tool that can assist in holistic life planning.
-*** Unlike typical productivity apps, "My Life Arranger" combines the essential features of various tools in one single platform. It stands out with its task division system, setting it apart in the productivity app market.
-*** The anticipated outcome for users is a more organized, productive lifestyle. "My Life Arranger" is designed to become their primary productivity tool, simplifying their task management and helping them to achieve their goals more effectively.
+- The app contains standard features of calendar apps but stands out with its unique ability to breakdown tasks into subtasks. This intelligent system divides a task over a specified period, ensuring users can manage their workload in a systematic way.
+- The app aims to be a comprehensive productivity tool, eliminating the need for multiple apps. It offers a complete system for planning tasks, goals, and daily routines.
+- The target audience is anyone looking for an advanced productivity app. This includes people who want more than just a simple to-do list and seek a tool that can assist in holistic life planning.
+- Unlike typical productivity apps, "My Life Arranger" combines the essential features of various tools in one single platform. It stands out with its task division system, setting it apart in the productivity app market.
+- The anticipated outcome for users is a more organized, productive lifestyle. "My Life Arranger" is designed to become their primary productivity tool, simplifying their task management and helping them to achieve their goals more effectively.
 
 
 ** Functional Requirements
-*** The app's user interface is facilitated through a bottom navigation bar. This provides users with easy access to the app's various features.
-*** Data is processed and stored locally on the user's device, using RoomDB as the underlying database management system.
-*** Currently, the app doesn't require network communication. Future iterations may include network features for data backup purposes.
-*** The app features notifications to alert users when a task's due date is approaching. Reminders are also in place for upcoming events.
-*** User inputs to the app include task creation, event creation (displayed in the timeline view), and goal setting (which may encompass multiple tasks or plans).
+- The app's user interface is facilitated through a bottom navigation bar. This provides users with easy access to the app's various features.
+- Data is processed and stored locally on the user's device, using RoomDB as the underlying database management system.
+- Currently, the app doesn't require network communication. Future iterations may include network features for data backup purposes.
+- The app features notifications to alert users when a task's due date is approaching. Reminders are also in place for upcoming events.
+- User inputs to the app include task creation, event creation (displayed in the timeline view), and goal setting (which may encompass multiple tasks or plans).
 
 
 ** Non-functional Requirements
-*** "My Life Arranger" ensures user data privacy and security by processing and storing data locally on the user's device with RoomDB. This local data management makes users responsible for their own data.
-*** The user interface will be familiar and consistent, providing an intuitive user experience. Guided dialog boxes and toast messages will be used to assist users and provide feedback.
-*** The app relies heavily on the database for many features, such as retrieving goals, tasks, and daily events. Therefore, efficient queries and swift data retrieval are critical for good performance.
+- "My Life Arranger" ensures user data privacy and security by processing and storing data locally on the user's device with RoomDB. This local data management makes users responsible for their own data.
+- The user interface will be familiar and consistent, providing an intuitive user experience. Guided dialog boxes and toast messages will be used to assist users and provide feedback.
+- The app relies heavily on the database for many features, such as retrieving goals, tasks, and daily events. Therefore, efficient queries and swift data retrieval are critical for good performance.
 
 
 ** System Architecture
-*** The key components of "My Life Arranger" are:
-**** Task Manager: This handles the creation and tracking of tasks, sub-tasks, and tasks associated with a goal or plan.
-**** Event Manager: This manages the creation of events and their display in the timeline view.
-**** Reminder Manager: This controls the generation and display of reminders for tasks and events.
-**** Database Manager: This oversees the storage and retrieval of user data via RoomDB.
-**** Goal Manager: This handles the creation and tracking of goals.
-*** These components interact with each other primarily through data exchange via the Database Manager. For instance, the Task Manager creates and tracks tasks that are stored by the Database Manager and subsequently displayed in the tasks tab. Similarly, the Event Manager creates events that are displayed in the timeline view after storage and retrieval via the Database Manager. The Goal Manager creates and tracks goals which are stored in the database and displayed in the goals tab. The Reminder Manager creates and displays reminders for tasks and events, based on the data stored in the database.
-*** The app is built with the RoomDB for database management and the Jetpack Compose Toolkit for UI components.
-*** The system architecture diagram in text:
+- The key components of "My Life Arranger" are:
+  - Task Manager: This handles the creation and tracking of tasks, sub-tasks, and tasks associated with a goal or plan.
+  - Event Manager: This manages the creation of events and their display in the timeline view.
+  - Reminder Manager: This controls the generation and display of reminders for tasks and events.
+  - Database Manager: This oversees the storage and retrieval of user data via RoomDB.
+  - Goal Manager: This handles the creation and tracking of goals.
+- These components interact with each other primarily through data exchange via the Database Manager. For instance, the Task Manager creates and tracks tasks that are stored by the Database Manager and subsequently displayed in the tasks tab. Similarly, the Event Manager creates events that are displayed in the timeline view after storage and retrieval via the Database Manager. The Goal Manager creates and tracks goals which are stored in the database and displayed in the goals tab. The Reminder Manager creates and displays reminders for tasks and events, based on the data stored in the database.
+- The app is built with the RoomDB for database management and the Jetpack Compose Toolkit for UI components.
+- The system architecture diagram in text:
 
 Task Manager --> Database Manager <-- Event Manager
      |                   ^                  |
@@ -48,17 +46,17 @@ Goal Manager
      v
 UI Components
 
-This represents the interaction between different components of the system. Task Manager and Event Manager interact with the Database Manager for storing and retrieving data. Their respective actions are represented in the user interface. The Reminder Manager, which creates and displays reminders, also interacts with the Database Manager. Finally, the Goal Manager interfaces with the user interface, creating and tracking goals for display.
+- This represents the interaction between different components of the system. Task Manager and Event Manager interact with the Database Manager for storing and retrieving data. Their respective actions are represented in the user interface. The Reminder Manager, which creates and displays reminders, also interacts with the Database Manager. Finally, the Goal Manager interfaces with the user interface, creating and tracking goals for display.
 
 
 ** Database Schema
-*** Tasks: Contains information about tasks such as task title, task duration (duration in seconds), task type (daily, monthly, yearly, or none which they not planned yet), planned timestamp (planned task timestamp in epoch), Boolean value for has the planned timestamp entered, task status (done, not done), due timestamp, assigned goal (if any), and assigned subtasks (if any).
-*** Plans: A plan is a dividable task. Contains information about plant title, plan type (total, range), total amount (if the plan type is total), completed amount, unit, start range and end range (if the plan type is range), days (on which days the plan will divide into plan tasks), start day timestamp (epoch), end day timestamp (epoch), task status (done, not done), and assigned plan tasks.
-*** Plan Tasks: A plan divides into plan tasks distributed to days. Plan tasks contains information about plan task title, plan task description, amount to complete the plan task, task duration, to be performed date timestamp, plan task status (done, not done), assigned plan, and assigned event (if any).
-*** Subtasks: Contains information about subtasks such as subtask title, subtask status, and assigned task or assigned event (one of them).
-*** Events: Contains information about events such as event title, event description, event start and end timestamps (epoch), color for labeling in the timeline, event status (done, not done), a Boolean value for check it is all day event, assigned task or plan task (if any, one of them) and assigned subtasks (if any).
-*** Goals: Contains information about goals such as goal title, goal description, goal status, and assigned tasks.
-- **Tags**: Users can create tags to better categorize and filter their tasks. For instance, a user might have tags like 'Work', 'Personal', 'Urgent', etc. Tasks can be associated with multiple tags.
+- Tasks: Contains information about tasks such as task title, task duration (duration in seconds), task type (daily, monthly, yearly, or none which they not planned yet), planned timestamp (planned task timestamp in epoch), Boolean value for has the planned timestamp entered, task status (done, not done), due timestamp, assigned goal (if any), and assigned subtasks (if any).
+- Plans: A plan is a dividable task. Contains information about plant title, plan type (total, range), total amount (if the plan type is total), completed amount, unit, start range and end range (if the plan type is range), days (on which days the plan will divide into plan tasks), start day timestamp (epoch), end day timestamp (epoch), task status (done, not done), and assigned plan tasks.
+- Plan Tasks: A plan divides into plan tasks distributed to days. Plan tasks contains information about plan task title, plan task description, amount to complete the plan task, task duration, to be performed date timestamp, plan task status (done, not done), assigned plan, and assigned event (if any).
+- Subtasks: Contains information about subtasks such as subtask title, subtask status, and assigned task or assigned event (one of them).
+- Events: Contains information about events such as event title, event description, event start and end timestamps (epoch), color for labeling in the timeline, event status (done, not done), a Boolean value for check it is all day event, assigned task or plan task (if any, one of them) and assigned subtasks (if any).
+- Goals: Contains information about goals such as goal title, goal description, goal status, and assigned tasks.
+  - **Tags**: Users can create tags to better categorize and filter their tasks. For instance, a user might have tags like 'Work', 'Personal', 'Urgent', etc. Tasks can be associated with multiple tags.
 *** How do these tables relate to each other?
 - Tasks and Subtasks have a one-to-many relationship.
 - Events and Subtasks have a one-to-many relationship.
