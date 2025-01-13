@@ -35,6 +35,7 @@
 - The app is built with the RoomDB for database management and the Jetpack Compose Toolkit for UI components.
 - The system architecture diagram in text:
 
+#+begin_example
 Task Manager --> Database Manager <-- Event Manager
      |                   ^                  |
      v                   |                  v
@@ -45,6 +46,7 @@ Goal Manager
      |
      v
 UI Components
+#+end_example
 
 - This represents the interaction between different components of the system. Task Manager and Event Manager interact with the Database Manager for storing and retrieving data. Their respective actions are represented in the user interface. The Reminder Manager, which creates and displays reminders, also interacts with the Database Manager. Finally, the Goal Manager interfaces with the user interface, creating and tracking goals for display.
 
@@ -56,7 +58,7 @@ UI Components
 - Subtasks: Contains information about subtasks such as subtask title, subtask status, and assigned task or assigned event (one of them).
 - Events: Contains information about events such as event title, event description, event start and end timestamps (epoch), color for labeling in the timeline, event status (done, not done), a Boolean value for check it is all day event, assigned task or plan task (if any, one of them) and assigned subtasks (if any).
 - Goals: Contains information about goals such as goal title, goal description, goal status, and assigned tasks.
-  - **Tags**: Users can create tags to better categorize and filter their tasks. For instance, a user might have tags like 'Work', 'Personal', 'Urgent', etc. Tasks can be associated with multiple tags.
+  - Tags: Users can create tags to better categorize and filter their tasks. For instance, a user might have tags like 'Work', 'Personal', 'Urgent', etc. Tasks can be associated with multiple tags.
 *** How do these tables relate to each other?
 - Tasks and Subtasks have a one-to-many relationship.
 - Events and Subtasks have a one-to-many relationship.
